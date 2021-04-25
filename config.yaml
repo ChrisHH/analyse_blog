@@ -2,7 +2,7 @@ baseURL: "https://hhanalytics.netlify.app/"
 languageCode: en-us
 title: HH analytics blog
 theme: hugo-theme-cactus
-copyright: © JChristian Jähnert 2021 · Made with the blogdown package and the Cactus theme for Hugo.
+copyright: Christian Jähnert · Made with the blogdown package and the Cactus theme for Hugo.
 disqusShortname: example
 menu:
   main:
