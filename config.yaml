@@ -1,6 +1,6 @@
 baseURL: "https://hhanalytics.netlify.app/"
 languageCode: en-us
-title: Cactus theme example
+title: HH analytics blog
 theme: hugo-theme-cactus
 copyright: You
 disqusShortname: example
@@ -9,15 +9,12 @@ menu:
     - name: Home
       url: /
       weight: 1
-    - name: Writings
+    - name: Beiträge
       url: /posts
       weight: 2
-    - name: Tags
-      url: /tags
-      weight: 3
-    - name: About
+    - name: Über mich
       url: /about
-      weight: 4
+      weight: 3
 markup:
   tableOfContents:
     endLevel: 4
