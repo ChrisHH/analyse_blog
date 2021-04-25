@@ -1,4 +1,4 @@
-baseURL: https://example.com
+baseURL: "https://hhanalytics.netlify.app/"
 languageCode: en-us
 title: Cactus theme example
 theme: hugo-theme-cactus
