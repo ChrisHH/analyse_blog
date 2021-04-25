@@ -47,8 +47,8 @@ params:
   social:
     - link: https://github.com/gohugoio
       name: github
-    - link: https://www.linkedin.com/company/github/
+    - link: https://www.linkedin.com/in/christian-jähnert-ab427412a/
       name: linkedin
     - link: example@example.com
       name: email
-  tagsOverview: yes
+  tagsOverview: no
