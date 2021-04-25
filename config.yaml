@@ -32,10 +32,10 @@ params:
   postsOnHomePage: 5
   projectsUrl: https://github.com/gohugoio
   rss: yes
-  show_updated: no
+  show_updated: yes
   showAllPostsOnHomePage: no
   showProjectsList: yes
-  showReadTime: no
+  showReadTime: yes
   social:
     - link: https://github.com/gohugoio
       name: github
