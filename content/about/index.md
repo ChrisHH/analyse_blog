@@ -3,8 +3,6 @@ date: "2016-08-24 17:51:42"
 title: Über mich
 ---
 
-An dieser Stelle möchte ich mich kurz vorstellen.
-
 Ich bin Christian und habe zwei Studien abgeschlossen.
 Zunächst habe ich im Jahr 2003 mein erstes Studium "Medizintechnik und Biomedizintechnik" erfolgreich abgeschlossen. 
 In diesem Studium lernte ich das Programmieren in C und C++. Das hat mich damals schon fasziniert.
