@@ -14,14 +14,14 @@ category: blog-post
 
 ## Vorgeschichte
 
-"Da ist es ja wieder, dieses hellblaue Kleid!"
+"Sie trägt es wieder, dieses hellblaue Kleid!"
 
 ![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendungsbild-596897~_v-grossgalerie16x9.jpg)
 
- Diesen Gedanken habe ich hin und wieder, wenn ich Caren Miosga als Moderatorin der Tagesthemen zuschaue, wie sie das Tagesgeschehen in den Tagesthemen einordnet. Die Gedanken gehen dann weiter: "Super, dass der NDR nachhaltig agiert und so verantwortungsbewusst mit GEZ-Geldern umgeht und die Kleidung der Moderator*innen mehrfach getragen werden!"  
+Diesen Gedanken habe ich hin und wieder, wenn ich Caren Miosga als Moderatorin der Tagesthemen zuschaue, wie sie das Tagesgeschehen in den Tagesthemen einordnet. Die Gedanken gehen dann weiter: "Super, dass der NDR nachhaltig agiert, verantwortungsbewusst mit GEZ-Geldern umgeht und die Kleidung der Moderator*innen mehrfach getragen werden!"
 
 Irgendwann wuchs aus diesen Gedanken die Idee, einmal genauer unter die Lupe zu nehmen, was bei den Tagesthemen so passiert.
-Ich kam auf folgende Fragen:
+Ich kam spontan auf folgende Fragen:
 
 - Welche Personen moderieren eigentlich die Tagesthemen wie häufig?
 - Wie lange dauert eine Sendung durchschnittlich?
@@ -32,7 +32,7 @@ Ich kam auf folgende Fragen:
 
 ... die Liste ließe sich noch erweitern.
 
-Diese Auswahl an Fragen war für mich Grund genug mit Hilfe verschiedener Instrumente aus dem Bereich Data Science loszulegen (und wie so oft, wird sich zwischendurch noch die eine oder andere Frage ergeben). In loser Folge versuche ich auf die einzelnen Fragen antworten zu geben und darzustellen, wie ich die Lösung vorangetrieben habe.
+Diese Auswahl an Fragen war für mich Grund genug mit Hilfe verschiedener Instrumente aus dem Bereich Data Science loszulegen (und wie so oft, wird sich zwischendurch noch die eine oder andere Frage ergeben). In loser Folge versuche ich auf die einzelnen Fragen Antworten zu geben und darzustellen, wie ich die Lösung vorangetrieben habe.
 
 ![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendungsbild-661551~_v-grossgalerie16x9.jpg)
 
@@ -46,7 +46,7 @@ vom 8. Mai 2021: https://www.tagesschau.de/multimedia/sendung/tt-8257.html
 
 Bei Inspektion mehrerer URLs von Tagesthemen-Seiten stellte ich fest, dass die Zahl "8257" in der URL ein Index ist, der hochzählt.
 So habe ich über die Kalenderfunktion (ebenfalls auf der Webseite vorhanden) die URL der Sendung vom 01.01.2019 und vom 17.03.2021 ermittelt.
-Das ist also der Start- und Endpunkt des Scrapings und dazwischen wird der Zähler einfach erhöht!
+Das ist also der Start- und Endpunkt des Scrapings und dazwischen wird der Zähler einfach erhöht! (Mehr dazu später.)
 
 ### Was findet man nun auf dieser Seite?
 
@@ -54,23 +54,24 @@ Die wesentlichen Bereiche sind in dem Screenshot farblich markiert:
 
 ![Screenshot, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/screenshot_tt.png)
 
-Zunächst können wir herausfinden, wann die Sendung ausgestrahlt wurde (organgefarbener Kasten). Das Standbild der Sendung (grüner Kasten) liefert natürlich die Information, welche Person die Sendung moderiert hat und welche Farbung die Kleidung hatte, die diese Person trug. Außerdem ist rechts unten im Standbild die Dauer der Sendung zu erkennen (gelber Kasten; es handelt sich um ein overlay, sodass der Text ermittelbar ist).
-Schlussendlich sind unter dem Bild die Themen der Sendung einsehbar (violetter Kasten).
+Zunächst können wir herausfinden, wann die Sendung ausgestrahlt wurde (organgefarbener Kasten). Das Standbild der Sendung (grüner Kasten) liefert natürlich die Information, welche Person die Sendung moderiert hat und welche Farbe die Kleidung hatte, die diese Person trug. Außerdem ist rechts unten im Standbild die Dauer der Sendung zu erkennen (gelber Kasten; es handelt sich um ein overlay, sodass der Text ermittelbar ist).Schlussendlich sind unter dem Bild die Themen der Sendung einsehbar (violetter Kasten).
 
-Das ist doch schomal eine ganze Menge oder?
-(Und es kommt schon der erste Gedanke: Oh oh, wie kann man denn die Kleidung von Moderator*in und Person im Hintergrund unterscheiden? Dieser Gedanke wird erstmal aufgeschoben und zu gegebener Zeit behandelt.)
+Das ist doch schomal eine ganze Menge! (Und es kommt schon der erste Gedanke: Oh oh, wie kann man denn die Kleidung der Moderator*innen von den Personen im Hintergrund (auf der Medienwand) unterscheiden? Dieser Gedanke wird erstmal aufgeschoben und zu gegebener Zeit behandelt - es wird aber mit Sicherheit ein Thema, das in Richtung Bild-Segmentierung geht.)
 
-Nun kann also das Scraping beginnen!
+Nun also erstmal zum Scraping!
 
 ## Webscraping
 
-Das Scraping mit R ist mit den Paketen tidyverse, rvest, lubridate und xml2 recht einfach möglich.
+Das Scraping mit R ist mit den Paketen tidyverse, rvest, lubridate und xml2 überraschend einfach möglich.
 Ich habe zunächst eine Funktion geschrieben, die für jede URL, die ihr übergeben wird, folgendes ermittelt:
 
--- Datum und Sendezeit
--- Themen der Sendung
--- Länge der Sendung
--- Link zum Standbild
+- Datum und Sendezeit
+- Themen der Sendung
+- Länge der Sendung
+- Link zum Standbild
+
+Zunächst wird in der Funktion der HTML-Inhalt der Seite ausgelesen und in der Variable tt gespeichert.
+Dieser Inhalt wird dann nach o.g. Kriterien untersucht.
 
 ```{r}
 
@@ -142,7 +143,7 @@ extract_tagestehmen <- function(url) {
 ```
 
 Diese Funktion habe ich in einem for-loop aufgerufen, und die Ergebnisse in einem Tibble gespeichert.
-Da der Index nicht immer exakt um 1 erhöht wird, existieren manche URLs nicht. Diese werden mit dem tryCatch Aufruf behandelt, sodass die Schleibe nicht abbricht.
+Da der Index nicht immer exakt um 1 erhöht wird, existieren manche URLs nicht. Diese werden mit dem tryCatch Aufruf behandelt, sodass die Schleife nicht einfach abbricht.
 
 
 ```{r}
@@ -193,10 +194,12 @@ for (link in linklist){
 
 ### Vom Bild zum Namen ohne viel Aufwand?
 
-Ich habe kurz darüber nachgedacht, wie ich nun aus den Bildern den Namen ableiten kann. Hier habe ich mir das Leben leicht gemacht und diese Bilder einfach per Batch nach Amazon Photos hochgeladen. Dort habe ich ein paar Gesichter markiert und per Tag den Namen der Person vergeben; nach einem Tag hatte Amazon den Job erledigt und alle Namen getaggt. 
-Die Bilder habe ich dann wieder heruntergeladen und schon konnte ich über den Dateinamen den Namen der moderierenden Person zuordnen. Dieses Vorgehen müsste eigentlich auch gut mit der Foto-App auf den Geräten von Apple funktionieren; das habe ich aber nicht ausprobiert.
+Ich habe kurz darüber nachgedacht, wie ich nun aus den Bildern den Namen ableiten kann. Hier habe ich mir das Leben leicht gemacht und diese Bilder einfach per Batch nach Amazon Photos hochgeladen. Dort habe ich ein paar Gesichter markiert und per Tag den Namen der Person vergeben; nach einem Tag hatte Amazon den Job erledigt und alle Namen für alle Fotos getaggt. Die Bilder habe ich dann wieder heruntergeladen und schon konnte ich über den Dateinamen den Namen der moderierenden Person zuordnen. Dieses Vorgehen müsste eigentlich auch gut mit der Foto-App auf den Geräten von Apple funktionieren; das habe ich aber nicht ausprobiert.
 
-Wer sich dafür interessiert, dem verlinke ich die Zuordnung zwischen Bild und Moderator*in hier.
+Wer sich dafür interessiert, dem verlinke ich die Zuordnung zwischen Bild und Moderator*innen hier.
+
+
+## Explorative Datenanalyse
 
 Während meiner Analyse ist mir aufgefallen, dass es an manchen Tagen mehrere Tagesthemen gibt.
 Es handelt sich um Extra-Ausgaben; diese habe ich identifiziert in dem ich von der Anzahl der Tagesthemen an einem Tag die Zeilennummer subtrahiert habe.
