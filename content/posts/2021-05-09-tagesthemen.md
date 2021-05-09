@@ -1,20 +1,22 @@
 ---
-category: blog-post
-date: "2021-05-09"
+title: "Tagesthemen"
+date: '2021-05-09'
 keywords:
 - tagesthemen
 - R
 tags:
 - R
 - sracping with R
-title: Tagesthemen
+category: blog-post
 ---
 
 ## Tagesthemen
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Ich schaffe es selten um 20 Uhr vor dem Fernseher zu sein und mir die Tagesschau anzuschauen.
+Aber das ist nicht der Hauptgrund, denn es ist ja möglich, die Tagesschau nach der Ausstrahlung jederzeit und überall zu schauen.
+Aber spannender finde ich dennoch die Tagesthemen, weil hier noch detailierter berichetet wird.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+![Caren Miosga, Tagesthemen](sendungsbild-596897~_v-grossgalerie16x9.jpg)
 
 ```{r cars}
 summary(cars)
