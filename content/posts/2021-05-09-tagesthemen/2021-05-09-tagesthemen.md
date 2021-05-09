@@ -196,68 +196,14 @@ for (link in linklist){
 
 Ich habe kurz darüber nachgedacht, wie ich nun aus den Bildern den Namen ableiten kann. Hier habe ich mir das Leben leicht gemacht und diese Bilder einfach per Batch nach Amazon Photos hochgeladen. Dort habe ich ein paar Gesichter markiert und per Tag den Namen der Person vergeben; nach einem Tag hatte Amazon den Job erledigt und alle Namen für alle Fotos getaggt. Die Bilder habe ich dann wieder heruntergeladen und schon konnte ich über den Dateinamen den Namen der moderierenden Person zuordnen. Dieses Vorgehen müsste eigentlich auch gut mit der Foto-App auf den Geräten von Apple funktionieren; das habe ich aber nicht ausprobiert.
 
-Wer sich dafür interessiert, dem verlinke ich die Zuordnung zwischen Bild und Moderator*innen hier.
+Die finale Datei kann hier heruntergeladen werden: 
 
+https://
 
-## Explorative Datenanalyse
+## Ausblick
 
-Während meiner Analyse ist mir aufgefallen, dass es an manchen Tagen mehrere Tagesthemen gibt.
-Es handelt sich um Extra-Ausgaben; diese habe ich identifiziert in dem ich von der Anzahl der Tagesthemen an einem Tag die Zeilennummer subtrahiert habe.
-Insofern bleibt im Falle einer Sondersendung die Zahl "1" und damit kann dann die Filterung vorgenommen werden. 
+In den nächsten Posts geht es ganz im Sinne von CRISP-DM erstmal um die Datensichtung, Datenbereinigung und eine erste explorative Datenanalyse, bevor das Instrumentarium dann komplexer wird.
 
+Stay tuned!
 
-```{r}
-
-moderatoren <- read_csv("./Tagesthemen_Standbilder/moderatoren_sendung.csv")
-
-# Verfeinerung des Datensatzes --------------------------------------------
-
-tagesthemen <- tagesthemen %>% 
-  mutate(dauer = as.numeric(dauer),
-         date = as.Date(strftime(datum_zeit, format = "%Y-%m-%d"))) %>% 
-  group_by(date) %>% 
-  arrange(date, .by_group = TRUE) %>% 
-  mutate(extra = n() - row_number(),
-         day = factor(weekdays(datum_zeit), levels = c("Montag", "Dienstag", "Mittwoch",
-                                                       "Donnerstag","Freitag","Samstag","Sonntag")),
-         dateiname_standbild = str_remove(standbild_url, "https://www.tagesschau.de/multimedia/bilder/")) %>% 
-  ungroup() %>% 
-  left_join(moderatoren, by = c("dateiname_standbild" = "file"))
-
-
-# Beleuchtung der Sendezeit -----------------------------------------------
-
-tagesthemen %>% 
-  ungroup() %>% 
-  filter(extra == 0) %>%
-  ggplot(aes(x=datum_zeit, y=round(dauer/60),1)) +
-  theme_plex() +
-  geom_line(color = "midnightblue") +
-  geom_smooth() +
-  labs(x = "Datum", y = "Sendezeit in Minuten", caption = "Quelle: www.tagesschau.de", 
-       subtitle = "01.01.2019 - 16.03.2021 (ohne Extrausgaben) ", title = "Sendezeit in Minuten nach Datum")
-```
-
-![Zeitreihe Sendezeit, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendezeit_over_days.png)
-
-Juhu, das erste Ergebnis - und schon so interessant!
-
-Zunächst ist starkes "Zucken" in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen.
-Daher ist es natürlich sinnvoll, die Werte auch noch einmal nach Wochentagen anzuschauen. Das passiert gleich.
-
-Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist.
-Das ist kein Fehler sondern hat nach meiner Recherche einen einfachen Grund! Mehr dazu in diesem Video:
-
-Und natürlich fällt ein starker Extremwert ins Auge undzwar gleich zu Beginn des Jahres 2021.
-Hierbei handelt es sich um die Sendung vom 06. Januar 2021 als in den USA das Kongressgebäude gestürmt wurde.
-
-![Sendezeit nach Wochentag, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendezeit_nach_wochentag.png)
-
-Das die Tagesthemen am Wochenende kürzer sind, das wusste ich. Neu war mir, dass dies offensichtlich schon am Freitag der Fall ist. 
-Erkennbar ist, das an den Tagen von Montag bis Donnerstag eine Sendung im Durchschnitt 28-30 Minuten dauer und von Freitag bis Sonntag knapp über 20 Minuten.
-Das ist doch gut zu wissen, wenn man mal wieder dringend aufs Klo muss, aber den nächsen Beitrag nicht verpassen möchte ;-)
-
-Mit diesen ersten Einblicken endet dieser Post zunächst.
-
-In den nächsten Posts gehe ich auf die Suche nach weiteren Insights - stay tuned! :-)
 

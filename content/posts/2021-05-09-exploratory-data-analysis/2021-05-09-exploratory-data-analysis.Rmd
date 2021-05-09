@@ -1,0 +1,53 @@
+## Einleitung und Fragstellungen
+
+Im vorigen Post habe ich beschrieben, wie ich die Daten, die nun analysiert werden, gewonnen habe.
+
+
+## Explorative Datenanalyse
+
+### Einlesen der Rohdaten
+
+Dieser Schritt ist sehr einfach :-)
+
+```{r}
+library(tidyverse)
+library(skimr)
+tagesthemen <- read_csv("tagesthemen_raw.csv")
+```
+
+### Sanity Checks
+
+Zunächst wollen wir einmal schauen, über wieviele Sendungen tatsächlich Informationen vorliegen.
+
+```{r}
+tagesthemen %>% 
+  skim()
+  
+```
+
+
+
+
+![Zeitreihe Sendezeit, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendezeit_over_days.png)
+
+Juhu, das erste Ergebnis - und schon so interessant!
+
+Zunächst ist starkes "Zucken" in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen.
+Daher ist es natürlich sinnvoll, die Werte auch noch einmal nach Wochentagen anzuschauen. Das passiert gleich.
+
+Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist.
+Das ist kein Fehler sondern hat nach meiner Recherche einen einfachen Grund! Mehr dazu in diesem Video:
+
+Und natürlich fällt ein starker Extremwert ins Auge undzwar gleich zu Beginn des Jahres 2021.
+Hierbei handelt es sich um die Sendung vom 06. Januar 2021 als in den USA das Kongressgebäude gestürmt wurde.
+
+![Sendezeit nach Wochentag, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendezeit_nach_wochentag.png)
+
+Das die Tagesthemen am Wochenende kürzer sind, das wusste ich. Neu war mir, dass dies offensichtlich schon am Freitag der Fall ist. 
+Erkennbar ist, das an den Tagen von Montag bis Donnerstag eine Sendung im Durchschnitt 28-30 Minuten dauer und von Freitag bis Sonntag knapp über 20 Minuten.
+Das ist doch gut zu wissen, wenn man mal wieder dringend aufs Klo muss, aber den nächsen Beitrag nicht verpassen möchte ;-)
+
+Mit diesen ersten Einblicken endet dieser Post zunächst.
+
+In den nächsten Posts gehe ich auf die Suche nach weiteren Insights - stay tuned! :-)
+

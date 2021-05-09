@@ -1,0 +1,287 @@
+
+
+
+<div id="einleitung-und-fragstellungen" class="section level2">
+<h2>Einleitung und Fragstellungen</h2>
+<p>Im vorigen Post habe ich beschrieben, wie ich die Daten, die nun analysiert werden, gewonnen habe.</p>
+</div>
+<div id="explorative-datenanalyse" class="section level2">
+<h2>Explorative Datenanalyse</h2>
+<div id="einlesen-der-rohdaten" class="section level3">
+<h3>Einlesen der Rohdaten</h3>
+<p>Dieser Schritt ist sehr einfach :-)</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.1.1     ✓ dplyr   1.0.5
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(skimr)
+tagesthemen &lt;- read_csv(&quot;tagesthemen_raw.csv&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   datum_zeit = col_datetime(format = &quot;&quot;),
+##   dauer = col_double(),
+##   themen = col_character(),
+##   standbild_url = col_character(),
+##   url = col_character(),
+##   date = col_date(format = &quot;&quot;),
+##   extra = col_double(),
+##   day = col_character(),
+##   dateiname_standbild = col_character(),
+##   name = col_character()
+## )</code></pre>
+</div>
+<div id="sanity-checks" class="section level3">
+<h3>Sanity Checks</h3>
+<p>Zunächst wollen wir einmal schauen, über wieviele Sendungen tatsächlich Informationen vorliegen.</p>
+<pre class="r"><code>tagesthemen %&gt;% 
+  skim()</code></pre>
+<table>
+<caption><span id="tab:unnamed-chunk-2">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">Piped data</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">813</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">10</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Date</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">POSIXct</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">themen</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">169</td>
+<td align="right">1196</td>
+<td align="right">0</td>
+<td align="right">813</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">standbild_url</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">27</td>
+<td align="right">87</td>
+<td align="right">0</td>
+<td align="right">810</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">url</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">57</td>
+<td align="right">57</td>
+<td align="right">0</td>
+<td align="right">813</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">day</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">dateiname_standbild</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">27</td>
+<td align="right">64</td>
+<td align="right">0</td>
+<td align="right">810</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">name</td>
+<td align="right">6</td>
+<td align="right">0.99</td>
+<td align="right">10</td>
+<td align="right">14</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2019-01-01</td>
+<td align="left">2021-03-17</td>
+<td align="left">2020-02-03</td>
+<td align="right">796</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">dauer</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1543.83</td>
+<td align="right">457.59</td>
+<td align="right">347</td>
+<td align="right">1213</td>
+<td align="right">1786</td>
+<td align="right">1836</td>
+<td align="right">3962</td>
+<td align="left">▂▇▇▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">extra</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.02</td>
+<td align="right">0.14</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: POSIXct</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">datum_zeit</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2019-01-01 22:15:00</td>
+<td align="left">2021-03-17 21:15:00</td>
+<td align="left">2020-02-03 21:15:00</td>
+<td align="right">813</td>
+</tr>
+</tbody>
+</table>
+<div class="figure">
+<img src="/posts/2021-05-09-tagesthemen/sendezeit_over_days.png" alt="" />
+<p class="caption">Zeitreihe Sendezeit, Quelle: Tagesthemen.de</p>
+</div>
+<p>Juhu, das erste Ergebnis - und schon so interessant!</p>
+<p>Zunächst ist starkes “Zucken” in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen.
+Daher ist es natürlich sinnvoll, die Werte auch noch einmal nach Wochentagen anzuschauen. Das passiert gleich.</p>
+<p>Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist.
+Das ist kein Fehler sondern hat nach meiner Recherche einen einfachen Grund! Mehr dazu in diesem Video:</p>
+<p>Und natürlich fällt ein starker Extremwert ins Auge undzwar gleich zu Beginn des Jahres 2021.
+Hierbei handelt es sich um die Sendung vom 06. Januar 2021 als in den USA das Kongressgebäude gestürmt wurde.</p>
+<div class="figure">
+<img src="/posts/2021-05-09-tagesthemen/sendezeit_nach_wochentag.png" alt="" />
+<p class="caption">Sendezeit nach Wochentag, Quelle: Tagesthemen.de</p>
+</div>
+<p>Das die Tagesthemen am Wochenende kürzer sind, das wusste ich. Neu war mir, dass dies offensichtlich schon am Freitag der Fall ist.
+Erkennbar ist, das an den Tagen von Montag bis Donnerstag eine Sendung im Durchschnitt 28-30 Minuten dauer und von Freitag bis Sonntag knapp über 20 Minuten.
+Das ist doch gut zu wissen, wenn man mal wieder dringend aufs Klo muss, aber den nächsen Beitrag nicht verpassen möchte ;-)</p>
+<p>Mit diesen ersten Einblicken endet dieser Post zunächst.</p>
+<p>In den nächsten Posts gehe ich auf die Suche nach weiteren Insights - stay tuned! :-)</p>
+</div>
+</div>
