@@ -1,6 +1,6 @@
 ---
-title: "Tagesthemen"
-date: '2021-05-09'
+title: "Tagesthemen - Scraping"
+date: '2021-05-03'
 keywords:
 - tagesthemen
 - R
@@ -10,33 +10,9 @@ tags:
 category: blog-post
 ---
 
-# Analyse der Tagesthemen
+# Scraping der Webseite www.tagesschau.de
 
-## Vorgeschichte
-
-"Sie trägt es wieder, dieses hellblaue Kleid!"
-
-![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendungsbild-596897~_v-grossgalerie16x9.jpg)
-
-Diesen Gedanken habe ich hin und wieder, wenn ich Caren Miosga als Moderatorin der Tagesthemen zuschaue, wie sie das Tagesgeschehen in den Tagesthemen einordnet. Die Gedanken gehen dann weiter: "Super, dass der NDR nachhaltig agiert, verantwortungsbewusst mit GEZ-Geldern umgeht und die Kleidung der Moderator*innen mehrfach getragen werden!"
-
-Irgendwann wuchs aus diesen Gedanken die Idee, einmal genauer unter die Lupe zu nehmen, was bei den Tagesthemen so passiert.
-Ich kam spontan auf folgende Fragen:
-
-- Welche Personen moderieren eigentlich die Tagesthemen wie häufig?
-- Wie lange dauert eine Sendung durchschnittlich?
-- Gibt es Unterschiede nach Tagen oder eine Saisonalität?
-- Haben die Moderator*innen erkennbar bevorzugte Lieblingsfarben ihrer Kleidung?
-- Und ist die Farbe der Kleidung beeinflusst durch die Themen der Sendung?
-- Wie oft wird ein Kleidungsstück genutzt; über welchen Zeitraum?
-
-... die Liste ließe sich noch erweitern.
-
-Diese Auswahl an Fragen war für mich Grund genug mit Hilfe verschiedener Instrumente aus dem Bereich Data Science loszulegen (und wie so oft, wird sich zwischendurch noch die eine oder andere Frage ergeben). In loser Folge versuche ich auf die einzelnen Fragen Antworten zu geben und darzustellen, wie ich die Lösung vorangetrieben habe.
-
-![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendungsbild-661551~_v-grossgalerie16x9.jpg)
-
-## Datenbasis
+## Untersuchung der Webseite
 
 Unter dem Link www.tagesschau.de ist das gesamte Nachrichtenangebot, dass die ARD hergibt, gebündelt. Es ist also eine dankbare Datenquelle, um die aufgeworfenen Fragen zu beantworten.
 
@@ -46,13 +22,13 @@ vom 8. Mai 2021: https://www.tagesschau.de/multimedia/sendung/tt-8257.html
 
 Bei Inspektion mehrerer URLs von Tagesthemen-Seiten stellte ich fest, dass die Zahl "8257" in der URL ein Index ist, der hochzählt.
 So habe ich über die Kalenderfunktion (ebenfalls auf der Webseite vorhanden) die URL der Sendung vom 01.01.2019 und vom 17.03.2021 ermittelt.
-Das ist also der Start- und Endpunkt des Scrapings und dazwischen wird der Zähler einfach erhöht! (Mehr dazu später.)
+Das ist also der Start- und Endpunkt des Scrapings und dazwischen wird der Zähler in der URL einfach erhöht! (Mehr dazu später.)
 
 ### Was findet man nun auf dieser Seite?
 
 Die wesentlichen Bereiche sind in dem Screenshot farblich markiert:
 
-![Screenshot, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/screenshot_tt.png)
+![Screenshot, Quelle: Tagesthemen.de](/posts/2021-05-03-tagesthemen-scraping/screenshot_tt.png)
 
 Zunächst können wir herausfinden, wann die Sendung ausgestrahlt wurde (organgefarbener Kasten). Das Standbild der Sendung (grüner Kasten) liefert natürlich die Information, welche Person die Sendung moderiert hat und welche Farbe die Kleidung hatte, die diese Person trug. Außerdem ist rechts unten im Standbild die Dauer der Sendung zu erkennen (gelber Kasten; es handelt sich um ein overlay, sodass der Text ermittelbar ist).Schlussendlich sind unter dem Bild die Themen der Sendung einsehbar (violetter Kasten).
 
@@ -60,7 +36,7 @@ Das ist doch schomal eine ganze Menge! (Und es kommt schon der erste Gedanke: Oh
 
 Nun also erstmal zum Scraping!
 
-## Webscraping
+## Scraping mit R
 
 Das Scraping mit R ist mit den Paketen tidyverse, rvest, lubridate und xml2 überraschend einfach möglich.
 Ich habe zunächst eine Funktion geschrieben, die für jede URL, die ihr übergeben wird, folgendes ermittelt:
@@ -205,5 +181,3 @@ https://
 In den nächsten Posts geht es ganz im Sinne von CRISP-DM erstmal um die Datensichtung, Datenbereinigung und eine erste explorative Datenanalyse, bevor das Instrumentarium dann komplexer wird.
 
 Stay tuned!
-
-
