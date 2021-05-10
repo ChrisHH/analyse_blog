@@ -1,3 +1,15 @@
+---
+title: "Explorative Datenanalyse"
+date: '2021-05-09'
+keywords:
+- Tagesthemen
+- Explorative Datenanalyse
+- R
+tags:
+- R
+category: blog-post
+---
+
 ## Einleitung und Fragstellungen
 
 Im vorigen Post habe ich beschrieben, wie ich die Daten, die nun analysiert werden, gewonnen habe.
@@ -5,30 +17,105 @@ Im vorigen Post habe ich beschrieben, wie ich die Daten, die nun analysiert werd
 
 ## Explorative Datenanalyse
 
-### Einlesen der Rohdaten
+### Einlesen der Rohdaten & Sanity Checks
 
-Dieser Schritt ist sehr einfach :-)
+Dieser Schritt ist sehr einfach; als erstes werden die gescrapten Rohdaten mit den Informationen zur Sendung eingelesen und anschließend die Zuordnung der Moderator*innen zu den Sendungen. Im Folgeschritt werden beide über den Namen des Bildes (der eineindeutig ist) zusammengeführt
 
 ```{r}
 library(tidyverse)
-library(skimr)
-tagesthemen <- read_csv("tagesthemen_raw.csv")
+
+tagesthemen <- read_csv("scraped_data.csv")
+moderatoren <- read_csv("moderatoren_sendung.csv")
+
+tagesthemen <- tagesthemen %>% 
+  mutate(dauer = as.numeric(dauer),
+         date = as.Date(strftime(datum_zeit, format = "%Y-%m-%d")),
+         dateiname_standbild = str_remove(standbild_url, "https://www.tagesschau.de/multimedia/bilder/")) %>% 
+  left_join(moderatoren, by = c("dateiname_standbild" = "file"))
+
+rm(moderatoren)
+
 ```
 
-### Sanity Checks
-
-Zunächst wollen wir einmal schauen, über wieviele Sendungen tatsächlich Informationen vorliegen.
+Zunächst wird die Vollständigkeit der Daten untersucht. Das mache ich gerne mit der Funktion "skim" aus dem Paket "skimr", weil der Output einen guten Überblick gibt.
 
 ```{r}
+library(skimr)
+
 tagesthemen %>% 
   skim()
-  
+```
+Mit Ausnahme von 6 Missings in der Variablen "name" sieht die Vollständigkeit schon mal gut aus.
+Aber was ist bei der Variable los? Dazu filtere ich einmal die Missings an und schaue mir die Beobachtungen genauer an.
+
+```{r}
+view( 
+  tagesthemen %>% 
+  filter(is.na(name)))
+```
+
+OK, es wird klarer: 4 der 6 Sendungen haben kein Vorschaubild; entsprechend kann die moderierende Person nur erkannt werden, in dem das Video analysiert/angeschaut wird.  
+Normalerweise wäre das der Zeitpunkt, an dem man sich Gedanken machen müsste, wie man die Ableitung noch sicherer machen könnte, im Sinne von unabhängiger vom Vorschaubild. 
+
+Und hier ist er nun, der erste Scheideweg an dem man sich die Frage stellen muss, wie man weiter vorgeht.
+Es gibt meiner Meinung nach vier Optionen. 
+
+Option 1 (keinesfalls best practise): Man schaut sich die Videos an und hard-coded den Namen der moderierenden Person. Aber nehmen wir mal an, wir hätten z.B. 40 Missings - dann wäre das schon aufwändig.
+Im Bereich Big Data hat man aber gelegentlich deutlich mehr missings, dann ist das nicht nur aufwändig sondern schlichtweg nicht mehr leistbar.
+
+Option 2 (finde ich persönlich zu einfach gedacht; findet man aber häufig): Die Beobachtungen werden gelöscht.
+
+Option 3: Man ergänzt die Missings durch einen Platzhalter "Name nicht bekannt".
+
+Option 4 (dafür entscheide ich mich): Die Daten werden aufgefüllt. Hier kann man von einfacher (z.B. "Interpolation", KNN) bis sehr sophisticated (z.B. Random Forrest) herangehen. Ich entscheide mich im Folgenden für den einfacheren Weg, da der Datensatz für anspruchsvollere Ansätze noch zu wenig features aufweist.
+
+
+```{r}
+
+tagesthemen <- tagesthemen %>% 
+  arrange(datum_zeit) %>% 
+  fill(name, .direction = "up")
+
+
+view(tagesthemen)
+
+```
+
+Ein Blick auf den dataframe zeigt, dass noch das eine oder andere zu tun ist:
+
+- Die Variable "Zeit" sollte gesplittet werden in "Datum" und "Uhrzeit"
+- Die Sendedauer ist noch in Sekdungen enthalten und sollte umgerechnet werden, da wir uns eher 5 Minuten als 300 Sekunden vorstellen können
+- Die Variable mit den Themen der Sendung muss noch optimiert werden; das wird aber später gemacht, wenn es um die Textanalyse geht.
+
+```{r}
+
+tagesthemen <- tagesthemen %>% 
+  mutate(date = as.Date(datum_zeit, format = "%Y-%m-%d"),
+         time = format(datum_zeit, "%H:%M:%S"),
+         dauer = dauer / 60)
+```
+
+Nun sind die Voraussetzungen geschaffen, sich tiefer in die Daten einzugraben.
+
+```{r}
+min(tagesthemen$time)
+```
+
+Die frühestes Sende-Uhrzeit einer Ausgabe der Tagestehmen ist um 21 Uhr.
+Hier kommt nun "Domain Expertise" ins Spiel und die sagt: es ist ungewöhnlich, dass eine Ausgabe der Tagesthemen bereits 1 Stunde nach der Tagesschau gesendet wird. 
+
+```{r}
+view(tagesthemen %>% 
+  filter(time <= "21:30:00"))
+
 ```
 
 
 
 
-![Zeitreihe Sendezeit, Quelle: Tagesthemen.de](/posts/2021-05-09-tagesthemen/sendezeit_over_days.png)
+
+
+
 
 Juhu, das erste Ergebnis - und schon so interessant!
 

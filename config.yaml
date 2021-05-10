@@ -1,6 +1,6 @@
 baseURL: "https://hhanalytics.netlify.app/"
 languageCode: en-us
-title: HH analytics blog
+title: Der FUNalytics Blog
 theme: hugo-theme-cactus
 copyright: Christian J. · Made with the blogdown package and the Cactus theme for Hugo.
 disqusShortname: example
@@ -12,7 +12,7 @@ menu:
     - name: Beiträge
       url: /posts
       weight: 2
-    - name: Über mich
+    - name: Über diesen Blog & mich
       url: /about
       weight: 3
 markup:
@@ -30,17 +30,13 @@ params:
   googleAnalyticsAsync: yes
   mainSection: posts
   postsOnHomePage: 5
-  projectsUrl: https://github.com/gohugoio
+  projectsUrl:
   rss: yes
   show_updated: yes
   showAllPostsOnHomePage: no
   showProjectsList: yes
   showReadTime: yes
   social:
-    - link: https://github.com/gohugoio
-      name: github
     - link: https://www.linkedin.com/in/christian-jähnert-ab427412a/
       name: linkedin
-    - link: example@example.com
-      name: email
-  tagsOverview: no
+  tagsOverview: yes
