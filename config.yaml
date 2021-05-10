@@ -34,9 +34,9 @@ params:
   rss: yes
   show_updated: yes
   showAllPostsOnHomePage: no
-  showProjectsList: no
+  showProjectsList: yes
   showReadTime: yes
   social:
     - link: https://www.linkedin.com/in/christian-jähnert-ab427412a/
       name: linkedin
-  tagsOverview: yes
+  tagsOverview: no
