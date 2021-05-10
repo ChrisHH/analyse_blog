@@ -23,18 +23,18 @@ markup:
 params:
   colortheme: white
   comments:
-    enabled: no
+    enabled: yes
     engine: disqus
   dateFormat: '2006-01-02'
-  description: Hallo! Guten Tag! Hello World!
+  description: Hello World!
   googleAnalyticsAsync: yes
   mainSection: posts
-  postsOnHomePage: 5
+  postsOnHomePage: 7
   projectsUrl:
   rss: yes
   show_updated: yes
   showAllPostsOnHomePage: no
-  showProjectsList: yes
+  showProjectsList: no
   showReadTime: yes
   social:
     - link: https://www.linkedin.com/in/christian-jähnert-ab427412a/
