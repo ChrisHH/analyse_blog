@@ -105,8 +105,21 @@ Die frühestes Sende-Uhrzeit einer Ausgabe der Tagestehmen ist um 21 Uhr.
 Hier kommt nun "Domain Expertise" ins Spiel und die sagt: es ist ungewöhnlich, dass eine Ausgabe der Tagesthemen bereits 1 Stunde nach der Tagesschau gesendet wird. 
 
 ```{r}
-view(tagesthemen %>% 
-  filter(time <= "21:30:00"))
+tagesthemen %>% 
+  filter(time <= "21:00:00")
+
+```
+
+Es existieren genau zwei Sendungen, die vor oder um 21 Uhr ausgestrahlt wurden. 
+Auffällig ist, dass diese sehr kurz waren (maximal 8 Minuten).Ein Blick auf eine der Sendungen zeigt, es handelte sich um Extra-Ausgaben. Das heißt, es muss nun identifiziert werden, welche der Sendungen in dem Datensatz eine reguläre und welche eine Extra Ausgabe ist.
+
+```{r}
+tagesthemen %>% 
+  group_by(date) %>% 
+  arrange(datum_zeit) %>% 
+  summarize(anzahl_sendungen = n()) %>% 
+  count(anzahl_sendungen)
+
 
 ```
 

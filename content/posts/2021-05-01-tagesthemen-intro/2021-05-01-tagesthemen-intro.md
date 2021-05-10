@@ -16,7 +16,7 @@ category: blog-post
 
 "Sie trägt es wieder, dieses hellblaue Kleid!"
 
-![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-01-tagesthemen/sendungsbild-596897~_v-grossgalerie16x9.jpg)
+![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-01-tagesthemen-intro/sendungsbild-596897~_v-grossgalerie16x9.jpg)
 
 Diesen Gedanken habe ich hin und wieder, wenn ich Caren Miosga als Moderatorin der Tagesthemen zuschaue, wie sie das Tagesgeschehen in den Tagesthemen einordnet. Die Gedanken gehen dann weiter: "Super, dass der NDR nachhaltig agiert, verantwortungsbewusst mit GEZ-Geldern umgeht und die Kleidung der Moderator*innen mehrfach getragen werden!"
 
@@ -34,4 +34,4 @@ Ich kam spontan auf folgende Fragen:
 
 Diese Auswahl an Fragen war für mich Grund genug mit Hilfe verschiedener Instrumente aus dem Bereich Data Science loszulegen (und wie so oft, wird sich zwischendurch noch die eine oder andere Frage ergeben). In loser Folge versuche ich auf die einzelnen Fragen Antworten zu geben und darzustellen, wie ich die Lösung vorangetrieben habe.
 
-![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-01-tagesthemen/sendungsbild-661551~_v-grossgalerie16x9.jpg)
+![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-01-tagesthemen-intro/sendungsbild-661551~_v-grossgalerie16x9.jpg)
