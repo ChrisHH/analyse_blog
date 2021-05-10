@@ -34,4 +34,4 @@ Ich kam spontan auf folgende Fragen:
 
 Diese Auswahl an Fragen war für mich Grund genug mit Hilfe verschiedener Instrumente aus dem Bereich Data Science loszulegen (und wie so oft, wird sich zwischendurch noch die eine oder andere Frage ergeben). In loser Folge versuche ich auf die einzelnen Fragen Antworten zu geben und darzustellen, wie ich die Lösung vorangetrieben habe.
 
-![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-01-tagesthemen-intro/sendungsbild-661551~_v-grossgalerie16x9.jpg, "Quelle: www.tagesschau.de")
+![Caren Miosga, Quelle: Tagesthemen.de](/posts/2021-05-01-tagesthemen-intro/sendungsbild-661551~_v-grossgalerie16x9.jpg "Quelle: www.tagesschau.de")
