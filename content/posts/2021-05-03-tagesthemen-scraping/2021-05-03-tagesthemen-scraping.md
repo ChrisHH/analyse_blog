@@ -28,7 +28,7 @@ Das ist also der Start- und Endpunkt des Scrapings und dazwischen wird der Zähl
 
 Die wesentlichen Bereiche sind in dem Screenshot farblich markiert:
 
-![Screenshot, Quelle: Tagesthemen.de](/posts/2021-05-03-tagesthemen-scraping/screenshot_tt.png)
+![Screenshot](/posts/2021-05-03-tagesthemen-scraping/screenshot_tt.png "Quelle: www.tagesschau.de")
 
 Zunächst können wir herausfinden, wann die Sendung ausgestrahlt wurde (organgefarbener Kasten). Das Standbild der Sendung (grüner Kasten) liefert natürlich die Information, welche Person die Sendung moderiert hat und welche Farbe die Kleidung hatte, die diese Person trug. Außerdem ist rechts unten im Standbild die Dauer der Sendung zu erkennen (gelber Kasten; es handelt sich um ein overlay, sodass der Text ermittelbar ist).Schlussendlich sind unter dem Bild die Themen der Sendung einsehbar (violetter Kasten).
 
@@ -179,5 +179,3 @@ https://
 ## Ausblick
 
 In den nächsten Posts geht es ganz im Sinne von CRISP-DM erstmal um die Datensichtung, Datenbereinigung und eine erste explorative Datenanalyse, bevor das Instrumentarium dann komplexer wird.
-
-Stay tuned!
