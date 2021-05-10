@@ -23,7 +23,7 @@ markup:
 params:
   colortheme: white
   comments:
-    enabled: yes
+    enabled: no
     engine: disqus
   dateFormat: '2006-01-02'
   description: Hello World!
