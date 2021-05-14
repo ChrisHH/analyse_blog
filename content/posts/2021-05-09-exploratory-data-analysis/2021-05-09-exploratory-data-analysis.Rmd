@@ -21,7 +21,7 @@ theme_set(theme_plex())
 update_geom_defaults("rect", list(fill = "midnightblue"))
 ```
 
-## Einleitung und Fragstellungen
+## Einleitung
 
 Im vorigen Post habe ich beschrieben, wie ich die Daten über die Tagesthemen-Sendungen gewonnen habe.
 Nun geht es weiter und diese Daten werden einer ersten explorativen Datenanalyse unterzogen.
@@ -30,7 +30,7 @@ Nun geht es weiter und diese Daten werden einer ersten explorativen Datenanalyse
 
 Die Rohdaten aus dem Prozess des Scrapings können hier heruntergeladen werden:
 
-[Moderator*innen](./moderatoren_sendung.csv)
+[Moderator*innen](./files/moderatoren_sendung.csv)
 [Sendungsdaten](./scraped_data.csv)
 
 ### Einlesen der Rohdaten & Sanity Checks
