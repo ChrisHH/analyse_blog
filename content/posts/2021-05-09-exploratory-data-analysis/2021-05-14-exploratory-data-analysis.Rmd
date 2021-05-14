@@ -132,7 +132,8 @@ tagesthemen %>%
   mutate(date_prior = lag(date),
          diff = abs(as.numeric(difftime(date_prior, date, "days")))) %>% 
   filter(!is.na(diff), diff >1) %>% 
-  summarise(intershow_time = mean(diff))
+  summarise(intershow_time = mean(diff)) %>% 
+  kable()
   
 
 tagesthemen %>% 

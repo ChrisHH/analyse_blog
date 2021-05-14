@@ -110,14 +110,54 @@ Somit ergibt sich dieses Bild, was auf den ersten Blick an einen Barcode erinner
     diff = abs(as.numeric(difftime(date_prior, date, &quot;days&quot;)))
   ) %&gt;%
   filter(!is.na(diff), diff &gt; 1) %&gt;%
-  summarise(intershow_time = mean(diff))</code></pre>
-<pre><code>## # A tibble: 4 x 2
-##   name           intershow_time
-##   &lt;chr&gt;                   &lt;dbl&gt;
-## 1 Caren Miosga             8.67
-## 2 Ingo Zamperoni           8.06
-## 3 Pinar Atalay            12.9 
-## 4 Vertretung              86.3</code></pre>
+  summarise(intershow_time = mean(diff)) %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:right;">
+intershow_time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Caren Miosga
+</td>
+<td style="text-align:right;">
+8.666667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ingo Zamperoni
+</td>
+<td style="text-align:right;">
+8.058824
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pinar Atalay
+</td>
+<td style="text-align:right;">
+12.943396
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vertretung
+</td>
+<td style="text-align:right;">
+86.333333
+</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>tagesthemen %&gt;%
   filter(extra == 0) %&gt;%
   select(name, date) %&gt;%
