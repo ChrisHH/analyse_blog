@@ -30,8 +30,8 @@ Nun geht es weiter und diese Daten werden einer ersten explorativen Datenanalyse
 
 Die Rohdaten aus dem Prozess des Scrapings können hier heruntergeladen werden:
 
-[Moderator*innen](./2021-05-09-exploratory-data-analysis/moderatoren_sendung.csv)
-[Sendungsdaten](.2021-05-09-exploratory-data-analysis/2021-05-09-exploratory-data-analysis/scraped_data.csv)
+[Moderator*innen](https://funalytics.netlify.app/files/moderatoren_sendung.csv)
+[Sendungsdaten](https://funalytics.netlify.app/files/scraped_data.csv)
 
 ### Einlesen der Rohdaten & Sanity Checks
 

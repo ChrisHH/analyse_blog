@@ -172,8 +172,6 @@ for (link in linklist){
 
 Ich habe kurz darüber nachgedacht, wie ich nun aus den Bildern den Namen ableiten kann. Hier habe ich mir das Leben leicht gemacht und diese Bilder einfach per Batch nach Amazon Photos hochgeladen. Dort habe ich ein paar Gesichter markiert und per Tag den Namen der Person vergeben; nach einem Tag hatte Amazon den Job erledigt und alle Namen für alle Fotos getaggt. Die Bilder habe ich dann wieder heruntergeladen und schon konnte ich über den Dateinamen den Namen der moderierenden Person zuordnen. Dieses Vorgehen müsste eigentlich auch gut mit der Foto-App auf den Geräten von Apple funktionieren; das habe ich aber nicht ausprobiert.
 
-[Moderator*innen](./moderatoren_sendung.csv)
-
 ## Ausblick
 
 In den nächsten Posts geht es ganz im Sinne von CRISP-DM erstmal um die Datensichtung, Datenbereinigung und eine erste explorative Datenanalyse, bevor das Instrumentarium dann komplexer wird.
