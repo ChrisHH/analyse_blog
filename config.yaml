@@ -1,4 +1,4 @@
-baseURL: "https://hhanalytics.netlify.app/"
+baseURL: "https://funalytics.netlify.app/"
 languageCode: en-us
 title: Der FUNalytics Blog
 theme: hugo-theme-cactus
