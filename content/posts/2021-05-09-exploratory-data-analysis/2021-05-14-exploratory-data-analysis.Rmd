@@ -25,15 +25,13 @@ update_geom_defaults("rect", list(fill = "midnightblue"))
 
 Die Exploration von Daten nimmt in der Regel einige Zeit in Anspruch. Aber heute macht das nichts: denn ich habe 10 Minuten Zeit gewonnen - denn es ist Freitag und da sind die Tagesthemen kürzer. Also nutze ich die Zeit und führe meine explorative Datenanalyse weiter.
 
-## Vorbemerkung
-
-Der Code dieses Blog-Eintrages setzt voraus, dass alle Schritte aus dem Post vom 09.05.2021 durchgeführt wurden und der DataFrame "tagesthemen" in der Umgebung vorhanden ist.
-
 ## Dienstplan der Moderator*innen
 
 Heute nehme ich einmal die Moderator*innen der Tagesthemen im Analysezeitraum etwas genauer unter die Lupe. Zunächst erfolgt ein Blick auf die Namen.
 
 ```{r}
+tagesthemen <- read_csv("https://funalytics.netlify.app/files/data_clean.csv")
+
 unique(tagesthemen$name)
 ```
 
