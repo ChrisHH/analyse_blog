@@ -30,8 +30,8 @@ Nun geht es weiter und diese Daten werden einer ersten explorativen Datenanalyse
 
 Die Rohdaten aus dem Prozess des Scrapings können hier heruntergeladen werden:
 
-[Moderator*innen](./files/moderatoren_sendung.csv)
-[Sendungsdaten](./scraped_data.csv)
+[Moderator*innen](moderatoren_sendung.csv)
+[Sendungsdaten](scraped_data.csv)
 
 ### Einlesen der Rohdaten & Sanity Checks
 
