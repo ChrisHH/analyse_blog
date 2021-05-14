@@ -23,7 +23,7 @@ Nun geht es weiter und diese Daten werden einer ersten explorativen Datenanalyse
 <a href="https://funalytics.netlify.app/files/scraped_data.csv">Sendungsdaten</a></p>
 <div id="einlesen-der-rohdaten-sanity-checks" class="section level3">
 <h3>Einlesen der Rohdaten &amp; Sanity Checks</h3>
-<p>Dieser Schritt ist sehr einfach; als erstes werden die gescrapten Rohdaten mit den Informationen zur Sendung eingelesen und anschließend die Zuordnung der Moderator*innen zu den Sendungen. Im Folgeschritt werden beide über den Namen des Bildes (der eineindeutig ist) zusammengeführt und der nicht mehr benötigte DataFrame mit den Moderatoren gelöscht.</p>
+<p>Dieser Schritt ist sehr einfach; als erstes werden die gescrapten Rohdaten mit den Informationen zur Sendung eingelesen und anschließend die Zuordnung der Moderator<em>innen zu den Sendungen. Im Folgeschritt werden beide über den Namen des Bildes (der eineindeutig ist) zusammengeführt und der nicht mehr benötigte DataFrame mit den Moderator</em>innen gelöscht.</p>
 <pre class="r"><code>library(tidyverse)
 
 tagesthemen &lt;- read_csv(&quot;scraped_data.csv&quot;)
@@ -440,23 +440,21 @@ NA
 <p>Das macht es schon klarer: 4 der 7 Sendungen haben kein Vorschaubild (erkennbar an dem “NA” am Ende des strings); entsprechend kann die moderierende Person nur erkannt werden, in dem das Video analysiert/angeschaut wird.</p>
 <p>Normalerweise wäre das der Zeitpunkt, an dem man sich Gedanken machen müsste, wie man die Ableitung der moderierenden Person noch sicherer, also unabhängiger vom Vorschaubild, machen könnte. Aber das ist ein anderes Thema und wird hier nicht weiterverfolgt. Dennoch, hier ist er nun: der erste Scheideweg an dem man sich die Frage stellen muss, wie man weiter vorgeht. Was macht man mit diesen Missings? Es gibt meiner Meinung nach vier Optionen.</p>
 </div>
-<div id="option-1-keinesfalls-best-practise" class="section level3">
-<h3>Option 1 (keinesfalls best practise)</h3>
-<p>Man schaut sich die Videos an und hard-coded den Namen der moderierenden Person. Aber nehmen wir mal an, wir hätten z.B. 40 Missings - dann wäre das schon aufwändig.
-Im Bereich Big Data hat man aber gelegentlich deutlich mehr missings, dann ist das nicht nur aufwändig sondern schlichtweg nicht mehr leistbar.</p>
+<div id="option-1" class="section level3">
+<h3>Option 1</h3>
+<p>Man schaut sich die Videos an und hard-coded den Namen der moderierenden Person. Aber nehmen wir mal an, wir hätten z.B. 40 Missings - dann wäre das schon aufwändig. Im Bereich Big Data hat man aber gelegentlich deutlich mehr missings, dann ist das nicht nur aufwändig sondern schlichtweg nicht mehr leistbar - insofern nicht unbedingt best practise.</p>
 </div>
-<div id="option-2-finde-ich-persönlich-zu-einfach-gedacht-findet-man-aber-häufig" class="section level3">
-<h3>Option 2 (finde ich persönlich zu einfach gedacht; findet man aber häufig)</h3>
-<p>Die Beobachtungen werden gelöscht.</p>
+<div id="option-2" class="section level3">
+<h3>Option 2</h3>
+<p>Die Beobachtungen werden gelöscht. Das wäre in diesem Fall sogar noch vertretbar (vorallem in Relation zu Anzahl aller Fälle), jedoch tue ich dies ungern und schon gar nicht vorschnell.</p>
 </div>
 <div id="option-3" class="section level3">
 <h3>Option 3</h3>
 <p>Man ergänzt die Missings durch einen Platzhalter “Name nicht bekannt”.</p>
 </div>
-<div id="option-4-dafür-entscheide-ich-mich" class="section level3">
-<h3>Option 4 (dafür entscheide ich mich)</h3>
-<p>Die Daten werden aufgefüllt. Hier kann man von einfacher (z.B. “Interpolation”, KNN) bis sehr sophisticated (z.B. Random Forrest) herangehen. Ich entscheide mich im Folgenden für den einfacheren Weg, da der Datensatz für anspruchsvollere Ansätze noch zu wenig features aufweist.
-Zum Auffüllen nutze ich die Funktion “fill” und habe mich für die Richtung “up” entschieden.</p>
+<div id="option-4-meine-wahl" class="section level3">
+<h3>Option 4 (meine Wahl)</h3>
+<p>Die Daten werden aufgefüllt. Hier kann man von einfacher (z.B. “Interpolation”, KNN) bis sehr sophisticated (z.B. Random Forrest) herangehen. Ich entscheide mich im Folgenden für den einfacheren dieser beiden Wege, da der Datensatz für anspruchsvollere Ansätze noch zu wenig features aufweist. Zum Auffüllen nutze ich die Funktion “fill” und habe mich für die Richtung “up” entschieden.</p>
 <pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;% 
   arrange(datum_zeit) %&gt;% 
   fill(name, .direction = &quot;up&quot;)</code></pre>
@@ -593,10 +591,9 @@ Entsprechend werde ich im Fall von zwei Sendungen die kürzere als Extra-Ausgabe
        subtitle = &quot;01.01.2019 - 16.03.2021 (ohne Extrausgaben) &quot;, title = &quot;Tagesthemen - Sendezeit nach Datum&quot;)</code></pre>
 <p><img src="/posts/2021-05-09-exploratory-data-analysis/2021-05-09-exploratory-data-analysis_files/figure-html/unnamed-chunk-10-1.png" width="2400" /></p>
 <p>Das erste Ergebnis - und schon so interessant!</p>
-<p>Zunächst ist starkes “Zucken” in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen.
-Daher erscheint es sinnvoll, die Werte auch noch einmal aggregiert nach Wochentagen anzuschauen. Das passiert gleich.</p>
-<p>Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist. Das ist kein Fehler sondern hat nach meiner Recherche einen einfachen Grund: es wurde eine neue Serie in den Tagesthemen etabliert, namens “mittendrin”. Mehr dazu in diesem Video: <a href="https://youtu.be/m6AGY1hB65o" class="uri">https://youtu.be/m6AGY1hB65o</a></p>
-<p>Und natürlich fällt ein starker Extremwert ins Auge undzwar gleich zu Beginn des Jahres 2021. Hierbei handelt es sich um die Sendung vom 06. Januar 2021 als in den USA das Kongressgebäude gestürmt wurde.</p>
+<p>Zunächst ist starkes “Zucken” in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen (daher habe ich eine recht naive Trendlinie eingefügt.) Daher erscheint es sinnvoll, die Werte auch noch einmal aggregiert nach Wochentagen anzuschauen. Das passiert gleich.</p>
+<p>Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist. Auf den ersten Blick dachte ich, es wäre ein Fehler im Scraping und bin dem nachgeangen (indem ich stichpunktartig ein paar Daten mit der Information auf der Webseite abgeglichen habe). Aber es stellte sich heraus: alles ok - kein Fehler! Es gibt einen einfachen Grund: es wurde eine neuer Beitragsblock in den Tagesthemen etabliert, namens “mittendrin”. Mehr dazu in diesem Video: <a href="https://youtu.be/m6AGY1hB65o" class="uri">https://youtu.be/m6AGY1hB65o</a></p>
+<p>Zusätzlich fällt ein starker Extremwert ins Auge undzwar gleich zu Beginn des Jahres 2021. Hierbei handelt es sich um die Sendung vom 06. Januar 2021 als in den USA das Kongressgebäude gestürmt wurde.</p>
 <p>Jetzt zu den Wochentagen. Für diese Analyse muss zunächst die Variable des Wochentages gebildet werden, um anschließend danach auswerten zu können. Damit in den Plots die Reihenfolge der Wochentage stimmt, wird die Reihenfolge der Faktor-Level explizit definiert und dann der Plot generiert.</p>
 <pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;%
   mutate(day = factor(weekdays(datum_zeit), levels = c(

@@ -1,6 +1,6 @@
 ---
-title: "Tagesthemen - Explorative Datenanalyse Teil 1"
-date: '2021-05-09'
+title: "Tagesthemen - Explorative Datenanalyse Teil 2"
+date: '2021-05-14'
 keywords:
 - Tagesthemen
 - Explorative Datenanalyse
@@ -23,181 +23,136 @@ update_geom_defaults("rect", list(fill = "midnightblue"))
 
 ## Einleitung
 
-Im vorigen Post habe ich beschrieben, wie ich die Daten über die Tagesthemen-Sendungen gewonnen habe.
-Nun geht es weiter und diese Daten werden einer ersten explorativen Datenanalyse unterzogen.
+Die Exploration von Daten nimmt in der Regel einige Zeit in Anspruch. Und heute habe ich 10 Minuten Zeit gewonnen - denn es ist Freitag und da sind die Tagesthemen kürzer. Also nutze ich die Zeit und führe meine explorative Datenanalyse weiter.
 
-## Explorative Datenanalyse
+## Vorbemerkung
 
-Die Rohdaten aus dem Prozess des Scrapings können hier heruntergeladen werden:
+Der Code dieses Blog-Eintrages setzt voraus, dass alle Schritte aus dem Post vom 09.05.2021 durchgeführt wurden und der DataFrame "tagesthemen" in der Umgebung vorhanden ist.
 
-[Moderator*innen](https://funalytics.netlify.app/files/moderatoren_sendung.csv)
-[Sendungsdaten](https://funalytics.netlify.app/files/scraped_data.csv)
+## Dienstplan der Moderator*innen
 
-### Einlesen der Rohdaten & Sanity Checks
-
-Dieser Schritt ist sehr einfach; als erstes werden die gescrapten Rohdaten mit den Informationen zur Sendung eingelesen und anschließend die Zuordnung der Moderator*innen zu den Sendungen. Im Folgeschritt werden beide über den Namen des Bildes (der eineindeutig ist) zusammengeführt und der nicht mehr benötigte DataFrame mit den Moderatoren gelöscht.
+Heute nehme ich einmal die Moderator*innen der Tagesthemen im Analysezeitraum etwas genauer unter die Lupe. Zunächst erfolgt ein Blick auf die Namen.
 
 ```{r}
-library(tidyverse)
-
-tagesthemen <- read_csv("scraped_data.csv")
-moderatoren <- read_csv("moderatoren_sendung.csv")
-
-tagesthemen <- tagesthemen %>% 
-  mutate(dauer = as.numeric(dauer),
-         date = as.Date(strftime(datum_zeit, format = "%Y-%m-%d")),
-         dateiname_standbild = str_remove(standbild_url, "https://www.tagesschau.de/multimedia/bilder/")) %>% 
-  left_join(moderatoren, by = c("dateiname_standbild" = "file"))
-
-rm(moderatoren)
-
+unique(tagesthemen$name)
 ```
 
-Jetzt wird die Vollständigkeit der Daten untersucht. 
-Dazu nutze ich die Funktion "skim" aus dem Paket "skimr", weil der Output einen sehr guten Überblick über alle relevanten Kennzahlen gibt.
+Es gibt also drei namentlich benannte Personen:
 
-```{r}
-library(skimr)
+- Pinar Atalay
+- Ingo Zamperoni
+- Caren Miosga
 
-tagesthemen %>% 
-  skim()
-```
-Mit Ausnahme von 7 Missings in der Variablen "name" sieht die Vollständigkeit schon mal gut aus.
-Aber was ist bei der Variable los? Dazu filtere ich einmal die Missings an und schaue mir die Beobachtungen genauer an.
+Zusätzlich gibt es eine Sammelgruppe von Vertretung (natürlich habe ich dies bei der Bildklassifizierung schon so vorgegeben); ich wollte aber nur die Hauptmoderator*innen taggen.
+
+Und wer ist nun wie häufig im Einsatz gewesen?
 
 ```{r}
 tagesthemen %>% 
-  filter(is.na(name)) %>% 
-  select(-themen) %>% 
-  kable()
-```
-
-Das macht es schon klarer: 4 der 7 Sendungen haben kein Vorschaubild (erkennbar an dem "NA" am Ende des strings); entsprechend kann die moderierende Person nur erkannt werden, in dem das Video analysiert/angeschaut wird.  
-
-Normalerweise wäre das der Zeitpunkt, an dem man sich Gedanken machen müsste, wie man die Ableitung der moderierenden Person noch sicherer, also unabhängiger vom Vorschaubild, machen könnte. Aber das ist ein anderes Thema und wird hier nicht weiterverfolgt. Dennoch, hier ist er nun: der erste Scheideweg an dem man sich die Frage stellen muss, wie man weiter vorgeht. Was macht man mit diesen Missings? Es gibt meiner Meinung nach vier Optionen. 
-
-### Option 1 (keinesfalls best practise) 
-Man schaut sich die Videos an und hard-coded den Namen der moderierenden Person. Aber nehmen wir mal an, wir hätten z.B. 40 Missings - dann wäre das schon aufwändig.
-Im Bereich Big Data hat man aber gelegentlich deutlich mehr missings, dann ist das nicht nur aufwändig sondern schlichtweg nicht mehr leistbar.
-
-### Option 2 (finde ich persönlich zu einfach gedacht; findet man aber häufig) 
-Die Beobachtungen werden gelöscht.
-
-### Option 3 
-Man ergänzt die Missings durch einen Platzhalter "Name nicht bekannt".
-
-### Option 4 (dafür entscheide ich mich) 
-Die Daten werden aufgefüllt. Hier kann man von einfacher (z.B. "Interpolation", KNN) bis sehr sophisticated (z.B. Random Forrest) herangehen. Ich entscheide mich im Folgenden für den einfacheren Weg, da der Datensatz für anspruchsvollere Ansätze noch zu wenig features aufweist.
-Zum Auffüllen nutze ich die Funktion "fill" und habe mich für die Richtung "up" entschieden.
-
-```{r}
-
-tagesthemen <- tagesthemen %>% 
-  arrange(datum_zeit) %>% 
-  fill(name, .direction = "up")
+  group_by(name) %>%
+  count() %>% 
+  ggplot(aes(x = name, y = n, label = n)) +
+  geom_bar(stat = "identity", fill = "midnightblue") +
+  labs(x = "Moderator*in", y = "", caption = "Quelle: www.tagesschau.de", 
+       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - Anzahl Sendungen nach Moderator*in") + 
+  theme_plex() + 
+  geom_label()
 
 ```
-
-Ein weiterer Blick auf das Data Summary weiter oben zeigt, dass noch das eine oder andere zu tun ist:
-
-- Die Variable "Zeit" sollte gesplittet werden in "Datum" und "Uhrzeit"
-- Die Sendedauer ist noch in Sekunden enthalten und sollte in Minuten umgerechnet werden, da Menschen besser in Minuten als Sekunden denken können
-- Die Variable mit den Themen der Sendung muss noch optimiert werden; das wird aber später gemacht, wenn es um die Textanalyse geht
-
-```{r}
-
-tagesthemen <- tagesthemen %>% 
-  mutate(date = as.Date(datum_zeit, format = "%Y-%m-%d"),
-         time = format(datum_zeit, "%H:%M:%S"),
-         dauer = dauer / 60)
-```
-
-Um die Qualität der Daten weiter zu überprüfen, frage ich mich, wann wurde die früheste Sendung der Tagesthemen ausgestrahlt?
-Das lässt sich ganz leicht herausfinden.
-
-```{r}
-min(tagesthemen$time)
-```
-
-Die früheste Sendezeit einer Ausgabe der Tagestehmen ist also bereits um 21 Uhr. Hier kommt nun oft zitierte "Domain Expertise" ins Spiel und die sagt: es ist ungewöhnlich, dass eine Ausgabe der Tagesthemen bereits 1 Stunde nach der Tagesschau (um 20 Uhr) gesendet wird. Also müssen diese einmal genauer angeschaut werden.
+Ingo Zamperoni hat die meisten Sendungen auf seinem Konto, gefolgt von Caren Miosga und Pinar Atalay. 
+Aber das heißt noch nicht - die Frage ist ja auch, wie lange eine Sendung dauert?
 
 ```{r}
 tagesthemen %>% 
-  filter(time <= "21:00:00") %>% 
-  select(-themen) %>% 
-  kable()
-
+  filter(extra == 0) %>% 
+  group_by(name) %>%
+  summarise(mittlere_sendedauer = mean(dauer)) %>% 
+  ggplot(aes(x = name, y = mittlere_sendedauer, label = round(mittlere_sendedauer,1))) +
+  geom_bar(stat = "identity", fill = "midnightblue") +
+  labs(x = "Moderator*in", y = "", caption = "Quelle: www.tagesschau.de", 
+       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - durchschnittliche Sendedauer in min") + 
+  theme_plex() + 
+  geom_label()
 ```
-
-Es existieren genau zwei Sendungen, die vor oder um 21 Uhr ausgestrahlt wurden. Auffällig ist, dass diese sehr kurz waren (maximal 8 Minuten). Ein Blick in die Aufzeichnung der Sendungen zeigt, dass es sich um Extra-Ausgaben handelte. Das heißt, es muss nun identifiziert werden, welche der Sendungen in dem Datensatz eine reguläre und welche eine Extra Ausgabe ist, denn es macht Sinn später danach zu differenzieren.
-
-Zur Sicherheit prüfe ich noch einmal, wieviele Ausgaben der Tagesthemen an einem Tag ausgestrahlt wurden bilde darüber eine Häufigkeitstabelle.
+Den Unterschied von 6 Sekunden kann man vernachlässigen. Caren Miosga und Ingo Zamperoni sind als im Durchschnitt länger im Einsatz als Pinar Atalay und die weiteren Vertreter*innen. Mit dem Wissen, dass die Sendungen von Freitag bis Sonntag im Durchschnitt kürzer sind, ist dies ein Hinweis darauf, dass letzgenannte Personen eher an diesen Tagen im Einsatz sind. Das ist einen Blick wert.
 
 ```{r}
 tagesthemen %>% 
-  group_by(date) %>% 
-  arrange(datum_zeit) %>% 
-  summarize(anzahl_sendungen = n()) %>% 
-  count(anzahl_sendungen)
-
-
+  group_by(name, day) %>%
+  count() %>% 
+  ggplot(aes(x = day, y = n, label = n)) +
+  geom_bar(stat = "identity", fill = "midnightblue") +
+  labs(x = "Moderator*in", y = "", caption = "Quelle: www.tagesschau.de", 
+       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - Anzahl Sendungen nach Moderator*in") + 
+  theme_plex() + 
+  geom_label() +
+  facet_wrap(.~name)
 ```
-
-An 779 Tagen gab es genau eine Ausgabe der Tagesthemen; an 17 Tagen gab es zwei Ausgaben.
-Entsprechend werde ich im Fall von zwei Sendungen die kürzere als Extra-Ausgabe markieren.
-
-```{r}
-tagesthemen <- tagesthemen %>% 
-  arrange(datum_zeit) %>% 
-  group_by(date) %>% 
-  mutate(extra = if_else(dauer == max(dauer),0,1))
-```
-
-Und nun kann schon eine erste grafische Inspektion erfolgen: wie verhält sich die Sendezeit der Tagesthemen über das Datum?
+Interessant; die Vermutung bestätigt sich. Um auf Nummer sicher zu gehen, werden die Werte nochmals relativiert.
 
 ```{r}
 tagesthemen %>% 
-  ungroup() %>% 
-  filter(extra == 0) %>%
-  ggplot(aes(x=datum_zeit, y=dauer)) +
-  theme_plex() +
-  geom_line(color = "midnightblue") +
-  geom_smooth() +
-  labs(x = "Datum", y = "Sendezeit in Minuten", caption = "Quelle: www.tagesschau.de", 
-       subtitle = "01.01.2019 - 16.03.2021 (ohne Extrausgaben) ", title = "Tagesthemen - Sendezeit nach Datum")
-
+  filter(extra == 0) %>% 
+  group_by(name, day) %>%
+  count() %>% 
+  group_by(name) %>% 
+  transmute(day,
+              share_wochentag = n / sum(n)*100) %>% 
+  ggplot(aes(x = name, y = share_wochentag, label = round(share_wochentag,1), fill = day)) +
+  geom_bar(stat = "identity") +
+  geom_label(position = position_stack(vjust = 0.5)) +
+  labs(x = "Moderator*in", y = "Anteil moderierte Sendungen Wochentag in %", caption = "Quelle: www.tagesschau.de", 
+       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - Anzahl Sendungen nach Moderator*in",
+       fill = "Tag") + 
+  theme_plex()
+  
 ```
+Als Fan von Pinar Atalay hat man also von Freitag bis Samstag die besten Chancen sie zu sehen. mehr als 50% der durch sie moderierten Tagesthemen hat sie an diesen Wochentagen absolviert. Insbesondere der Samstag ist hingegen bei Caren Miosga und Ingo Zamperoni relativ gesehen weniger häufig. 
 
-Das erste Ergebnis - und schon so interessant!
-
-Zunächst ist starkes "Zucken" in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen.
-Daher erscheint es  sinnvoll, die Werte auch noch einmal aggregiert nach Wochentagen anzuschauen. Das passiert gleich.
-
-Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist. Das ist kein Fehler sondern hat nach meiner Recherche einen einfachen Grund: es wurde eine neue Serie in den Tagesthemen etabliert, namens "mittendrin". Mehr dazu in diesem Video: https://youtu.be/m6AGY1hB65o
-
-Und natürlich fällt ein starker Extremwert ins Auge undzwar gleich zu Beginn des Jahres 2021. Hierbei handelt es sich um die Sendung vom 06. Januar 2021 als in den USA das Kongressgebäude gestürmt wurde.
-
-Jetzt zu den Wochentagen. Für diese Analyse muss zunächst die Variable des Wochentages gebildet werden, um anschließend danach auswerten zu können. Damit in den Plots die Reihenfolge der Wochentage stimmt, wird die Reihenfolge der Faktor-Level explizit definiert und dann der Plot generiert.
+Es drängt sich die Frage nach dem Dienstplan der Modertor*innen auf; dieser wird jetzt unter die Lupe genommen.
 
 ```{r}
+tagesthemen %>%
+  ggplot(aes(x = date, y = name)) +
+  geom_tile(size = 1L, fill = "midnightblue")
+```
 
-tagesthemen <- tagesthemen %>% 
-  mutate(day = factor(weekdays(datum_zeit), levels = c("Montag", "Dienstag", "Mittwoch",
-                                                       "Donnerstag","Freitag","Samstag","Sonntag"))) 
+Für die Visualisierung habe ich einen sogenannten Tile-Plot verwendet. Diesen versuche ich zu erklären.
+Auf der X-Achse befindet sich jeder Tag im Analysezeitraum. Pro Moderator*in wird am Einsatztag ein vertikaler Strich eingezeichnet.
+Somit ergibt sich dieses Bild, was auf den ersten Blick an einen Barcode erinnert.
+
+Erkennbar sind dickere und dünnere Balken. Die dicken Balken sind Moderationseinsätze am mehreren Tagen hintereinander; entsprechend sind dünne Balken eher einzelne tageweise Moderationseinsätze. Manchmal sind zwischen den Balken längere Lücken erkennbar die von den "normalen" Lücken abweichen - hier waren die Moderator*innen vermutlich im Urlaub. Zuguterletzt blicke ich für heute deshalb auf das durchschnittliche Einsatzintervall (durchschnittlicher Abstand in Tagen zwischen zwei Einsätzen) und die längste Abwesenheit (längster Abstand zwischen zwei Einsätzen).
+
+```{r}
 
 tagesthemen %>% 
   filter(extra == 0) %>% 
-  group_by(day) %>% 
-  summarise(mittlere_sendezeit = mean(dauer)) %>% 
-  ggplot(aes(x = day, y = mittlere_sendezeit)) +
-  geom_bar(stat = "identity", fill = "midnightblue") +
-  labs(x = "Wochentag", y = "Sendezeit in Minuten", caption = "Quelle: www.tagesschau.de", 
-       subtitle = "01.01.2019 - 16.03.2021 (ohne Extrausgaben) ", title = "Tagesthemen - Mittlere Sendezeit nach Wochentag") + 
-  theme_plex()
+  select(name, date) %>% 
+  group_by(name) %>% 
+  arrange(date, .by_group = TRUE) %>% 
+  mutate(date_prior = lag(date),
+         diff = abs(as.numeric(difftime(date_prior, date, "days")))) %>% 
+  filter(!is.na(diff), diff >1) %>% 
+  summarise(intershow_time = mean(diff))
+  
+
+tagesthemen %>% 
+  filter(extra == 0) %>% 
+  select(name, date) %>% 
+  group_by(name) %>% 
+  arrange(date, .by_group = TRUE) %>% 
+  mutate(date_prior = lag(date),
+         diff = abs(as.numeric(difftime(date_prior, date, "days")))) %>% 
+  filter(!is.na(diff)) %>% 
+  count(diff) %>% 
+  group_by(name) %>% 
+  summarise(max_difference = max(diff)) %>% 
+  kable()
+  
+
+  
 ```
-Das die Tagesthemen am Wochenende kürzer sind, das wusste ich. Neu war mir, dass dies offensichtlich schon am Freitag der Fall ist. 
-Erkennbar ist, das an den Tagen von Montag bis Donnerstag eine Sendung im Durchschnitt 28-30 Minuten dauert und von Freitag bis Sonntag knapp über 20 Minuten. Das ist doch gut zu wissen.
+Durchschnittlich liegen bei Caren Miosga und Ingo Zamperoni 8-9 Tage zwischen Block-Einsätzen. Bei Pinar Atalay sind es circa 13 Tage. 
+Vertretungsmoderator*innen müssen sich länger gedulden um mal wieder moderieren zu dürfen. Hier liegt die Zeit zwischen Sendeblöcken (in der Regel nur 1 Sendung) bei 86 Tagen.
 
-Mit diesen ersten Einblicken endet dieser Post zunächst.
-
-In den nächsten Posts gehe ich auf die Suche nach weiteren Insights: z.B. nehme ich einmal den Dienstplan der Moderatoren unter die Lupe!
+Der maximalste Abstand zwischen zwei Sendungen betrug bei Caren Miosga und Ingo Zamperoni 25 bzw. 29 Tage. Dass es sich dabei um Urlaub handelt bleibt nur zu vermuten - und ist eine gute Zeitspanne um abzuschalten. Und das ist das Stichwort für das heutige Ende... gleich beginnen die Tagesthemen!
