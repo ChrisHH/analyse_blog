@@ -23,7 +23,7 @@ update_geom_defaults("rect", list(fill = "midnightblue"))
 
 ## Einleitung
 
-Die Exploration von Daten nimmt in der Regel einige Zeit in Anspruch. Und heute habe ich 10 Minuten Zeit gewonnen - denn es ist Freitag und da sind die Tagesthemen kürzer. Also nutze ich die Zeit und führe meine explorative Datenanalyse weiter.
+Die Exploration von Daten nimmt in der Regel einige Zeit in Anspruch. Aber heute macht das nichts: denn ich habe 10 Minuten Zeit gewonnen - denn es ist Freitag und da sind die Tagesthemen kürzer. Also nutze ich die Zeit und führe meine explorative Datenanalyse weiter.
 
 ## Vorbemerkung
 
