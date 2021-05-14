@@ -58,7 +58,7 @@ tagesthemen %>%
 
 ```
 Ingo Zamperoni hat die meisten Sendungen auf seinem Konto, gefolgt von Caren Miosga und Pinar Atalay. 
-Aber das heißt noch nicht - die Frage ist ja auch, wie lange eine Sendung dauert?
+Aber das heißt noch nichts - die Frage ist ja auch, wie lange eine Sendung dauert, also die Person im Einsatz ist?
 
 ```{r}
 tagesthemen %>% 
@@ -68,11 +68,11 @@ tagesthemen %>%
   ggplot(aes(x = name, y = mittlere_sendedauer, label = round(mittlere_sendedauer,1))) +
   geom_bar(stat = "identity", fill = "midnightblue") +
   labs(x = "Moderator*in", y = "", caption = "Quelle: www.tagesschau.de", 
-       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - durchschnittliche Sendedauer in min") + 
+       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - durchschnittliche Sendedauer in Minuten") + 
   theme_plex() + 
   geom_label()
 ```
-Den Unterschied von 6 Sekunden kann man vernachlässigen. Caren Miosga und Ingo Zamperoni sind als im Durchschnitt länger im Einsatz als Pinar Atalay und die weiteren Vertreter*innen. Mit dem Wissen, dass die Sendungen von Freitag bis Sonntag im Durchschnitt kürzer sind, ist dies ein Hinweis darauf, dass letzgenannte Personen eher an diesen Tagen im Einsatz sind. Das ist einen Blick wert.
+Den Unterschied von 6 Sekunden kann man vernachlässigen. Caren Miosga und Ingo Zamperoni sind also im Durchschnitt länger im Einsatz als Pinar Atalay und die weiteren Vertreter*innen. Mit dem Wissen, dass die Sendungen von Freitag bis Sonntag im Durchschnitt kürzer sind, ist dies ein Hinweis darauf, dass letzgenannte Personen eher an diesen Tagen im Einsatz sind. Das ist einen Blick wert.
 
 ```{r}
 tagesthemen %>% 
@@ -86,7 +86,7 @@ tagesthemen %>%
   geom_label() +
   facet_wrap(.~name)
 ```
-Interessant; die Vermutung bestätigt sich. Um auf Nummer sicher zu gehen, werden die Werte nochmals relativiert.
+Die Vermutung bestätigt sich. Um auf Nummer sicher zu gehen, werden die Werte nochmals relativiert.
 
 ```{r}
 tagesthemen %>% 
@@ -100,12 +100,13 @@ tagesthemen %>%
   geom_bar(stat = "identity") +
   geom_label(position = position_stack(vjust = 0.5)) +
   labs(x = "Moderator*in", y = "Anteil moderierte Sendungen Wochentag in %", caption = "Quelle: www.tagesschau.de", 
-       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - Anzahl Sendungen nach Moderator*in",
+       subtitle = "01.01.2019 - 16.03.2021", title = "Tagesthemen - Anteil Sendungen Wochentag",
        fill = "Tag") + 
   theme_plex()
   
 ```
-Als Fan von Pinar Atalay hat man also von Freitag bis Samstag die besten Chancen sie zu sehen. mehr als 50% der durch sie moderierten Tagesthemen hat sie an diesen Wochentagen absolviert. Insbesondere der Samstag ist hingegen bei Caren Miosga und Ingo Zamperoni relativ gesehen weniger häufig. 
+
+Als Fan von Pinar Atalay hat man also von Freitag bis Samstag die besten Chancen sie zu sehen. mehr als 50% der durch sie moderierten Tagesthemen hat sie an diesen Wochentagen absolviert. Insbesondere der Samstag ist hingegen bei Caren Miosga und Ingo Zamperoni relativ gesehen weniger häufig.
 
 Es drängt sich die Frage nach dem Dienstplan der Modertor*innen auf; dieser wird jetzt unter die Lupe genommen.
 
