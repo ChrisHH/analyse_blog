@@ -10,7 +10,7 @@ tags:
 - NLP
 - Tidytext
 - Tidymodels
-draft: yes
+draft: no
 ---
 
 
