@@ -1,17 +1,25 @@
 ---
-title: "Tagesthemen - Textanalyse"
-author: "Christian"
-date: '2021-05-18'
-slug: []
+title: "Test"
+author: Christian
+date: '2021-04-28'
+slug: ceo-departures
 categories:
-- Natural Language Processing
-- Textanalytics
+  - rstats
+  - tidymodels
 tags:
-- NLP
-- Tidytext
-- Tidymodels
-draft: no
+  - rstats
+  - tidymodels
+subtitle: ''
+summary: "Test"
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: true
+projects: []
 ---
+
+
 
 
 
