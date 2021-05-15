@@ -16768,7 +16768,7 @@ tagesthemen %>%
   geom_jitter(width = 0.1, height = 0.1)
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="2400" />
+<img src="/posts/2021-05-18-tagesthemen-textanalyse/post_files/figure-html/unnamed-chunk-9-1.png" width="2400" />
 
 ```r
 tagesthemen %>%
@@ -16780,7 +16780,7 @@ tagesthemen %>%
   geom_tile()
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-2.png" width="2400" />
+<img src="/posts/2021-05-18-tagesthemen-textanalyse/post_files/figure-html/unnamed-chunk-9-2.png" width="2400" />
 Aha, Mitte 2020 hat man sich bei den Tagesthemen wohl gedacht, "Den Kommentar" umzubenennen in "Die Meinung". Ich schätze das hat im Rahmen der Fake-News-Bewegung mit den Bemühungen der Medien zu tun, Meinungen als solche noch kenntlicher zu machen. 
 
 
