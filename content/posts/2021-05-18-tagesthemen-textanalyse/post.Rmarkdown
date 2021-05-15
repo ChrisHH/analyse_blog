@@ -1,5 +1,6 @@
 ---
 title: "Tagesthemen - Analyse der Themen"
+subtitle: "Dieser Post ist noch work in progress"
 date: '2021-05-15'
 keywords:
   - R
@@ -32,8 +33,7 @@ update_geom_defaults("rect", list(fill = "midnightblue"))
 ## Einleitung
 
 Ich habe jetzt schon die eine oder andere deskriptive Analyse der Tagesthemen durchgeführt.
-Bisher noch völlig ausser acht gelassen ist die Themenvielfalt der Sendungen. Und darum geht es im heutigen Post
-Wie schon beschrieben, 
+Bisher noch völlig ausser acht gelassen ist die Themenvielfalt der Sendungen. Und darum geht es im heutigen Post!
 
 Zunächst werden die bis zu diesem Punkt verfeinerten Daten eingelesen.
 
@@ -43,9 +43,9 @@ tagesthemen <- read_csv("https://funalytics.netlify.app/files/data_clean.csv")
 
 ## Ableitung von Features aus den Themen der Sendung
 
-Aus den Themen der Sendung lassen sich bestimmt noch Features ableiten. Um dies zu realisieren kommt das R-Paket "tidytext" von Julia Silge und David Robinson zum Einsatz. Ich kann das zugehörige Buch "Text Mining with R (O'Reilly Verlag) sehr empfehlen. Es existiert aber auch als open source Version unter diesem Link: xxx
+Aus den Themen der Sendung lassen sich bestimmt noch Features ableiten. Um dies zu realisieren kommt das R-Paket "tidytext" von Julia Silge und David Robinson zum Einsatz. Ich kann das zugehörige Buch "Text Mining with R (O'Reilly Verlag) sehr empfehlen. Es existiert aber auch als open source Version unter [diesem Link] (https://www.tidytextmining.com).
 
-Im ersten Schritt müssen die Themen der Sendung vereinzelt werden. Nach kurzer Betrachtung des Strings stellte ich fest, dass die Theman durch ein Komma getrennt sind. Es bietet sich also ein String-Split mit Hilfe der separate Funktion an. Diese verlangt jedoch die Vorgabe einer Anzahl von Variablen, in die gesplittet werden soll. Ich habe die Anzahl einmal auf 20 gesetzt und prüfe im Nachgang ob das ausreichend war. Außerdem ist es bei Textanalysen immer sehr sinnvoll, Leerzeichen zu "strippen" und den gesamten String in Groß- oder Kleinschreibung umzuwandeln, wobei sich im NLP Umfeld die Kleinschreibung durchgesetzt hat. 
+Damit sie analysierbar sind, müssen im ersten Schritt die Themen der Sendung "vereinzelt" werden. Nach kurzer Betrachtung des Strings stellte ich fest, dass die Theman durch ein Komma getrennt sind. Es bietet sich also ein String-Split mit Hilfe der separate Funktion an. Diese verlangt jedoch die Vorgabe einer Anzahl von Variablen, in die gesplittet werden soll. Ich habe die Anzahl einmal auf 20 gesetzt und prüfe im Nachgang ob das ausreichend war. Außerdem ist es bei Textanalysen immer sehr sinnvoll, Leerzeichen zu "strippen" und den gesamten String in Groß- oder Kleinschreibung umzuwandeln, wobei sich im NLP Umfeld die Kleinschreibung durchgesetzt hat. 
 
 Wenn dies erfolgt ist, vertikalisiere ich den Datensatz gleich noch, um die weitere Feature-Ableitung einfacher zu halten. 
 
@@ -65,29 +65,35 @@ tagesthemen_text <- tagesthemen %>%
 ```
 
 Nun prüfe ich zunächst, ob meine Annahme korrekt war, mit maximal 20 Themenvariablen auszukommen.
-In der letzten Variable, also "thema.20" bzw. der Variable "nummer_thema" mit der Ausprägung 20, müssten alle themen ein NA besitzen.
-Das heißt die Anzahl der NA's muss der Anzahl aller Fälle entsprechen.
+In der letzten Variable, also 'thema.20' bzw. der Variable 'nummer_thema' mit der Ausprägung 20, müssten alle Themen ein 'NA' besitzen.
+Das heißt die Anzahl der 'NA's muss der Anzahl aller Fälle entsprechen.
 
 ```{r}
 # Check ob Anzahl von 20 Variablen in separate Anweisung ausreicht
 
 tagesthemen_text %>% 
   filter(nummer_thema == 20) %>% 
-  count(thema)
+  count(thema) %>% 
+  kable()
 
 ```
 
 Das sieht gut aus!
 
-Nun verschaffe ich mir einen Überblick über die Häufigkeit einzelner Themen. 
+Nun verschaffe ich mir einen Überblick über die Häufigkeit einzelner Themen; dabei filtere ich auf Themen die mind. 10 mal vorkommen 
 
 ```{r}
 tagesthemen_text %>% 
+  filter(!is.na(thema)) %>% 
   count(thema, sort = TRUE) %>% 
-  kable()
+  filter(n >= 10) %>% 
+  arrange(n) %>% 
+  ggplot(aes(x = reorder(thema,n), y = n)) +
+  geom_bar(stat = "identity") +
+  coord_flip()
 ```
 
-Interessant, hier ist schon einiges an neuen Features zu holen, nämlich:
+Interessant, denn hier ist schon einiges an neuen Features zu holen, nämlich:
 
 - Gab es einen Kommentar?
 - Gab es eine Meinung?
@@ -104,7 +110,8 @@ Bei den "Weiteren Meldungen" prüfe ich zunächst, wie viele Nachrichtenblöcke 
 tagesthemen_text %>%
   mutate(weitere_meldungen = if_else(str_detect(thema, "weitere meldungen im")==TRUE, thema, ""),
          weitere_meldungen = str_remove(weitere_meldungen, "weitere meldungen im überblick")) %>%
-  count(weitere_meldungen)
+  count(weitere_meldungen, sort = TRUE) %>% 
+  kable()
 ```
 Die Zeile 3 und 4 sind interessant für mich. Offensichtlich gab es maximal eine "II". Für den Fall dass ich die Analyse irgendwann wiederhole und auch mehr als 2 Nachrichtenblöcke vorhanden sind, setze ich die Zählung entsprechend flexibel auf (mit einer Summe).
 Bei den anderen Features interessiert mich nur ob es das gab oder nicht; entsprechend nutze ich in der mutate-Anweisung die max-Funktion.
