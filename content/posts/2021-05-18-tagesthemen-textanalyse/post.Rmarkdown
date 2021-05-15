@@ -1,7 +1,7 @@
 ---
 title: "Tagesthemen - Analyse der Themen"
 date: '2021-05-15'
-categories:
+keywords:
   - R
   - Explorative Datenanalyse
   - NLP
@@ -9,13 +9,11 @@ categories:
 tags:
   - R
   - Tagesthemen
-featured: no
-image:
-  caption: ''
-  focal_point: ''
-  preview_only: true
-projects: []
 ---
+
+
+
+
 
 
 
