@@ -2,7 +2,7 @@
 title: "Test"
 author: Christian
 date: '2021-04-28'
-slug: ceo-departures
+#slug: ceo-departures
 categories:
   - rstats
   - tidymodels
