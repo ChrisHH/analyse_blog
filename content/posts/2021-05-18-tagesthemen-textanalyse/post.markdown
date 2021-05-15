@@ -1,16 +1,14 @@
 ---
-title: "Test"
-author: Christian
-date: '2021-04-28'
-#slug: ceo-departures
+title: "Tagesthemen - Analyse der Themen"
+date: '2021-05-15'
 categories:
-  - rstats
-  - tidymodels
+  - R
+  - Explorative Datenanalyse
+  - NLP
+  - Feature Engineering
 tags:
-  - rstats
-  - tidymodels
-subtitle: ''
-summary: "Test"
+  - R
+  - Tagesthemen
 featured: no
 image:
   caption: ''
