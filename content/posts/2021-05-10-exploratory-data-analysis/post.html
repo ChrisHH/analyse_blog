@@ -41,7 +41,7 @@ unique(tagesthemen$name)</code></pre>
   ) +
   theme_plex() +
   geom_label()</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="2400" />
+<p><img src="/posts/2021-05-10-exploratory-data-analysis/post_files/figure-html/unnamed-chunk-2-1.png" width="2400" />
 Ingo Zamperoni hat die meisten Sendungen auf seinem Konto, gefolgt von Caren Miosga und Pinar Atalay.
 Aber das heißt noch nichts - die Frage ist ja auch, wie lange eine Sendung dauert, also die Person im Einsatz ist?</p>
 <pre class="r"><code>tagesthemen %&gt;%
@@ -56,7 +56,7 @@ Aber das heißt noch nichts - die Frage ist ja auch, wie lange eine Sendung daue
   ) +
   theme_plex() +
   geom_label()</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="2400" />
+<p><img src="/posts/2021-05-10-exploratory-data-analysis/post_files/figure-html/unnamed-chunk-3-1.png" width="2400" />
 Den Unterschied von 6 Sekunden kann man vernachlässigen. Caren Miosga und Ingo Zamperoni sind also im Durchschnitt länger im Einsatz als Pinar Atalay und die weiteren Vertreter*innen. Mit dem Wissen, dass die Sendungen von Freitag bis Sonntag im Durchschnitt kürzer sind, ist dies ein Hinweis darauf, dass letzgenannte Personen eher an diesen Tagen im Einsatz sind. Das ist einen Blick wert.</p>
 <pre class="r"><code>tagesthemen %&gt;%
   group_by(name, day) %&gt;%
@@ -70,7 +70,7 @@ Den Unterschied von 6 Sekunden kann man vernachlässigen. Caren Miosga und Ingo 
   theme_plex() +
   geom_label() +
   facet_wrap(. ~ name)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="2400" />
+<p><img src="/posts/2021-05-10-exploratory-data-analysis/post_files/figure-html/unnamed-chunk-4-1.png" width="2400" />
 Die Vermutung bestätigt sich. Um auf Nummer sicher zu gehen, werden die Werte nochmals relativiert.</p>
 <pre class="r"><code>tagesthemen %&gt;%
   filter(extra == 0) %&gt;%
@@ -89,13 +89,13 @@ Die Vermutung bestätigt sich. Um auf Nummer sicher zu gehen, werden die Werte n
     fill = &quot;Tag&quot;
   ) +
   theme_plex()</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="2400" /></p>
+<p><img src="/posts/2021-05-10-exploratory-data-analysis/post_files/figure-html/unnamed-chunk-5-1.png" width="2400" /></p>
 <p>Als Fan von Pinar Atalay hat man also von Freitag bis Samstag die besten Chancen sie zu sehen. mehr als 50% der durch sie moderierten Tagesthemen hat sie an diesen Wochentagen absolviert. Insbesondere der Samstag ist hingegen bei Caren Miosga und Ingo Zamperoni relativ gesehen weniger häufig.</p>
 <p>Es drängt sich die Frage nach dem Dienstplan der Modertor*innen auf; dieser wird jetzt unter die Lupe genommen.</p>
 <pre class="r"><code>tagesthemen %&gt;%
   ggplot(aes(x = date, y = name)) +
   geom_tile(size = 1L, fill = &quot;midnightblue&quot;)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="2400" /></p>
+<p><img src="/posts/2021-05-10-exploratory-data-analysis/post_files/figure-html/unnamed-chunk-6-1.png" width="2400" /></p>
 <p>Für die Visualisierung habe ich einen sogenannten Tile-Plot verwendet. Diesen versuche ich zu erklären.
 Auf der X-Achse befindet sich jeder Tag im Analysezeitraum. Pro Moderator*in wird am Einsatztag ein vertikaler Strich eingezeichnet.
 Somit ergibt sich dieses Bild, was auf den ersten Blick an einen Barcode erinnert.</p>

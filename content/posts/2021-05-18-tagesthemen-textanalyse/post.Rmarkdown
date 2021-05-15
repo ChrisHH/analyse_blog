@@ -1,15 +1,15 @@
 ---
-title: Tagesthemen - Textanalyse
-author: Christian
+title: "Tagesthemen - Textanalyse"
+author: "Christian"
 date: '2021-05-18'
 slug: []
 categories:
-  - Natural Language Processing
-  - Textanalytics
+- Natural Language Processing
+- Textanalytics
 tags:
-  - NLP
-  - Tidytext
-  - Tidymodels
+- NLP
+- Tidytext
+- Tidymodels
 draft: yes
 ---
 

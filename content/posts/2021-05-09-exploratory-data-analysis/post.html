@@ -843,7 +843,7 @@ Entsprechend werde ich im Fall von zwei Sendungen die kürzere als Extra-Ausgabe
     x = &quot;Datum&quot;, y = &quot;Sendezeit in Minuten&quot;, caption = &quot;Quelle: www.tagesschau.de&quot;,
     subtitle = &quot;01.01.2019 - 16.03.2021 (ohne Extrausgaben) &quot;, title = &quot;Tagesthemen - Sendezeit nach Datum&quot;
   )</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="2400" /></p>
+<p><img src="/posts/2021-05-09-exploratory-data-analysis/post_files/figure-html/unnamed-chunk-10-1.png" width="2400" /></p>
 <p>Das erste Ergebnis - und schon so interessant!</p>
 <p>Zunächst ist starkes “Zucken” in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen (daher habe ich eine recht naive Trendlinie eingefügt.) Daher erscheint es sinnvoll, die Werte auch noch einmal aggregiert nach Wochentagen anzuschauen. Das passiert gleich.</p>
 <p>Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist. Auf den ersten Blick dachte ich, es wäre ein Fehler im Scraping und bin dem nachgeangen (indem ich stichpunktartig ein paar Daten mit der Information auf der Webseite abgeglichen habe). Aber es stellte sich heraus: alles ok - kein Fehler! Es gibt einen einfachen Grund: es wurde eine neuer Beitragsblock in den Tagesthemen etabliert, namens “mittendrin”. Mehr dazu in diesem Video: <a href="https://youtu.be/m6AGY1hB65o" class="uri">https://youtu.be/m6AGY1hB65o</a></p>
@@ -866,7 +866,7 @@ tagesthemen %&gt;%
     subtitle = &quot;01.01.2019 - 16.03.2021 (ohne Extrausgaben) &quot;, title = &quot;Tagesthemen - Mittlere Sendezeit nach Wochentag&quot;
   ) +
   theme_plex()</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="2400" />
+<p><img src="/posts/2021-05-09-exploratory-data-analysis/post_files/figure-html/unnamed-chunk-11-1.png" width="2400" />
 Das die Tagesthemen am Wochenende kürzer sind, das wusste ich. Neu war mir, dass dies offensichtlich schon am Freitag der Fall ist.
 Erkennbar ist, das an den Tagen von Montag bis Donnerstag eine Sendung im Durchschnitt 28-30 Minuten dauert und von Freitag bis Sonntag knapp über 20 Minuten. Das ist doch gut zu wissen.</p>
 <p>Mit diesen ersten Einblicken endet dieser Post zunächst.</p>
