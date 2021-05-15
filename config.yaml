@@ -41,5 +41,5 @@ params:
       name: linkedin
   tagsOverview: no
 
-[permalinks]
-    post = "/:year/:month/:day/:slug/"
+permalinks:
+  post: "/:year/:month/:day/:slug/"
