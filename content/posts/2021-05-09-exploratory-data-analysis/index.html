@@ -29,10 +29,12 @@ Nun geht es weiter und diese Daten werden einer ersten explorativen Datenanalyse
 tagesthemen &lt;- read_csv(&quot;scraped_data.csv&quot;)
 moderatoren &lt;- read_csv(&quot;moderatoren_sendung.csv&quot;)
 
-tagesthemen &lt;- tagesthemen %&gt;% 
-  mutate(dauer = as.numeric(dauer),
-         date = as.Date(strftime(datum_zeit, format = &quot;%Y-%m-%d&quot;)),
-         dateiname_standbild = str_remove(standbild_url, &quot;https://www.tagesschau.de/multimedia/bilder/&quot;)) %&gt;% 
+tagesthemen &lt;- tagesthemen %&gt;%
+  mutate(
+    dauer = as.numeric(dauer),
+    date = as.Date(strftime(datum_zeit, format = &quot;%Y-%m-%d&quot;)),
+    dateiname_standbild = str_remove(standbild_url, &quot;https://www.tagesschau.de/multimedia/bilder/&quot;)
+  ) %&gt;%
   left_join(moderatoren, by = c(&quot;dateiname_standbild&quot; = &quot;file&quot;))
 
 rm(moderatoren)</code></pre>
@@ -40,204 +42,452 @@ rm(moderatoren)</code></pre>
 Dazu nutze ich die Funktion “skim” aus dem Paket “skimr”, weil der Output einen sehr guten Überblick über alle relevanten Kennzahlen gibt.</p>
 <pre class="r"><code>library(skimr)
 
-tagesthemen %&gt;% 
+tagesthemen %&gt;%
   skim()</code></pre>
-<table>
-<caption><span id="tab:unnamed-chunk-2">Table 1: </span>Data summary</caption>
+<table style='width: auto;'
+        class='table table-condensed'>
+<caption>
+<span id="tab:unnamed-chunk-2">Table 1: </span>Data summary
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td align="left">Name</td>
-<td align="left">Piped data</td>
+<tr>
+<td style="text-align:left;">
+Name
+</td>
+<td style="text-align:left;">
+Piped data
+</td>
 </tr>
-<tr class="even">
-<td align="left">Number of rows</td>
-<td align="left">813</td>
+<tr>
+<td style="text-align:left;">
+Number of rows
+</td>
+<td style="text-align:left;">
+813
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Number of columns</td>
-<td align="left">8</td>
+<tr>
+<td style="text-align:left;">
+Number of columns
+</td>
+<td style="text-align:left;">
+8
+</td>
 </tr>
-<tr class="even">
-<td align="left">_______________________</td>
-<td align="left"></td>
+<tr>
+<td style="text-align:left;">
+_______________________
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Column type frequency:</td>
-<td align="left"></td>
+<tr>
+<td style="text-align:left;">
+Column type frequency:
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="even">
-<td align="left">character</td>
-<td align="left">5</td>
+<tr>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:left;">
+5
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Date</td>
-<td align="left">1</td>
+<tr>
+<td style="text-align:left;">
+Date
+</td>
+<td style="text-align:left;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="left">numeric</td>
-<td align="left">1</td>
+<tr>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+1
+</td>
 </tr>
-<tr class="odd">
-<td align="left">POSIXct</td>
-<td align="left">1</td>
+<tr>
+<td style="text-align:left;">
+POSIXct
+</td>
+<td style="text-align:left;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="left">________________________</td>
-<td align="left"></td>
+<tr>
+<td style="text-align:left;">
+________________________
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Group variables</td>
-<td align="left">None</td>
+<tr>
+<td style="text-align:left;">
+Group variables
+</td>
+<td style="text-align:left;">
+None
+</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">min</th>
-<th align="right">max</th>
-<th align="right">empty</th>
-<th align="right">n_unique</th>
-<th align="right">whitespace</th>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+empty
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
+<th style="text-align:right;">
+whitespace
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">themen</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">169</td>
-<td align="right">1196</td>
-<td align="right">0</td>
-<td align="right">813</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+themen
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+169
+</td>
+<td style="text-align:right;">
+1196
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+813
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">standbild_url</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">27</td>
-<td align="right">87</td>
-<td align="right">0</td>
-<td align="right">810</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+standbild_url
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+810
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">url</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">57</td>
-<td align="right">57</td>
-<td align="right">0</td>
-<td align="right">813</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+url
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+813
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">dateiname_standbild</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">27</td>
-<td align="right">64</td>
-<td align="right">0</td>
-<td align="right">810</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+dateiname_standbild
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+810
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">name</td>
-<td align="right">7</td>
-<td align="right">0.99</td>
-<td align="right">10</td>
-<td align="right">14</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+name
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: Date</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="left">min</th>
-<th align="left">max</th>
-<th align="left">median</th>
-<th align="right">n_unique</th>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:left;">
+min
+</th>
+<th style="text-align:left;">
+max
+</th>
+<th style="text-align:left;">
+median
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">date</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="left">2019-01-02</td>
-<td align="left">2021-03-17</td>
-<td align="left">2020-02-03</td>
-<td align="right">679</td>
+<tr>
+<td style="text-align:left;">
+date
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2019-01-02
+</td>
+<td style="text-align:left;">
+2021-03-17
+</td>
+<td style="text-align:left;">
+2020-02-03
+</td>
+<td style="text-align:right;">
+679
+</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">mean</th>
-<th align="right">sd</th>
-<th align="right">p0</th>
-<th align="right">p25</th>
-<th align="right">p50</th>
-<th align="right">p75</th>
-<th align="right">p100</th>
-<th align="left">hist</th>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+p0
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+p50
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+p100
+</th>
+<th style="text-align:left;">
+hist
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">dauer</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1543.83</td>
-<td align="right">457.58</td>
-<td align="right">347</td>
-<td align="right">1213</td>
-<td align="right">1786</td>
-<td align="right">1836</td>
-<td align="right">3962</td>
-<td align="left">▂▇▇▁▁</td>
+<tr>
+<td style="text-align:left;">
+dauer
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1543.83
+</td>
+<td style="text-align:right;">
+457.58
+</td>
+<td style="text-align:right;">
+347
+</td>
+<td style="text-align:right;">
+1213
+</td>
+<td style="text-align:right;">
+1786
+</td>
+<td style="text-align:right;">
+1836
+</td>
+<td style="text-align:right;">
+3962
+</td>
+<td style="text-align:left;">
+▂▇▇▁▁
+</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: POSIXct</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="left">min</th>
-<th align="left">max</th>
-<th align="left">median</th>
-<th align="right">n_unique</th>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:left;">
+min
+</th>
+<th style="text-align:left;">
+max
+</th>
+<th style="text-align:left;">
+median
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">datum_zeit</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="left">2019-01-01 23:15:00</td>
-<td align="left">2021-03-17 22:15:00</td>
-<td align="left">2020-02-03 22:15:00</td>
-<td align="right">813</td>
+<tr>
+<td style="text-align:left;">
+datum_zeit
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2019-01-01 23:15:00
+</td>
+<td style="text-align:left;">
+2021-03-17 22:15:00
+</td>
+<td style="text-align:left;">
+2020-02-03 22:15:00
+</td>
+<td style="text-align:right;">
+813
+</td>
 </tr>
 </tbody>
 </table>
@@ -455,8 +705,8 @@ NA
 <div id="option-4-meine-wahl" class="section level3">
 <h3>Option 4 (meine Wahl)</h3>
 <p>Die Daten werden aufgefüllt. Hier kann man von einfacher (z.B. “Interpolation”, KNN) bis sehr sophisticated (z.B. Random Forrest) herangehen. Ich entscheide mich im Folgenden für den einfacheren dieser beiden Wege, da der Datensatz für anspruchsvollere Ansätze noch zu wenig features aufweist. Zum Auffüllen nutze ich die Funktion “fill” und habe mich für die Richtung “up” entschieden.</p>
-<pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;% 
-  arrange(datum_zeit) %&gt;% 
+<pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;%
+  arrange(datum_zeit) %&gt;%
   fill(name, .direction = &quot;up&quot;)</code></pre>
 <p>Ein weiterer Blick auf das Data Summary weiter oben zeigt, dass noch das eine oder andere zu tun ist:</p>
 <ul>
@@ -464,10 +714,12 @@ NA
 <li>Die Sendedauer ist noch in Sekunden enthalten und sollte in Minuten umgerechnet werden, da Menschen besser in Minuten als Sekunden denken können</li>
 <li>Die Variable mit den Themen der Sendung muss noch optimiert werden; das wird aber später gemacht, wenn es um die Textanalyse geht</li>
 </ul>
-<pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;% 
-  mutate(date = as.Date(datum_zeit, format = &quot;%Y-%m-%d&quot;),
-         time = format(datum_zeit, &quot;%H:%M:%S&quot;),
-         dauer = dauer / 60)</code></pre>
+<pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;%
+  mutate(
+    date = as.Date(datum_zeit, format = &quot;%Y-%m-%d&quot;),
+    time = format(datum_zeit, &quot;%H:%M:%S&quot;),
+    dauer = dauer / 60
+  )</code></pre>
 <p>Um die Qualität der Daten weiter zu überprüfen, frage ich mich, wann wurde die früheste Sendung der Tagesthemen ausgestrahlt?
 Das lässt sich ganz leicht herausfinden.</p>
 <pre class="r"><code>min(tagesthemen$time)</code></pre>
@@ -563,10 +815,10 @@ Ingo Zamperoni
 </table>
 <p>Es existieren genau zwei Sendungen, die vor oder um 21 Uhr ausgestrahlt wurden. Auffällig ist, dass diese sehr kurz waren (maximal 8 Minuten). Ein Blick in die Aufzeichnung der Sendungen zeigt, dass es sich um Extra-Ausgaben handelte. Das heißt, es muss nun identifiziert werden, welche der Sendungen in dem Datensatz eine reguläre und welche eine Extra Ausgabe ist, denn es macht Sinn später danach zu differenzieren.</p>
 <p>Zur Sicherheit prüfe ich noch einmal, wieviele Ausgaben der Tagesthemen an einem Tag ausgestrahlt wurden bilde darüber eine Häufigkeitstabelle.</p>
-<pre class="r"><code>tagesthemen %&gt;% 
-  group_by(date) %&gt;% 
-  arrange(datum_zeit) %&gt;% 
-  summarize(anzahl_sendungen = n()) %&gt;% 
+<pre class="r"><code>tagesthemen %&gt;%
+  group_by(date) %&gt;%
+  arrange(datum_zeit) %&gt;%
+  summarize(anzahl_sendungen = n()) %&gt;%
   count(anzahl_sendungen)</code></pre>
 <pre><code>## # A tibble: 2 x 2
 ##   anzahl_sendungen     n
@@ -575,21 +827,23 @@ Ingo Zamperoni
 ## 2                2    17</code></pre>
 <p>An 779 Tagen gab es genau eine Ausgabe der Tagesthemen; an 17 Tagen gab es zwei Ausgaben.
 Entsprechend werde ich im Fall von zwei Sendungen die kürzere als Extra-Ausgabe markieren.</p>
-<pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;% 
-  arrange(datum_zeit) %&gt;% 
-  group_by(date) %&gt;% 
-  mutate(extra = if_else(dauer == max(dauer),0,1))</code></pre>
+<pre class="r"><code>tagesthemen &lt;- tagesthemen %&gt;%
+  arrange(datum_zeit) %&gt;%
+  group_by(date) %&gt;%
+  mutate(extra = if_else(dauer == max(dauer), 0, 1))</code></pre>
 <p>Und nun kann schon eine erste grafische Inspektion erfolgen: wie verhält sich die Sendezeit der Tagesthemen über das Datum?</p>
-<pre class="r"><code>tagesthemen %&gt;% 
-  ungroup() %&gt;% 
+<pre class="r"><code>tagesthemen %&gt;%
+  ungroup() %&gt;%
   filter(extra == 0) %&gt;%
-  ggplot(aes(x=datum_zeit, y=dauer)) +
+  ggplot(aes(x = datum_zeit, y = dauer)) +
   theme_plex() +
   geom_line(color = &quot;midnightblue&quot;) +
   geom_smooth() +
-  labs(x = &quot;Datum&quot;, y = &quot;Sendezeit in Minuten&quot;, caption = &quot;Quelle: www.tagesschau.de&quot;, 
-       subtitle = &quot;01.01.2019 - 16.03.2021 (ohne Extrausgaben) &quot;, title = &quot;Tagesthemen - Sendezeit nach Datum&quot;)</code></pre>
-<p><img src="/posts/2021-05-09-exploratory-data-analysis/2021-05-09-exploratory-data-analysis_files/figure-html/unnamed-chunk-10-1.png" width="2400" /></p>
+  labs(
+    x = &quot;Datum&quot;, y = &quot;Sendezeit in Minuten&quot;, caption = &quot;Quelle: www.tagesschau.de&quot;,
+    subtitle = &quot;01.01.2019 - 16.03.2021 (ohne Extrausgaben) &quot;, title = &quot;Tagesthemen - Sendezeit nach Datum&quot;
+  )</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="2400" /></p>
 <p>Das erste Ergebnis - und schon so interessant!</p>
 <p>Zunächst ist starkes “Zucken” in den Daten erkennbar; in jeder Woche gibt es starke Schwankungen (daher habe ich eine recht naive Trendlinie eingefügt.) Daher erscheint es sinnvoll, die Werte auch noch einmal aggregiert nach Wochentagen anzuschauen. Das passiert gleich.</p>
 <p>Weiterhin ist erkennbar, dass ab ca. August 2020 eine kleine Treppe in der durchschnittlichen Sendezeit erkennbar ist. Auf den ersten Blick dachte ich, es wäre ein Fehler im Scraping und bin dem nachgeangen (indem ich stichpunktartig ein paar Daten mit der Information auf der Webseite abgeglichen habe). Aber es stellte sich heraus: alles ok - kein Fehler! Es gibt einen einfachen Grund: es wurde eine neuer Beitragsblock in den Tagesthemen etabliert, namens “mittendrin”. Mehr dazu in diesem Video: <a href="https://youtu.be/m6AGY1hB65o" class="uri">https://youtu.be/m6AGY1hB65o</a></p>
@@ -612,7 +866,7 @@ tagesthemen %&gt;%
     subtitle = &quot;01.01.2019 - 16.03.2021 (ohne Extrausgaben) &quot;, title = &quot;Tagesthemen - Mittlere Sendezeit nach Wochentag&quot;
   ) +
   theme_plex()</code></pre>
-<p><img src="/posts/2021-05-09-exploratory-data-analysis/2021-05-09-exploratory-data-analysis_files/figure-html/unnamed-chunk-11-1.png" width="2400" />
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="2400" />
 Das die Tagesthemen am Wochenende kürzer sind, das wusste ich. Neu war mir, dass dies offensichtlich schon am Freitag der Fall ist.
 Erkennbar ist, das an den Tagen von Montag bis Donnerstag eine Sendung im Durchschnitt 28-30 Minuten dauert und von Freitag bis Sonntag knapp über 20 Minuten. Das ist doch gut zu wissen.</p>
 <p>Mit diesen ersten Einblicken endet dieser Post zunächst.</p>
