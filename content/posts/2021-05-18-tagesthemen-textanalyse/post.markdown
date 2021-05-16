@@ -1,5 +1,5 @@
 ---
-title: "Tagesthemen - Ableitung von Features aus den Themen"
+title: "Tagesthemen - Featureextraktion aus den Themen den Sendung"
 date: '2021-05-15'
 keywords:
   - R
@@ -427,6 +427,7 @@ Schlussendlich erfolgt nun eine erste multivariate Analyse. Ich möchte wissen, 
 - Anzahl der Themen
 - Anzahl Nachrichtenblöcke
 - Extrausgabe
+- Wochentag
 
 Dafür wird auf die lineare Regression zurückgegriffen. Damit später das Ergebnis der linearen Regression nachvollziehbar interpretiert werden kann, wird zunächst für die Faktor-Variablen das Referenz-Level gesetzt. 
 
@@ -444,7 +445,7 @@ Nun erfolgt die lineare Regression
 
 
 ```r
-linear_model <- lm(dauer ~ name + kommentar_meinung + anzahl_themen + anzahl_nachrichtenbloecke + extra, tagesthemen)
+linear_model <- lm(dauer ~ name + kommentar_meinung + anzahl_themen + anzahl_nachrichtenbloecke + extra + day, tagesthemen)
 
 summary(linear_model)
 ```
@@ -453,32 +454,37 @@ summary(linear_model)
 ## 
 ## Call:
 ## lm(formula = dauer ~ name + kommentar_meinung + anzahl_themen + 
-##     anzahl_nachrichtenbloecke + extra, data = tagesthemen)
+##     anzahl_nachrichtenbloecke + extra + day, data = tagesthemen)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -19.615  -1.538   0.231   1.808  39.494 
+## -19.495  -1.424   0.178   1.853  39.553 
 ## 
 ## Coefficients:
 ##                           Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)               10.00818    0.80863  12.377  < 2e-16 ***
-## nameIngo Zamperoni        -0.09504    0.33981  -0.280 0.779796    
-## namePinar Atalay          -0.57260    0.40647  -1.409 0.159305    
-## nameVertretung            -1.88116    1.36467  -1.378 0.168441    
-## kommentar_meinung1         7.52654    0.39751  18.934  < 2e-16 ***
-## anzahl_themen              1.74217    0.11608  15.009  < 2e-16 ***
-## anzahl_nachrichtenbloecke -1.35315    0.43792  -3.090 0.002071 ** 
-## extra                     -4.23581    1.17863  -3.594 0.000346 ***
+## (Intercept)               10.42598    0.90798  11.483  < 2e-16 ***
+## nameIngo Zamperoni        -0.09487    0.33413  -0.284  0.77654    
+## namePinar Atalay          -0.47445    0.40015  -1.186  0.23610    
+## nameVertretung            -1.20067    1.36849  -0.877  0.38055    
+## kommentar_meinung1         7.04232    0.48755  14.444  < 2e-16 ***
+## anzahl_themen              1.71687    0.11622  14.773  < 2e-16 ***
+## anzahl_nachrichtenbloecke -1.34031    0.43344  -3.092  0.00206 ** 
+## extra                     -4.72382    1.16618  -4.051  5.6e-05 ***
+## dayDonnerstag              0.75450    0.55178   1.367  0.17189    
+## dayFreitag                -1.47978    0.57252  -2.585  0.00992 ** 
+## dayMittwoch                0.14604    0.54436   0.268  0.78856    
+## dayMontag                  1.15994    0.55096   2.105  0.03558 *  
+## daySamstag                -1.08411    0.63368  -1.711  0.08751 .  
+## daySonntag                 0.65747    0.62164   1.058  0.29054    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 4.24 on 805 degrees of freedom
-## Multiple R-squared:  0.6935,	Adjusted R-squared:  0.6909 
-## F-statistic: 260.3 on 7 and 805 DF,  p-value: < 2.2e-16
+## Residual standard error: 4.168 on 799 degrees of freedom
+## Multiple R-squared:  0.7061,	Adjusted R-squared:  0.7013 
+## F-statistic: 147.7 on 13 and 799 DF,  p-value: < 2.2e-16
 ```
 Gut, was sagt uns dieser Output?
 
-Der Intercept sind 10 Minuten und bezieht sich darauf, dass Caren Miosga die Senung moderiert (da sie bei der Variable "name" im weiteren nicht auftaucht; d.h. sie ist das Referenz-Level). Wenn Ingo Zamperoni die Sendung moderiert, dann verkürzt sich die Sendezeit um 0.1 Minute marginal.
-Fast zwei Minuten kürzer ist die Sendung, wenn sie von einer Vertretung moderiert wird (-1.9 Minuten). Wenn ein Kommentar/Meinungsbeitrag in der Sendung stattfindet, dann erhöht sich die Sendedauer um 7.5 Minuten (was aber nicht heißt, dass der Meinungsbeitrag so lange dauert). Mit jedem zusätzlichen Thema erhöht sich die Sendedauer um 1.7 Minuten; hingegen reduziert sie sich um 1.4 Minuten mit jedem Nachrichtenblock. Handelt es sich um eine Extra-Ausgabe, dann reduziert sich die Sendedauer um 4,2 Minuten. 
+Der Intercept sind 10.4 Minuten und bezieht sich darauf, dass Caren Miosga die Sendung an einem Dienstag moderiert (da sie bei der Variable "name" im weiteren nicht auftaucht; d.h. sie ist das Referenz-Level - dsgl. gilt für den Wochentag). Wenn Ingo Zamperoni die Sendung moderiert, dann verkürzt sich die Sendezeit um 0.1 Minute marginal. Um 1.2 Minuten kürzer ist die Sendung, wenn sie von einer Vertretung moderiert wird. Wenn ein Kommentar/Meinungsbeitrag in der Sendung stattfindet, dann erhöht sich die Sendedauer um 7 Minuten (was aber nicht heißt, dass der Meinungsbeitrag so lange dauert). Mit jedem zusätzlichen Thema erhöht sich die Sendedauer um 1.7 Minuten; hingegen reduziert sie sich um 1.3 Minuten mit jedem Nachrichtenblock. Handelt es sich um eine Extra-Ausgabe, dann reduziert sich die Sendedauer um 4.7 Minuten. An einem Montag ist die Sendung um 1.2 min länger; hingegen an einem Freitag um 1.5 min kürzer.
 
-Diese Erklärung ist schon in einem gelben Bereich (Richtung) grün, da das angepasste R^2 bei 0.690 liegt. Das heißt, dass die Varianz in der Sendedauer durch die unabhängigen Variablen zu knapp 70% erklärt wird. Ich denke ein weiterer Fakt der die Sendedauer bestimmt, ist die Anfangszeit der Sendezeit. Je früher, desto länger und je später, desto kürzer.
+Diese Erklärung ist schon in einem gelben Bereich (Richtung) grün, da das angepasste R^2 bei 0.701 liegt. Das heißt, dass die Varianz in der Sendedauer durch die unabhängigen Variablen zu knapp 70% erklärt wird. Ich denke ein weiterer Fakt der die Sendedauer bestimmt, ist die Anfangszeit der Sendezeit. Je früher, desto länger und je später, desto kürzer.
