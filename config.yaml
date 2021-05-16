@@ -20,6 +20,9 @@ markup:
     endLevel: 4
     ordered: no
     startLevel: 2
+  goldmark:
+    renderer:
+      unsafe: true
 params:
   colortheme: white
   comments:
