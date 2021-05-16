@@ -199,7 +199,8 @@ Nun interessieren mich noch die Lottozahlen. Diese sind ja gleichzeitig eine gut
 tagesthemen %>% 
   filter(extra == 0, 
          hatte_lotto == 1) %>% 
-  count(day)
+  count(day) %>% 
+  kable()
 ```
 
 Schade, das hat nicht geklappt. Denn demzufolge wären im Analysezeitraum nur 28 mal die Lottozahlen gesendet worden.
@@ -228,7 +229,8 @@ Hier lohnt nochmal ein Blick auf die Sendungen.
 ```{r}
 tagesthemen %>% 
   filter(extra == 0, hatte_wetter == 0) %>% 
-  select(datum_zeit, dauer)
+  select(datum_zeit, dauer) %>% 
+  kable()
 ```
 
 Die Sendungen, in denen es keinen Wetterbericht gab, waren überwiegend relativ kurz. 
@@ -242,6 +244,7 @@ Schlussendlich erfolgt nun eine erste multivariate Analyse. Ich möchte wissen, 
 - Kommentar / Meinung
 - Anzahl der Themen
 - Anzahl Nachrichtenblöcke
+- Extrausgabe
 
 Dafür wird auf die lineare Regression zurückgegriffen. Damit später das Ergebnis der linearen Regression nachvollziehbar interpretiert werden kann, wird zunächst für die Faktor-Variablen das Referenz-Level gesetzt. 
 
@@ -257,11 +260,14 @@ Nun erfolgt die lineare Regression
 
 ```{r}
 
-linear_model <- lm(dauer ~ name + kommentar_meinung + anzahl_themen + anzahl_nachrichtenbloecke, tagesthemen)
+linear_model <- lm(dauer ~ name + kommentar_meinung + anzahl_themen + anzahl_nachrichtenbloecke + extra, tagesthemen)
 
 summary(linear_model)
  
 ```
+Gut, was sagt uns dieser Output?
 
+Der Intercept sind 10 Minuten und bezieht sich darauf, dass Caren Miosga die Senung moderiert (da sie bei der Variable "name" im weiteren nicht auftaucht; d.h. sie ist das Referenz-Level). Wenn Ingo Zamperoni die Sendung moderiert, dann verkürzt sich die Sendezeit um 0.1 Minute marginal.
+Fast zwei Minuten kürzer ist die Sendung, wenn sie von einer Vertretung moderiert wird (-1.9 Minuten). Wenn ein Kommentar/Meinungsbeitrag in der Sendung stattfindet, dann erhöht sich die Sendedauer um 7.5 Minuten (was aber nicht heißt, dass der Meinungsbeitrag so lange dauert). Mit jedem zusätzlichen Thema erhöht sich die Sendedauer um 1.7 Minuten; hingegen reduziert sie sich um 1.4 Minuten mit jedem Nachrichtenblock. Handelt es sich um eine Extra-Ausgabe, dann reduziert sich die Sendedauer um 4,2 Minuten. 
 
-
+Diese Erklärung ist schon in einem gelben Bereich (Richtung) grün, da das angepasste R^2 bei 0.690 liegt. Das heißt, dass die Varianz in der Sendedauer durch die unabhängigen Variablen zu knapp 70% erklärt wird. Ich denke ein weiterer Fakt der die Sendedauer bestimmt, ist die Anfangszeit der Sendezeit. Je früher, desto länger und je später, desto kürzer.

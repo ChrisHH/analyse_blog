@@ -279,15 +279,24 @@ tagesthemen %>%
     extra == 0,
     hatte_lotto == 1
   ) %>%
-  count(day)
+  count(day) %>%
+  kable()
 ```
 
-```
-## # A tibble: 1 x 2
-##   day         n
-##   <chr>   <int>
-## 1 Samstag    28
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> day </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Samstag </td>
+   <td style="text-align:right;"> 28 </td>
+  </tr>
+</tbody>
+</table>
 
 Schade, das hat nicht geklappt. Denn demzufolge wären im Analysezeitraum nur 28 mal die Lottozahlen gesendet worden.
 Aber das ist nicht korrekt; vielmehr ist es so, dass die Lottozahlen als Thema nur 28 mal separat aufgeführt wurden.
@@ -335,28 +344,76 @@ Hier lohnt nochmal ein Blick auf die Sendungen.
 ```r
 tagesthemen %>%
   filter(extra == 0, hatte_wetter == 0) %>%
-  select(datum_zeit, dauer)
+  select(datum_zeit, dauer) %>%
+  kable()
 ```
 
-```
-## # A tibble: 14 x 2
-##    datum_zeit          dauer
-##    <dttm>              <dbl>
-##  1 2019-01-19 21:10:00  7.83
-##  2 2019-02-17 22:45:00 20.1 
-##  3 2019-04-02 21:33:00  7.95
-##  4 2019-04-24 21:35:00  7.67
-##  5 2019-06-17 21:50:00  8.15
-##  6 2019-06-30 23:45:00  6.65
-##  7 2019-07-31 22:15:00 30.2 
-##  8 2020-01-31 23:40:00 25.6 
-##  9 2020-02-04 21:35:00  6.68
-## 10 2020-08-17 22:15:00 30.7 
-## 11 2020-09-07 22:15:00 35.2 
-## 12 2020-12-23 21:35:00  7.02
-## 13 2021-01-13 21:35:00  7.68
-## 14 2021-03-03 23:15:00 14.8
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> datum_zeit </th>
+   <th style="text-align:right;"> dauer </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 2019-01-19 21:10:00 </td>
+   <td style="text-align:right;"> 7.833333 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2019-02-17 22:45:00 </td>
+   <td style="text-align:right;"> 20.083333 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2019-04-02 21:33:00 </td>
+   <td style="text-align:right;"> 7.950000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2019-04-24 21:35:00 </td>
+   <td style="text-align:right;"> 7.666667 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2019-06-17 21:50:00 </td>
+   <td style="text-align:right;"> 8.150000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2019-06-30 23:45:00 </td>
+   <td style="text-align:right;"> 6.650000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2019-07-31 22:15:00 </td>
+   <td style="text-align:right;"> 30.183333 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2020-01-31 23:40:00 </td>
+   <td style="text-align:right;"> 25.650000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2020-02-04 21:35:00 </td>
+   <td style="text-align:right;"> 6.683333 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2020-08-17 22:15:00 </td>
+   <td style="text-align:right;"> 30.700000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2020-09-07 22:15:00 </td>
+   <td style="text-align:right;"> 35.200000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2020-12-23 21:35:00 </td>
+   <td style="text-align:right;"> 7.016667 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2021-01-13 21:35:00 </td>
+   <td style="text-align:right;"> 7.683333 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2021-03-03 23:15:00 </td>
+   <td style="text-align:right;"> 14.850000 </td>
+  </tr>
+</tbody>
+</table>
 
 Die Sendungen, in denen es keinen Wetterbericht gab, waren überwiegend relativ kurz. 
 Es handelte sich um kurze Tagesthemen, die z.B häufig während der Halbzeit eines Fußballspiels ausgestrahlt werden.
@@ -369,6 +426,7 @@ Schlussendlich erfolgt nun eine erste multivariate Analyse. Ich möchte wissen, 
 - Kommentar / Meinung
 - Anzahl der Themen
 - Anzahl Nachrichtenblöcke
+- Extrausgabe
 
 Dafür wird auf die lineare Regression zurückgegriffen. Damit später das Ergebnis der linearen Regression nachvollziehbar interpretiert werden kann, wird zunächst für die Faktor-Variablen das Referenz-Level gesetzt. 
 
@@ -386,7 +444,7 @@ Nun erfolgt die lineare Regression
 
 
 ```r
-linear_model <- lm(dauer ~ name + kommentar_meinung + anzahl_themen + anzahl_nachrichtenbloecke, tagesthemen)
+linear_model <- lm(dauer ~ name + kommentar_meinung + anzahl_themen + anzahl_nachrichtenbloecke + extra, tagesthemen)
 
 summary(linear_model)
 ```
@@ -395,28 +453,32 @@ summary(linear_model)
 ## 
 ## Call:
 ## lm(formula = dauer ~ name + kommentar_meinung + anzahl_themen + 
-##     anzahl_nachrichtenbloecke, data = tagesthemen)
+##     anzahl_nachrichtenbloecke + extra, data = tagesthemen)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -19.682  -1.646   0.215   1.882  39.790 
+## -19.615  -1.538   0.231   1.808  39.494 
 ## 
 ## Coefficients:
 ##                           Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)                 8.6680     0.7228  11.992   <2e-16 ***
-## nameIngo Zamperoni         -0.1234     0.3422  -0.361   0.7185    
-## namePinar Atalay           -0.6411     0.4090  -1.567   0.1174    
-## nameVertretung             -1.8135     1.3746  -1.319   0.1874    
-## kommentar_meinung1          7.3719     0.3981  18.518   <2e-16 ***
-## anzahl_themen               1.8843     0.1099  17.140   <2e-16 ***
-## anzahl_nachrichtenbloecke  -0.9790     0.4285  -2.285   0.0226 *  
+## (Intercept)               10.00818    0.80863  12.377  < 2e-16 ***
+## nameIngo Zamperoni        -0.09504    0.33981  -0.280 0.779796    
+## namePinar Atalay          -0.57260    0.40647  -1.409 0.159305    
+## nameVertretung            -1.88116    1.36467  -1.378 0.168441    
+## kommentar_meinung1         7.52654    0.39751  18.934  < 2e-16 ***
+## anzahl_themen              1.74217    0.11608  15.009  < 2e-16 ***
+## anzahl_nachrichtenbloecke -1.35315    0.43792  -3.090 0.002071 ** 
+## extra                     -4.23581    1.17863  -3.594 0.000346 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 4.271 on 806 degrees of freedom
-## Multiple R-squared:  0.6886,	Adjusted R-squared:  0.6863 
-## F-statistic: 297.1 on 6 and 806 DF,  p-value: < 2.2e-16
+## Residual standard error: 4.24 on 805 degrees of freedom
+## Multiple R-squared:  0.6935,	Adjusted R-squared:  0.6909 
+## F-statistic: 260.3 on 7 and 805 DF,  p-value: < 2.2e-16
 ```
+Gut, was sagt uns dieser Output?
 
+Der Intercept sind 10 Minuten und bezieht sich darauf, dass Caren Miosga die Senung moderiert (da sie bei der Variable "name" im weiteren nicht auftaucht; d.h. sie ist das Referenz-Level). Wenn Ingo Zamperoni die Sendung moderiert, dann verkürzt sich die Sendezeit um 0.1 Minute marginal.
+Fast zwei Minuten kürzer ist die Sendung, wenn sie von einer Vertretung moderiert wird (-1.9 Minuten). Wenn ein Kommentar/Meinungsbeitrag in der Sendung stattfindet, dann erhöht sich die Sendedauer um 7.5 Minuten (was aber nicht heißt, dass der Meinungsbeitrag so lange dauert). Mit jedem zusätzlichen Thema erhöht sich die Sendedauer um 1.7 Minuten; hingegen reduziert sie sich um 1.4 Minuten mit jedem Nachrichtenblock. Handelt es sich um eine Extra-Ausgabe, dann reduziert sich die Sendedauer um 4,2 Minuten. 
 
-
+Diese Erklärung ist schon in einem gelben Bereich (Richtung) grün, da das angepasste R^2 bei 0.690 liegt. Das heißt, dass die Varianz in der Sendedauer durch die unabhängigen Variablen zu knapp 70% erklärt wird. Ich denke ein weiterer Fakt der die Sendedauer bestimmt, ist die Anfangszeit der Sendezeit. Je früher, desto länger und je später, desto kürzer.
