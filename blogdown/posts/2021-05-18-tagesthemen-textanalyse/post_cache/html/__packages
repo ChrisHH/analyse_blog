@@ -12,3 +12,5 @@ forcats
 silgelib
 kableExtra
 tidytext
+stopwords
+lubridate

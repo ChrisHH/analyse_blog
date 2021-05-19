@@ -1,6 +1,6 @@
 ---
-title: "Tagesthemen - Featureextraktion aus den Themen den Sendung"
-date: '2021-05-15'
+title: "Tagesthemen - Erweiterung der explorativen Datenanalyse um Themen der Sendung"
+date: '2021-05-19'
 keywords:
   - R
   - Explorative Datenanalyse
@@ -36,14 +36,11 @@ tagesthemen <- read_csv("https://funalytics.netlify.app/files/data_clean.csv")
 
 ## Ableitung von Features aus den Themen der Sendung
 
-Aus den Themen der Sendung lassen sich bestimmt noch Features ableiten. Um dies zu realisieren kommt das R-Paket "tidytext" von Julia Silge und David Robinson zum Einsatz. Ich kann das zugehörige Buch "Text Mining with R (O'Reilly Verlag) sehr empfehlen. Es existiert aber auch als open source Version unter diesem Link: https://www.tidytextmining.com
-
 Damit sie analysierbar sind, müssen im ersten Schritt die Themen der Sendung "vereinzelt" werden. Nach kurzer Betrachtung des Strings stellte ich fest, dass die Theman durch ein Komma getrennt sind. Es bietet sich also ein String-Split mit Hilfe der separate Funktion an. Diese verlangt jedoch die Vorgabe einer Anzahl von Variablen, in die gesplittet werden soll. Ich habe die Anzahl einmal auf 20 gesetzt und prüfe im Nachgang ob das ausreichend war. Außerdem ist es bei Textanalysen immer sehr sinnvoll, Leerzeichen zu "strippen" und den gesamten String in Groß- oder Kleinschreibung umzuwandeln, wobei sich im NLP Umfeld die Kleinschreibung durchgesetzt hat. 
 
 Wenn dies erfolgt ist, vertikalisiere ich den Datensatz gleich noch, um die weitere Feature-Ableitung einfacher zu halten. 
 
 ```{r}
-library(tidytext)
 
 tagesthemen_text <- tagesthemen %>% 
   select(-contains("standbild"), -contains("url")) %>% 
@@ -191,7 +188,7 @@ tagesthemen %>%
   labs(x="Datum", y="", fill = "Variable")
 ```
 
-In diesem Plot sieht man schon sehr gut, dass gegen Ende des Jahres, die Kommentar- bzw. Meinungsbeiträge in den Tagesthemen eher rar sind.
+In diesem Plot sieht man schon sehr gut, dass gegen Ende des Jahres, die Kommentar- bzw. Meinungsbeiträge in den Tagesthemen ausgesetzt werden (Weihnachtspause?).
 
 Nun interessieren mich noch die Lottozahlen. Diese sind ja gleichzeitig eine gute Möglichkeit, die Datenqualität zwischendurch erneut zu überprüfen, denn sie sollten nur an den Ziehungstagen, also mittwochs oder samstags auftauchen.
 
@@ -257,7 +254,7 @@ tagesthemen <- tagesthemen %>%
            name = as.factor(name))
 ```
 
-Nun erfolgt die lineare Regression
+Nun erfolgt die lineare Regression.
 
 ```{r}
 
@@ -266,8 +263,63 @@ linear_model <- lm(dauer ~ name + kommentar_meinung + anzahl_themen + anzahl_nac
 summary(linear_model)
  
 ```
-Gut, was sagt uns dieser Output?
 
-Der Intercept sind 10.4 Minuten und bezieht sich darauf, dass Caren Miosga die Sendung an einem Dienstag moderiert (da sie bei der Variable "name" im weiteren nicht auftaucht; d.h. sie ist das Referenz-Level - dsgl. gilt für den Wochentag). Wenn Ingo Zamperoni die Sendung moderiert, dann verkürzt sich die Sendezeit um 0.1 Minute marginal. Um 1.2 Minuten kürzer ist die Sendung, wenn sie von einer Vertretung moderiert wird. Wenn ein Kommentar/Meinungsbeitrag in der Sendung stattfindet, dann erhöht sich die Sendedauer um 7 Minuten (was aber nicht heißt, dass der Meinungsbeitrag so lange dauert). Mit jedem zusätzlichen Thema erhöht sich die Sendedauer um 1.7 Minuten; hingegen reduziert sie sich um 1.3 Minuten mit jedem Nachrichtenblock. Handelt es sich um eine Extra-Ausgabe, dann reduziert sich die Sendedauer um 4.7 Minuten. An einem Montag ist die Sendung um 1.2 min länger; hingegen an einem Freitag um 1.5 min kürzer.
+Und was sagt dieser Output?
+
+Der Intercept sind 10.4 Minuten und bezieht sich darauf, dass Caren Miosga die Sendung an einem Dienstag moderiert (da sie bei der Variable "name" im weiteren nicht auftaucht; d.h. sie ist das Referenz-Level - dsgl. gilt für den Wochentag). Wenn Ingo Zamperoni die Sendung moderiert, dann verkürzt sich die Sendezeit um 0.1 Minute marginal. Um 1.2 Minuten kürzer ist die Sendung, wenn sie von einer Vertretung moderiert wird. Wenn ein Kommentar/Meinungsbeitrag in der Sendung stattfindet, dann erhöht sich die Sendedauer um 7 Minuten (was aber nicht heißt, dass der Meinungsbeitrag so lange dauert). Mit jedem zusätzlichen Thema erhöht sich die Sendedauer um 1.7 Minuten; hingegen reduziert sie sich um 1.3 Minuten mit jedem Nachrichtenblock. Handelt es sich um eine Extra-Ausgabe, dann reduziert sich die Sendedauer um 4.7 Minuten. An einem Montag ist die Sendung um 1.2 min länger; hingegen an einem Freitag um 1.5 min kürzer. All dies überrascht nicht. Vielmehr wird nun durch die Regression quantifiziert, was sich in den vorigen explorativen Analysen schon angedeutet hat.
 
 Diese Erklärung ist schon in einem gelben Bereich (Richtung) grün, da das angepasste R^2 bei 0.701 liegt. Das heißt, dass die Varianz in der Sendedauer durch die unabhängigen Variablen zu knapp 70% erklärt wird. Ich denke ein weiterer Fakt der die Sendedauer bestimmt, ist die Anfangszeit der Sendezeit. Je früher, desto länger und je später, desto kürzer.
+
+## Weitere Textanalyse der Themen der Sendung
+
+Das soll nun erstmal ausreichen - ganz zum Schluss widme ich mich noch detailierter den Themen der Sendung. Dazu wird der Text weiter verarbeitet, Stopwords (Füllworte; für DE in der Bibliothek "stopwords") entfernt und zuguterletzt die Top 20 Worte visualisiert. Um dies zu realisieren kommt das R-Paket "tidytext" von Julia Silge und David Robinson zum Einsatz. Ich kann das zugehörige Buch "Text Mining with R (O'Reilly Verlag) sehr empfehlen. Es existiert aber auch als open source Version unter diesem Link: https://www.tidytextmining.com
+
+```{r}
+library(tidytext)
+library(stopwords)
+
+stopwords <- tibble(word = stopwords("de"))
+
+tagesthemen_text %>% 
+  ungroup() %>% 
+  select(thema) %>% 
+  unnest_tokens(word, thema) %>% 
+  anti_join(stopwords) %>% 
+  count(word, sort = TRUE) %>% 
+  top_n(20,n) %>% 
+  mutate(word = as.factor(word),
+         word = fct_reorder(word, n)) %>% 
+  ggplot(aes(x=word, y=n, label = n)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x = "Wort", "Häufigkeit") +
+  geom_label()
+  
+
+```
+Das häufigste Wort in den Themen der Sendung ist das Wort "Corona". Gefolgt wird es vom Wort "Sport".
+Und wie entwickelt sich die Nennung des Wortes "Corona" über die Zeit?
+
+
+```{r}
+
+date_tibble <- tibble( date = seq(min(tagesthemen_text$date), max(tagesthemen_text$date), by = "days"))
+
+date_tibble %>% 
+  left_join(tagesthemen_text %>% 
+              ungroup() %>% 
+              select(thema, date) %>% 
+              unnest_tokens(word, thema) %>% 
+              anti_join(stopwords) %>% 
+              filter(word == "corona") %>% 
+              group_by(date) %>% 
+              summarise(corona = n())) %>% 
+  mutate(corona = if_else(is.na(corona), 0L, corona)) %>% 
+  ggplot(aes(x= date, y = corona)) + 
+  geom_line(color = "midnightblue") +
+  labs( x = "Datum", y = "Häufigkeit Wort >>Corona<< in den Themen der Sendung")
+  
+```
+Erstmals taucht das Wort "Corona" Anfang 2020 in den Themen der Sendung auf. Bleibt dann eine Weile auf einem hohen Niveau und pendelt sich dann ein.
+
+Und das war es für heute! Beim nächsten mal steige ich ein in die Sentiment-Analyse. Und dann geht es auch langsam in Richtung Bildanalyse - denn die Frage, ob die Auswahl der Kleidungsfarbe mit den Themen der Sendung zusammenhängt steht ja nach wie vor im Raum...
