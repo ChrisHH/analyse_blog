@@ -1,17 +1,29 @@
-{{ define "main" }}
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<!-- TODO: gallery -->
-  <div class="content" itemprop="articleBody">
-  {{ if (eq .Type "search") }}
-    <!-- TODO: search https://gohugo.io/tools/search/ -->
-  {{ else }}
-    {{ .Content }}
-  {{ end }}
+{{- define "main" -}}
+
+<article class="article">
+
+  {{ partial "page_header" . }}
+
+  <div class="article-container">
+
+    <div class="row">
+
+    <div class="col-12 col-lg-10ish article-style">
+      {{ .Content }}
+    </div>
+
+  {{ partial "page_footer" . }}
   </div>
-  
-  <div class="article-container"></div>
-{{ partial "comments.html" . }}
-</div>
-  
+    <div class="col-12 col-lg-10ish article-style">
+    <script src="https://utteranc.es/client.js"
+        repo="ChrisHH / analyse_blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </div>
+  </div>
 </article>
-{{ end }}
+
+{{- end -}}
