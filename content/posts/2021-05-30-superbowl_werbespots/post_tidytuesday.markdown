@@ -422,14 +422,14 @@ Interessant ist, dass die Werbespots klassifiziert wurden (logical-Variablen), z
 
 Für die Clusteranalyse habe ich den k-Means Algorithmus verwendet. Mit Hilfe des Screeplots habe ich entschieden, 5 Cluster zu bilden. 
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-3-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-3-1.png" width="2400" />
 
 
 
 
 Nun prüfe ich, wie groß die 5 Cluster sind, d.h. wieviele Werbespots pro Cluster enthalten sind. 
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-5-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-5-1.png" width="2400" />
 
 Es existieren zwei größere Cluster (3 und 4), ein mittelgroßes und zwei kleinere Cluster. 
 
@@ -439,7 +439,7 @@ Und wie lassen sich die Cluster charakterisieren?
 
 Dazu schaue ich auf die Mittelwerte der segmentbildenden Variablen (d.h. der 7 Klassifizierungsmerkmale). 
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
 Im Cluster 4 sind knapp 85% der Werbespots "funny". Es kennzeichnet sich zudem dadurch, dass die Werbespots nicht mit Gefahr spielen und sie frei von Sexualität (Erotik) sind. Gut einer von 4 Spots in dem Cluster zeigt Tiere.
 
 Und wie sieht es im Cluster 3 aus? Alle Werbespots in diesem Cluster spielen mit Gefahr ("danger"). Dabei können meiner Meinung nach negative Emotionen entstehen. Diese werden mit Spass ausgeglichen, denn 97% der Werbespots sind auch als "funny" klassifiziert. 
@@ -466,13 +466,13 @@ Nachdem die Cluster nun feststehen, können sie weitergehend analysiert werden. 
 
 Wenn man sich (so wie gleich) prozentuale Verteilungen anschaut, halte ich es für wichtig, auch die dahinter stehende absolute Größe anzuschauen. Diese stelle ich zunächst dar. 
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
 
 Man sieht, dass die Anzal von Werbespots pro Jahr schwankt. Die Range liegt im Bereich von 5 bis 15 Spots. Man erkennt auch, dass es in mehr oder weniger regelmäßigen Abständen Einbrüche bei der Anzahl gibt; erklären kann ich mir das im Augenblick nicht. Es könnte damit zu tun haben, dass die verbleibenden Spots länger sind (und die Sendezeit ist begrenzt) oder das gleiche Spots während der Werbepausen des Superbowls mehrfach verwendet werden. Zuletzt ist die Anzahl der Spots rückläufig und lag bei 9. 
 
 Und wie entwickeln sich nun die vorab bestimmten Cluster relativ über die Zeit?
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-8-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-8-1.png" width="2400" />
 Es fällt auf, dass in Relation zur Anzahl der Spots pro Jahr, die Spots mit bekannten Persönlichkeiten über die letzten Jahre zunehmen. Bis zum Jahr 2009 waren Spots aus diesem Cluster relativ selten, während in den letzten 5 Jahren der Anteil relativ groß war (mindestens ein Drittel). Gleichzeitig sind in den letzten Jahren die Werbespots mit erotischen Inhalten weniger geworden. Um das Jahr 2005 waren diese offensichtlich angesagter.
 
 Nun möchte ich verstehen, wie die einzelnen Cluster über die YouTube Metriken abschneiden:
@@ -909,7 +909,7 @@ Die Filme stammen teilweise schon aus dem Jahr 2000 (Jahr der Ausstrahlung währ
 </table>
 Die Plattform YouTube existiert erst seit dem Jahr 2005. Entsprechend konnten die Werbespots früherer Jahre natürlich nicht vorher eingestellt werden. Da jedoch einige Filme schon länger, und einige Film kürzer auf YouTube vorhanden sind, ist es meiner Meinung nach unfair, absolute Größen o.g. Metriken miteinander zu vergleichen. Daher nehme ich eine Normierung vor, undzwar auf die Anzahl der Views. 
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-10-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-10-1.png" width="2400" />
 
 Die erste Erkenntnis: in Relation zur Anzahl der Views wird wesentlich mehr geliked, als disliked und kommentiert (da dies nicht clusterspezifisch ist, sieht das nach einem allgemeinem YouTube-Effekt aus). Auf Basis der sehr geringen Anteilswerte beim mittleren Anteil der Likes (mean_like_share) zeigt sich meiner Meinung nach schon, dass die Spots aus dem Cluster "celebrity" häufiger kommentiert werden, als z.B. Werbespots aus dem Cluster "funny". Spielt hier der Vampireffekt ein Rolle? Damit ist gemeint, dass Werbung mit Celebrities ein zweischneidiges Schwert sein kann, da die bekannte Persönlichkeit von der eigentlichen Werbebotschaft ablenken kann (als Einstieg empfiehlt sich dieses Paper: https://core.ac.uk/download/pdf/25590419.pdf). Es wäre also durchaus interessant, für diese Werbespots die Kommentare auf YouTube zu analysieren, um zu verstehen, was dort kommentiert wird. 
 
@@ -917,14 +917,14 @@ Die erste Erkenntnis: in Relation zur Anzahl der Views wird wesentlich mehr geli
 
 Zuguterletzt möchte ich für heute untersuchen, in welchen Clustern die einzelnen Marken Ihre Schwerpunkte haben. Zu dem Zweck analysiere ich zunächst wieder, wieviele Werbespots eine Marke in den Jahren 2000-2020 ausgestrahlt hat und dann wie sich diese über die Cluster verteilen.
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-11-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-11-1.png" width="2400" />
 
 Das ist eindeutig: mehr als 100 Werbespots während des Superbowls in den Jahren 2000-2020 stammen von der Brauerei Anheuser Busch. 
 Dann folgen Doritos, Pepsi, Hyundai und Coca-Cola mit 21-25 Werbespots (also pro Jahr durchschnittlich 1 Spot). 
 
 Und wo liegen nun die Schwerpunkte?
 
-<img src="/posts/2021-05-23-tidytuesday/post_tidytuesday_files/figure-html/unnamed-chunk-12-1.png" width="2400" />
+<img src="/posts/2021-05-30-superbowl_werbespots/post_tidytuesday_files/figure-html/unnamed-chunk-12-1.png" width="2400" />
 
 Aufgrund der vielen Fälle für Bud Light und Budweiser, halte ich die Anteile schon für gut interpretierbar und das ist wirklich spannend: Bud Light hat einen klaren Schwerpunkt auf Werbespots aus dem Cluster "Danger / Funny" und "Funny". Die Marke kommt also in fast 70% der Spots "lustig" daher; und sie wirbt komplett ohne bekannte Personen (keine Spots aus dem Cluster "Celebrity"). Erotik spielt auch eine Rolle. 
 
