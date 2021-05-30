@@ -1,5 +1,5 @@
 ---
-title: "Tagesthemen - Erweiterung der explorativen Datenanalyse um Themen der Sendung"
+title: "Tagesthemen - Erweiterung der explorativen Datenanalyse zu den Themen der Sendung"
 date: '2021-05-19'
 keywords:
   - R
