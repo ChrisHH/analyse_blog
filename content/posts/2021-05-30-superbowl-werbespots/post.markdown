@@ -441,7 +441,7 @@ Im Ergebnis existieren zwei größere Cluster (3 und 4), ein mittelgroßes und z
 
 Die extrahierten Cluster haben bis hier sehr technische Namen, nämlich einfach eine Nummerierung.
 In der Praxis ist diese Art der Benennung ungebräuchlich, da z.B. der Begriff "Cluster 1" kein Bild in den Köpfen erzeugt.
-Also sollten Namen gefunden werden, die das Cluster möglichst eindeutig charakterisiert. 
+Also sollten Namen gefunden werden, die die Cluster möglichst eindeutig charakterisieren.
 
 Wie kann das gelingen? Ich schaue mir zunächst auf den Variablen, die für die Clusterung verwendet wurden die Mittelwerte an. 
 
@@ -474,7 +474,7 @@ Wenn man sich (so wie gleich) prozentuale Verteilungen betrachtet, halte ich es 
 
 <img src="/posts/2021-05-30-superbowl-werbespots/post_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
 
-Man erkennt, dass die Anzal von Werbespots pro Jahr schwankt. Die Range liegt im Bereich von 5 bis 15 Spots. Man erkennt auch, dass es in mehr oder weniger regelmäßigen Abständen Einbrüche bei der Anzahl gibt; erklären kann ich mir das im Augenblick nicht. Es könnte damit zu tun haben, dass die verbleibenden Spots länger sind (und die Sendezeit ist begrenzt) oder das gleiche Spots während der Werbepausen des Superbowls mehrfach verwendet werden. Zuletzt ist die Anzahl der Spots rückläufig und lag bei 9. 
+Man erkennt, dass die Anzahl von Werbespots pro Jahr schwankt. Die Range liegt im Bereich von 5 bis 15 Spots. Man erkennt auch, dass es in mehr oder weniger regelmäßigen Abständen Einbrüche bei der Anzahl gibt; erklären kann ich mir das im Augenblick nicht. Es könnte damit zu tun haben, dass die verbleibenden Spots länger sind (und die Sendezeit ist begrenzt) oder das gleiche Spots während der Werbepausen des Superbowls mehrfach verwendet werden. Zuletzt ist die Anzahl der Spots rückläufig und lag bei 9. 
 
 Und wie entwickeln sich nun die vorab bestimmten Cluster relativ über die Zeit?
 
@@ -913,6 +913,7 @@ Die Filme stammen teilweise schon aus dem Jahr 2000 (Jahr der Ausstrahlung währ
   </tr>
 </tbody>
 </table>
+
 Die Plattform YouTube existiert erst seit dem Jahr 2005. Entsprechend konnten die Werbespots früherer Jahre natürlich nicht vorher eingestellt werden. Da jedoch einige Filme schon länger, und einige Film kürzer auf YouTube vorhanden sind, ist es meiner Meinung nach unfair, absolute Größen o.g. Metriken miteinander zu vergleichen. Daher nehme ich eine Normierung vor, undzwar auf die Anzahl der Views. 
 
 <img src="/posts/2021-05-30-superbowl-werbespots/post_files/figure-html/unnamed-chunk-10-1.png" width="2400" />
