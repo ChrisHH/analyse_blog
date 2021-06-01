@@ -7,16 +7,19 @@ categories:
   - Tidytuesday
   - Tidyverse
   - Superbowl
+  - R
+  - K-Means
+  - Werbung
 tags: []
 draft: no
 ---
 
 # Superbowl Werbespots
 
-Heute lasse ich die weitere Analyse der Tagesthemen einmal ruhen und habe mir einen Datensatz des Projektes "Tidytuesday" herausgesucht.
-Jeden Dienstag wird auf der Webseite des Projektes (https://github.com/rfordatascience/tidytuesday) ein neuer Datensatz veröffentlicht, den man analysieren kann. Zudem blende ich heute die Code Snippets aus (bei Interesse können diese im Markdown-Dokument in meinem GibHub Repo eingesehen werden).
+Heute lasse ich die weitere Analyse der Tagesthemen einmal ruhen und konzentriere mich auf einen Datensatz des Projektes "Tidytuesday". Jeden Dienstag wird auf der Webseite des Projektes (https://github.com/rfordatascience/tidytuesday) ein neuer Datensatz veröffentlicht, den man analysieren kann. Für meinen heutigen Post habe ich mir den Datensatz aus Kalenderwoche 10/2021 herausgesucht.
+In diesem geht es um die Werbespots die in den Werbepausen des Superbowls der letzten 20 Jahre (2000 - 2020) ausgestrahlt wurden. 
 
-Für den heutigen Post habe ich mir den Datensatz aus Kalenderwoche 10/2021 herausgesucht. In diesem geht es um die Spots in den Werbepausen des Superbowls der letzten 20 Jahre (2000 - 2020). 
+Um die Lesbarkeit zu vereinfachen blende ich heute die Code Snippets aus (bei Interesse können diese im Markdown-Dokument in meinem GibHub Repository eingesehen werden).
 
 
 ```{r setup, include=FALSE}
@@ -42,7 +45,7 @@ set.seed(123)
 
 ## Überblick der Variablen und Kennzahlen
 
-Zunächst verschaffe ich mir einen Überblick über die Variablen in dem Datensatz, genauer gesagt schaue ich auf statistische Kennzahlen und Lagemaße. Diese sind für alle Variablen in dem Datensatz in der folgenden Tabelle zusammengefasst.
+Zunächst verschaffe ich mir einen Überblick über die Variablen in dem Datensatz, genauer gesagt schaue ich auf statistische Kennzahlen und Lagemaße. Diese sind für alle Variablen in dem Datensatz in der folgenden Tabelle 1 zusammengefasst.
 
 ```{r, results='hide'}
 library(tidytuesdayR)
@@ -63,13 +66,14 @@ skim(ads)
 Die Größe des Datensatzes ist mit 247 Fällen überschaubar. Die Variable "year" bestätigt, was schon in der Datensatzbeschreibung zu lesen war: der Datensatz enthält die Werbespots aus den Jahren 2000 (p0) bis 2020 (p100). Im Mittel gab es ungefähr 12 Werbespots pro Superbowl in den letzten 20 Jahren. Diese stammen von ingesamt 10 verschiedenen Marken (brand; n_unique = 10). Zudem sind ein paar YouTube Kennzahlen integriert: die Anzahl der Views, Likes, Dislikes und Kommentare (im Bereich der "numeric"-Variablen).
 
 Interessant ist, dass die Werbespots klassifiziert wurden (logical-Variablen), z.B. nach "funny" oder "patriotic" - und die gute Nachricht ist, dass diese Klassifizierung vollständig gepflegt ist, denn es existieren keine "missings" und die Ausprägungen sind "TRUE" und "FALSE". 
-Hier stellt sich die Frage, wie, das heißt, nach welchen Kriterien diese Klassifizierung vorgenommen wurde. Aber für heute nehme ich mal an, dass die Klassifizierung so in Ordnung ist. Anhand der Mittelwerte kann man es schon erkennen: etwa 69% aller Werbespots sind "funny" und 68% zeigen das Produkt kurz ("shop_product_quickly"). Ich habe einmal die TRUE-Werte addiert und durch die Anzahl der Werbespots geteilt: in dieser Mittelwertbetrachtung treffen 2.7 Attribute auf einen Werbespot zu und entsprechend 4.3 Attribute nicht zu. 
 
-Mich interessiert nun: gibt es Gruppen von Werbespots, die entlang dieser sieben Merkmale ähnlich sind? Das ruft nach einer Clusteranalyse (einzelne Beobachtungen werden anhand ausgewählter Variablen zu einem Cluster "gebündelt") und diese habe ich durchgeführt.
+Hier stellt sich die Frage, wie, das heißt, nach welchen Kriterien diese Klassifizierung vorgenommen wurde und auch von wem. Aber für heute nehme ich mal an, dass die Klassifizierung so in Ordnung ist. Anhand der Mittelwerte kann man es schon erkennen: etwa 69% aller Werbespots sind "funny" und 68% zeigen das Produkt kurz ("shop_product_quickly"). Ich habe einmal die TRUE-Werte addiert und durch die Anzahl der Werbespots geteilt: in dieser Mittelwertbetrachtung treffen 2.7 Attribute auf einen Werbespot zu und entsprechend 4.3 Attribute nicht zu. 
+
+Mich interessiert nun: gibt es Gruppen von Werbespots, die entlang dieser sieben Kriterien ähnlich sind? Das ruft nach einer Clusteranalyse (einzelne Beobachtungen werden anhand ausgewählter Variablen zu einem Cluster "gebündelt") und diese habe ich durchgeführt.
 
 ## Ergebnisse der Clusteranalyse
 
-Für die Clusteranalyse habe ich den k-Means Algorithmus verwendet. Mit Hilfe des Screeplots habe ich entschieden, 5 Cluster zu bilden. 
+Für die Clusteranalyse habe ich den k-Means Algorithmus verwendet. Mit Hilfe des Screeplots habe ich entschieden, fünf Cluster zu bilden. 
 
 ```{r}
 
@@ -122,8 +126,8 @@ final <- kmeans(cluster_ads, centers = 5, nstart = 25)
 
 ```
 
-Nun prüfe ich, wie groß diese 5 Cluster sind, d.h. wieviele Werbespots pro Cluster enthalten sind.
-Wünschenswert ist hier eine möglichst gleichmäßige Verteilung. Im Kontrast dazu wäre es z.B. ungünstig, wenn ein Cluster 200 Beobachtungen (Werbespots) enthält, und die restlichen 47 Werbespots verteilen sich auf die restlichen 4 Cluster. In diesem Fall sollte man zumindest einmal stutzig werden und die Clusterung noch einmal anschauen. 
+Nun prüfe ich, wie groß diese fünf Cluster sind, d.h. wieviele Werbespots pro Cluster enthalten sind.
+Wünschenswert ist hier eine möglichst gleichmäßige Verteilung. Im Kontrast dazu wäre es z.B. ungünstig, wenn ein Cluster 200 Beobachtungen (Werbespots) enthält, und die restlichen 47 Werbespots verteilen sich auf die restlichen vier Cluster. In diesem Fall sollte man zumindest einmal stutzig werden und die Clusterung noch einmal anschauen. 
 
 ```{r}
 cluster_ads <- cluster_ads %>% 
@@ -144,8 +148,7 @@ Im Ergebnis existieren zwei größere Cluster (3 und 4), ein mittelgroßes und z
 ## Charakterisierung & Benennung der Cluster
 
 Die extrahierten Cluster haben bis hier sehr technische Namen, nämlich einfach eine Nummerierung.
-In der Praxis ist diese Art der Benennung ungebräuchlich, da z.B. der Begriff "Cluster 1" kein Bild in den Köpfen erzeugt.
-Also sollten Namen gefunden werden, die die Cluster möglichst eindeutig charakterisieren.
+In der Praxis ist diese Art der Benennung ungebräuchlich, da z.B. der Begriff "Cluster 1" kein Bild in den Köpfen der Nutzer*innen erzeugt. Also sollten Namen gefunden werden, die die Cluster möglichst eindeutig charakterisieren.
 
 Wie kann das gelingen? Ich schaue mir zunächst auf den Variablen, die für die Clusterung verwendet wurden die Mittelwerte an. 
 
@@ -164,6 +167,7 @@ cluster_ads %>%
   
 
 ```
+
 Im Cluster 4 sind 85% der Werbespots "funny". Es kennzeichnet sich zudem dadurch, dass die Werbespots nicht mit Gefahr spielen und sie frei von Sexualität (Erotik) sind. Gut einer von 4 Spots in dem Cluster zeigt Tiere.
 
 Und wie sieht es im Cluster 3 aus? Alle Werbespots in diesem Cluster spielen mit Gefahr ("danger"). Dabei können meiner Meinung nach negative Emotionen entstehen. Diese werden mit Spass ausgeglichen, denn 97% der Werbespots sind auch als "funny" klassifiziert. 
@@ -174,7 +178,7 @@ Die Werbespots in Cluster 1 sind nicht besonders lustig; dafür treten in Ihnen 
 
 Im Cluster 2 sind die Werbespots dadurch gekennzeichnet, dass sie zu 90% Tiere als Protagonisten zeigen.
 
-Ich entscheide mich jetzt für die folgende Namensgebung:
+Ich entscheide mich an dieser Stelle für die folgende Namensgebung:
 
 - Cluster 1:    Celebrity
 - Cluster 2:    Animal & Patriotic
@@ -182,13 +186,13 @@ Ich entscheide mich jetzt für die folgende Namensgebung:
 - Cluster 4:    Funny 
 - Cluster 5:    Erotic
 
-Tipp: In der Praxis muss man mit der Auswahl von Clusternamen sehr sorgfältig umgehen; denn wenn sie einmal ausgesprochen werden, sind sie in den Köpfen und erzeugen ein Bild (und das kann möglicherweise auch fehlleitend sein). Unter Umständen sollte man die Clusternamen in einem größeren Kreis diskutieren.
+Tipp: In der Praxis muss man mit der Auswahl von Clusternamen sehr sorgfältig umgehen; denn wenn sie einmal ausgesprochen werden, sind sie in den Köpfen und erzeugen ein Bild (und das kann möglicherweise auch fehlleitend sein). Unter Umständen sollte man die Clusternamen in einem größeren Kreis mit verschiedenen Personen und Blickwinkeln diskutieren.
 
 ## Vergleich der Cluster 
 
 Nachdem die Cluster nun feststehen, können sie weitergehend analysiert werden. Hierzu blicke ich zunächst auf die zeitliche Entwicklung und dann im Folgenden auf die YouTube Metriken und vergleiche die Cluster. 
 
-Wenn man sich (so wie gleich) prozentuale Verteilungen betrachtet, halte ich es für wichtig, auch die dahinter stehende absolute Größe zu kennen.  Diese stelle ich zunächst dar. 
+Wenn man sich (so wie gleich) prozentuale Verteilungen betrachtet, halte ich es für wichtig, auch die dahinter stehende absolute Größe zu kennen. Diese stelle ich zunächst dar. 
 
 ```{r}
 library(RColorBrewer)
@@ -215,7 +219,7 @@ ads %>%
   labs(x= "Jahr", y = "Anzahl Werbespots")
 ```
 
-Man erkennt, dass die Anzahl von Werbespots pro Jahr schwankt. Die Range liegt im Bereich von 5 bis 15 Spots. Man erkennt auch, dass es in mehr oder weniger regelmäßigen Abständen Einbrüche bei der Anzahl gibt; erklären kann ich mir das im Augenblick nicht. Es könnte damit zu tun haben, dass die verbleibenden Spots länger sind (und die Sendezeit ist begrenzt) oder das gleiche Spots während der Werbepausen des Superbowls mehrfach verwendet werden. Zuletzt ist die Anzahl der Spots rückläufig und lag bei 9. 
+Man erkennt, dass die Anzahl von Werbespots pro Jahr in den Jahren 2000 - 2020 schwankt. Die Range liegt im Bereich von 5 bis 15 Spots. Man erkennt auch, dass es in mehr oder weniger regelmäßigen Abständen Einbrüche bei der Anzahl gibt; erklären kann ich mir das im Augenblick nicht. Es könnte damit zu tun haben, dass die verbleibenden Spots länger sind (und die Sendezeit ist begrenzt) oder das gleiche Spots während der Werbepausen des Superbowls mehrfach verwendet werden. Zuletzt ist die Anzahl der Spots rückläufig und lag bei neun. 
 
 Und wie entwickeln sich nun die vorab bestimmten Cluster relativ über die Zeit?
 
@@ -232,9 +236,10 @@ ads %>%
 
 
 ```
-Es fällt auf, dass in Relation zur Anzahl der Spots pro Jahr, die Spots mit bekannten Persönlichkeiten über die letzten Jahre zunehmen. Bis zum Jahr 2009 waren Spots aus diesem Cluster relativ selten, während in den letzten 5 Jahren der Anteil relativ groß war (mindestens ein Drittel). Gleichzeitig sind in den letzten Jahren die Werbespots mit erotischen Inhalten weniger geworden. Um das Jahr 2005 waren diese offensichtlich angesagter.
 
-Nun möchte ich verstehen, wie die einzelnen Cluster über die YouTube Metriken abschneiden:
+Es fällt auf, dass in Relation zur Anzahl der Spots pro Jahr, die Spots mit bekannten Persönlichkeiten über die letzten Jahre zunehmen. Bis zum Jahr 2009 waren Spots aus diesem Cluster relativ selten, während in den letzten fünf Jahren der Anteil relativ groß war (mindestens ein Drittel). Gleichzeitig sind in den letzten Jahren die Werbespots mit erotischen Inhalten weniger geworden. Um das Jahr 2005 waren diese offensichtlich angesagter.
+
+Nun möchte ich verstehen, wie die einzelnen Cluster auf den YouTube Metriken abschneiden:
 
 - Anzahl der Likes
 - Anzahl der Dislikes
@@ -250,7 +255,7 @@ table("Ausstrahlungsjahr" = ads$year, "Jahr YouTube" = year(ads$published_at)) %
 
 ```
 
-Die Plattform YouTube existiert erst seit dem Jahr 2005. Entsprechend konnten die Werbespots früherer Jahre natürlich nicht vorher eingestellt werden. Da jedoch einige Filme schon länger, und einige Film kürzer auf YouTube vorhanden sind, ist es meiner Meinung nach unfair, absolute Größen o.g. Metriken miteinander zu vergleichen. Daher nehme ich eine Normierung vor, undzwar auf die Anzahl der Views. 
+Die Plattform YouTube existiert erst seit dem Jahr 2005. Entsprechend konnten die Werbespots früherer Jahre natürlich nicht vorher eingestellt werden. Da jedoch einige Filme schon länger, und einige Film kürzer auf YouTube vorhanden sind, ist es meiner Meinung nach unfair, absolute Größen o.g. Metriken miteinander zu vergleichen. Daher nehme ich eine Normierung vor, undzwar auf die Anzahl der Views. Dadurch ergeben sich Anteile. So gibt zum Beispiel der Wert "rel_like_count" wieder, wieviele Likes anteilig auf die Anzahl der Views fallen.
 
 ```{r}
 
@@ -272,7 +277,9 @@ ads %>%
 
 ```
 
-Die erste Erkenntnis: in Relation zur Anzahl der Views wird wesentlich mehr geliked, als disliked und kommentiert (da dies nicht clusterspezifisch ist, sieht das nach einem allgemeinem YouTube-Effekt aus). Auf Basis der sehr geringen Anteilswerte beim mittleren Anteil der Likes (mean_like_share) zeigt sich meiner Meinung ein Trend dahin, dass die Spots aus dem Cluster "celebrity" häufiger kommentiert werden, als z.B. Werbespots aus dem Cluster "funny". Spielt hier der Vampireffekt ein Rolle? Damit ist gemeint, dass Werbung mit Celebrities ein zweischneidiges Schwert sein kann, da die bekannte Persönlichkeit von der eigentlichen Werbebotschaft ablenken kann (als Einstieg empfiehlt sich dieses Paper: https://core.ac.uk/download/pdf/25590419.pdf). Es wäre also durchaus interessant, für diese Werbespots die Kommentare auf YouTube zu analysieren, um zu verstehen, was dort kommentiert wird. 
+Die erste Erkenntnis: in Relation zur Anzahl der Views wird wesentlich mehr geliked, als disliked und kommentiert (da dies nicht clusterspezifisch ist, sieht das nach einem allgemeinem YouTube-Effekt aus). 
+
+Auf Basis der sehr geringen Anteilswerte beim mittleren Anteil der Likes (mean_like_share) zeigt sich meiner Meinung ein Trend dahingehend, dass die Spots aus dem Cluster "celebrity" häufiger kommentiert werden, als z.B. Werbespots aus dem Cluster "funny". Mein Gedanke: Spielt hier der Vampireffekt ein Rolle? Damit ist gemeint, dass Werbung mit Celebrities ein zweischneidiges Schwert sein kann, da die bekannte Persönlichkeit von der eigentlichen Werbebotschaft ablenken kann (als Einstieg empfiehlt sich dieses Paper: https://core.ac.uk/download/pdf/25590419.pdf). Es wäre also durchaus interessant, für diese Werbespots die Kommentare auf YouTube zu analysieren, um zu verstehen, was dort kommentiert wird; tauchen dort häufiger Namen der bekannten Persönlichkeit(en) aus dem Werbespot auf? (Aber das vertiefe ich heute nicht; hierzu müssten zunächst einmal die Kommentare über die YouTube API heruntergeladen werden.) 
 
 ## Cluster & Marken
 
@@ -288,7 +295,7 @@ ads %>%
   labs(x = "Marke", y = "Anzahl Werbespots")
 ```
 
-Das ist eindeutig: mehr als 100 Werbespots während des Superbowls in den Jahren 2000-2020 stammen von der Brauerei Anheuser Busch (Hersteller der Marken Bud Light und Budweiser). Dann folgen Doritos, Pepsi, Hyundai und Coca-Cola mit 21-25 Werbespots (also pro Jahr durchschnittlich 1 Spot). 
+Das ist eindeutig: mehr als 100 Werbespots während des Superbowls in den Jahren 2000-2020 stammen von der Brauerei Anheuser Busch (Hersteller der Marken Bud Light und Budweiser). Dann folgt Pepsico mit Spots für Doritos und Pepsi sowie weitere Marken. 
 
 Und wo liegen nun die Schwerpunkte der einzelnen Marken?
 
@@ -309,10 +316,10 @@ ads %>%
 
 ```
 
-Aufgrund der vielen Fälle für Bud Light und Budweiser, halte ich die Anteile schon für gut interpretierbar und das ist wirklich spannend: Bud Light hat einen klaren Schwerpunkt auf Werbespots aus dem Cluster "Danger / Funny" und "Funny". Die Marke kommt also in fast 70% der Spots "lustig" daher; und sie wirbt komplett ohne bekannte Personen (keine Spots aus dem Cluster "Celebrity"). Erotik spielt auch eine Rolle. 
+Aufgrund der vielen Fälle für Bud Light und Budweiser, halte ich die Anteile schon für gut interpretierbar und das ist wirklich spannend: Bud Light hat einen klaren Schwerpunkt auf Werbespots aus dem Cluster "Danger / Funny" und "Funny". Die Marke kommt also in 70% der Spots "lustig" daher; und sie wirbt komplett ohne bekannte Personen (keine Spots aus dem Cluster "Celebrity").
 
 Bei Budweiser ist das Bild anders: hier stammt mehr als ein Drittel der Werbespots aus dem Cluster "Animal / Patriotic". Der zweite Schwerpunkt liegt auch hier bei "funny". 
 
-Ich vermute, die unterschiedlichen Schwerpunkte der Werbespots haben mit den unterschiedlichen Zielgruppen der beiden Marken zu tun. Bud Light scheint (auch mit Blick auf die Wesbseite) eher abteuerlustige Personen anzusprechen. Während des bei Budweiser vermutlich eher Personen angesprochen werden, die auch patriotisch sind. 
+Ich vermute, die unterschiedlichen Schwerpunkte der Werbespots haben mit den unterschiedlichen Marketingzielgruppen der beiden Marken zu tun. Bud Light scheint (auch mit Blick auf die Webseite) eher abteuerlustige Personen anzusprechen. Während bei Budweiser vermutlich eher Personen anspricht, die auch patriotisch sind. (Zur Erinnerung: die Ausstrahlung der Spots findet in den USA statt.)
 
 Zum Abschluss noch ein Blick auf die zwei Konkurrenten Coca-Cola und Pepsi. Während Pepsi bei 40% der Werbespots auf Erotik setzt, verzichtet Coca-Cola fast ganz darauf und ist vor allem schwerpunktmäßig patriotisch unterwegs.
