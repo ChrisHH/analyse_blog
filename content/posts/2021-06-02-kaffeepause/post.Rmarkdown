@@ -1,0 +1,36 @@
+---
+title: Kaffeepause
+author: Christian Jähnert
+date: '2021-06-02'
+slug: []
+categories:
+  - R
+  - Tidyverse
+  - Tidytuesday
+  - Kaffee
+tags: []
+draft: yes
+---
+
+Er ist wortwörtlich in aller Munde: der Kaffee.
+...
+
+
+
+```{r}
+library(tidytuesdayR)
+
+tuesdata <- tidytuesdayR::tt_load('2020-07-07')
+
+coffee <- tuesdata$coffee_ratings
+
+rm(tuesdata)
+```
+
+
+```{r}
+
+
+
+```
+
