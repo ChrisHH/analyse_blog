@@ -108,4 +108,4 @@ flights %>%
 
 ```
 
-Es täuschte also doch nicht. In den letzten Tagen war nach circa 20 Minuten die Reiseflughöhe erreicht. Am 24.06.2021 war das erst nach ungefähr 25 Minuten der Fall. Der Grund: zu Beginn des Steigflugs existieren zwei Zeitfenster, in denen das Flugzeug auf der gleichen Höhe blieb - vermutlich wegen des Wetters.
+Es täuschte also doch nicht. In den letzten Tagen war nach circa 20 Minuten die Reiseflughöhe erreicht. Am 24.06.2021 war das erst nach ungefähr 25 Minuten der Fall. Der Grund: zu Beginn des Steigflugs existieren zwei Zeitfenster, in denen das Flugzeug auf der gleichen Höhe blieb - vermutlich wegen des Wetters!?
