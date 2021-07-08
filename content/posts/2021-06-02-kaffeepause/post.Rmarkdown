@@ -9,16 +9,18 @@ categories:
   - Tidytuesday
   - Kaffee
 tags: []
-draft: yes
+draft: no
 ---
+Hallo
+Er ist wortwörtlich in aller Munde: Kaffee. Ob als Filterkaffee am Morgen zum Wachwerden, als Espresso nach dem Mittagessen oder als Cafe Creme zum Kuchen am Nachmittag. Ob heiß gebrüht oder auf Eiswürfeln serviert. Mal kommt er schwarz daher, mal weiß, mit viel Zucker und Milchschaumkrone. Wie auch immer Kaffee serviert wird: allen Leuten die Kaffee konsumieren geht es darum, dass er auch gut schmeckt.
 
-Er ist wortwörtlich in aller Munde: der Kaffee.
+Und um den Geschmack des Kaffees geht es im heutigen Post.
 ...
-
 
 
 ```{r}
 library(tidytuesdayR)
+library(tidyverse)
 
 tuesdata <- tidytuesdayR::tt_load('2020-07-07')
 
@@ -30,6 +32,13 @@ rm(tuesdata)
 
 ```{r}
 
+coffee %>%  
+  count(country_of_origin, sort = TRUE)
+
+coffee %>% 
+  group_by(country_of_origin) %>% 
+  summarise(avg_aroma = mean(flavor)) %>% 
+  arrange(-avg_aroma)
 
 
 ```
