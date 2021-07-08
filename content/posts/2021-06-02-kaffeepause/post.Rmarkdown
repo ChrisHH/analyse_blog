@@ -9,9 +9,8 @@ categories:
   - Tidytuesday
   - Kaffee
 tags: []
-draft: no
+draft: yes
 ---
-Hallo
 Er ist wortwörtlich in aller Munde: Kaffee. Ob als Filterkaffee am Morgen zum Wachwerden, als Espresso nach dem Mittagessen oder als Cafe Creme zum Kuchen am Nachmittag. Ob heiß gebrüht oder auf Eiswürfeln serviert. Mal kommt er schwarz daher, mal weiß, mit viel Zucker und Milchschaumkrone. Wie auch immer Kaffee serviert wird: allen Leuten die Kaffee konsumieren geht es darum, dass er auch gut schmeckt.
 
 Und um den Geschmack des Kaffees geht es im heutigen Post.
