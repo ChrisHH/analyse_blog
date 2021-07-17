@@ -49,6 +49,8 @@ library(bdfcolors)
 library(correlation) 
 library(ggcharts)
 library(kableExtra)
+library(rpart.plot)
+library(tidymodels)
 
 
 tuesdata <- tidytuesdayR::tt_load('2020-07-07')
@@ -190,13 +192,11 @@ Die bisherige Analyse führt zu zwei Erkenntnissen:
 1. Die Bewertung des Kaffees unterscheidet sich je nach Anbauland. 
 2. Die Höhenlage hat ebenfalls Einfluss auf die Bewertung des Kaffees. 
 
-Beides sind Informationen, die in der Regel auf der Kaffeepackung zu finden sind, wie das Beispiel auf den folgenden Bildern zeigt.
+Beides sind Informationen, die in der Regel auf der Kaffeepackung zu finden sind, wie das Beispiel auf dem folgenden Bild zeigt.
 
-<img src="/posts/2021-06-02-kaffeepause/post_files/IMG_2929.HEIC" alt="" width="400px"/>
+<img src="/posts/2021-06-02-kaffeepause/post_files/Folie1.png" alt="" width="700"/>
 
-<img src="/posts/2021-06-02-kaffeepause/post_files/IMG_2928.heic" alt="" width="400px"/>
-
-Somit werde ich jetzt ein Modell berechnen (Entscheidungsbaum), dass beide Merkmale kombiniert und die Total Cup Points prognostiziert; für eine kleine Hilfe beim nächsten Einkauf; um auf die Qualität zu schließen. 
+Somit werde ich jetzt ein Modell berechnen (Entscheidungsbaum), dass beide Merkmale kombiniert und die Total Cup Points prognostiziert; für eine kleine Hilfe beim nächsten Einkauf, um auf die Qualität zu schließen. 
 
 Eine kurze Bemerkung zu Entscheidungsbäumen. Sie neigen zum Overfitting, d.h. sie lernen die präsentierten Daten auswendig und sind daher nicht in der Lage, die eigentlich zu lernenden Zusammenhänge in neuen Daten zu erkennen. Dies wird dadurch verhindert, dass der Entscheidungsbaum getunt wird; im hier vorliegenden Fall werden insgesamt 1.600 Modelle berechnet und nun folgt das Ergebnis un dann die beste Lösung ausgewählt. Und das Ergebnis ist im wahrsten Sinne des Wortes ein Baum. 
 
@@ -222,51 +222,42 @@ coffee_folds <- bootstraps(coffee_train, strata = total_cup_points)
 
 tree_spec <-
   decision_tree(
-    cost_complexity = tune(),
-    tree_depth = tune(),
-    min_n = tune()
+    cost_complexity = 0.0001,
+    tree_depth = 5,
+    min_n = 14
   ) %>%
   set_mode("regression") %>%
   set_engine("rpart")
 
-tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 4)
+#tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 4)
 
-set.seed(345)
-tree_rs <-
-  tune_grid(
-    tree_spec,
-    total_cup_points ~ country_of_origin + altitude_mean_meters,
-    resamples = coffee_folds,
-    grid = tree_grid,
-    metrics = metric_set(rmse, mae, mape, rsq)
-  )
+#set.seed(345)
+#tree_rs <-
+#  tune_grid(
+#    tree_spec,
+#    total_cup_points ~ country_of_origin + altitude_mean_meters,
+#    resamples = coffee_folds,
+#    grid = tree_grid,
+#    metrics = metric_set(rmse, mae, mape, rsq)
+#  )
 
-show_best(tree_rs,n =1)
-best_tree <- select_best(tree_rs, metric = "rmse")
+#show_best(tree_rs,n =1)
+#best_tree <- select_best(tree_rs, metric = "rmse")
 
 
-final_tree <- finalize_model(tree_spec, best_tree)
+#final_tree <- finalize_model(tree_spec, best_tree)
 
-final_fit <- fit(final_tree, 
+final_fit <- fit(tree_spec, 
                      total_cup_points ~ country_of_origin + altitude_mean_meters, 
                      coffee_train)
 
-collect_metrics(last_fit(final_tree, 
-                     total_cup_points ~ country_of_origin + altitude_mean_meters, 
-                     coffee_split))
 
 
-rpart.plot(final_fit$fit, cex = 0.6)
+rpart.plot(final_fit$fit, cex = 0.6, roundint = FALSE)
 ```
 Der Baum unterscheidet an oberster Stelle anhand des Anbaulandes; im weiteren nach der Höhenlage des Anbaugebiets.
 
-Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folg durchschreiten. Das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links. Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit landet der Kaffe bei einem Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand. 
+Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten. Das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links. Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit landet der Kaffe bei einem Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand. 
 Hätte ich das mal vorher gewusst!
-
-Um die Lesbarkeit zu verbessern, folgen hier noch einmal die Regeln als Tabelle, zum einfachen einordnen.
-
-```{r}
-rpart.rules(final_fit$fit, roundint=FALSE, clip.facs=TRUE)
-```
 
 Viel Spass damit beim nächsten Einkauf von Kaffee!

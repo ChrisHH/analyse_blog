@@ -102,12 +102,12 @@ Und wie unterschiedlich ist nun die Bewertung der Kaffees?
 
 Zunächst wird betrachtet, wie sich die Total Cup Points der Degustationen im Durchschnitt über die Anbauländer darstellen.
 
-<img src="post_files/figure-html/unnamed-chunk-4-1.png" width="2400" />
+<img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-4-1.png" width="2400" />
 Das Land mit den höchsten Total Cup Points ist Äthiopien; das Schlusslicht bildet Kaffee aus Honduras. 
 
 Das führt nun zu der Frage, woher es kommt, dass die Total Cup Points variieren. Zu diesem Zweck erfolgt nun die Aufsplittung der Total Cup Points in die zehn Unterdimensionen.
 
-<img src="post_files/figure-html/unnamed-chunk-5-1.png" width="2400" />
+<img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-5-1.png" width="2400" />
 Während die Dimensionen Einheitlichkeit (uniformity), Süße (sweetness) und Geschmack (flavor) über die Proben aller Länder mehr oder weniger gleich gut abschneiden, öffnet sich das Feld bei den Cupper Points.
 
 
@@ -115,12 +115,12 @@ Jetzt gehe ich kurz der Frage nach, ob es einen Zusammenhang zwischen der Höhen
 
 # Höhenlage und Kaffeebewertung
 
-<img src="post_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
+<img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
 Ich musste ein paar Werte herausfiltern, die offensichtlich falsch waren; das trifft vor allem auf die Höhenlage zu. Hier gab es ein paar wenige Extremwerte im Bereich von 3.000 - 100.000 Metern, was unrealistisch ist. Danach stellt sich dieser Scatterplot dar. Durch diesen habe ich eine einfache Regressionsgerade gelegt; ein perfekter fit ist das  nicht, aber es deutet sich an, dass ein höher gelegenes Anbaugebiet zu höheren Total Cup Points führt. Vermutlich wirkt sich die Höhenlage auf einen oder mehrere der o.g. Dimensionen aus, wodurch die Total Cup Points entsprechend steigen.
 
 Um einzukreisen, welche Dimensionen dafür verantwortlich sind, blicke ich noch einmal auf den Zusammenhang zwischen den einzelnen Dimensionen und der Höhenlage. 
 
-<img src="post_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
+<img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
 Während einige Dimensionen, wie z.B. Süße oder Einheitlichkeit offensichtlich unbeeinflusst sind von der Höhenlage der Plantage, sieht es bei anderen Dimensionen schon etwas anders aus (z.B. Säure: je höher die Plantage liegt, desto mehr steigt die Beurteilung auf dieser Dimension).
 
 # Zwischenfazit
@@ -130,17 +130,18 @@ Die bisherige Analyse führt zu zwei Erkenntnissen:
 1. Die Bewertung des Kaffees unterscheidet sich je nach Anbauland. 
 2. Die Höhenlage hat ebenfalls Einfluss auf die Bewertung des Kaffees. 
 
-Beides sind Informationen, die in der Regel auf der Kaffeepackung zu finden sind, wie das Beispiel auf den folgenden Bildern zeigt.
+Beides sind Informationen, die in der Regel auf der Kaffeepackung zu finden sind, wie das Beispiel auf dem folgenden Bild zeigt.
 
-<img src="/posts/2021-06-02-kaffeepause/post_files/IMG_2929.HEIC" alt="" width="400px"/>
+<img src="/posts/2021-06-02-kaffeepause/post_files/Folie1.png" alt="" width="700"/>
 
-<img src="/posts/2021-06-02-kaffeepause/post_files/IMG_2928.heic" alt="" width="400px"/>
-
-Somit werde ich jetzt ein Modell berechnen (Entscheidungsbaum), dass beide Merkmale kombiniert und die Total Cup Points prognostiziert; für eine kleine Hilfe beim nächsten Einkauf; um auf die Qualität zu schließen. 
+Somit werde ich jetzt ein Modell berechnen (Entscheidungsbaum), dass beide Merkmale kombiniert und die Total Cup Points prognostiziert; für eine kleine Hilfe beim nächsten Einkauf, um auf die Qualität zu schließen. 
 
 Eine kurze Bemerkung zu Entscheidungsbäumen. Sie neigen zum Overfitting, d.h. sie lernen die präsentierten Daten auswendig und sind daher nicht in der Lage, die eigentlich zu lernenden Zusammenhänge in neuen Daten zu erkennen. Dies wird dadurch verhindert, dass der Entscheidungsbaum getunt wird; im hier vorliegenden Fall werden insgesamt 1.600 Modelle berechnet und nun folgt das Ergebnis un dann die beste Lösung ausgewählt. Und das Ergebnis ist im wahrsten Sinne des Wortes ein Baum. 
 
+<img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-8-1.png" width="2400" />
+Der Baum unterscheidet an oberster Stelle anhand des Anbaulandes; im weiteren nach der Höhenlage des Anbaugebiets.
 
+Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten. Das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links. Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit landet der Kaffe bei einem Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand. 
+Hätte ich das mal vorher gewusst!
 
-
-
+Viel Spass damit beim nächsten Einkauf von Kaffee!
