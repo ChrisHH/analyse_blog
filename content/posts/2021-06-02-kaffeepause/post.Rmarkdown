@@ -1,7 +1,7 @@
 ---
 title: Kaffeepause
 author: Christian Jähnert
-date: '2021-06-02'
+date: '2021-07-17'
 slug: []
 categories:
   - R
@@ -9,18 +9,47 @@ categories:
   - Tidytuesday
   - Kaffee
 tags: []
-draft: yes
+draft: no
 ---
-Hallo!!!
-Er ist wortwörtlich in aller Munde: Kaffee. Ob als Filterkaffee am Morgen zum Wachwerden, als Espresso nach dem Mittagessen oder als Cafe Creme zum Kuchen am Nachmittag. Ob heiß gebrüht oder auf Eiswürfeln serviert. Mal kommt er schwarz daher, mal weiß, mit viel Zucker und Milchschaumkrone. Wie auch immer Kaffee serviert wird: allen Leuten die Kaffee konsumieren geht es darum, dass er auch gut schmeckt.
 
-Und um den Geschmack des Kaffees geht es im heutigen Post.
-...
+Er ist wortwörtlich in aller Munde: Kaffee. Ob als Filterkaffee, Espresso, Cafe Creme oder Mokka. Zum Frühstück, nach dem Mittag oder am Nachmittag. Ob heiß gebrüht oder auf Eiswürfeln serviert. Mal kommt er schwarz daher, mal weiß, mal mit wenig, mal mit viel Zucker. Gelegentlich ist eine ordentliche Portion Milchschaum oben drauf. Wann und wie auch immer Kaffee genossen wird: Das wichtigste ist den Genießer*innen doch, dass der Kaffee gut schmeckt.
 
+<img src="/posts/2021-06-02-kaffeepause/post_files/janko-ferlic-h9Iq22JJlGk-unsplash.jpg" alt="Bildquelle: www.unsplash.com" width="400px"/>
 
-```{r}
+Das Coffee Quality Institute (https://www.coffeeinstitute.org) hat im Januar 2018 einen Datensatz veröffentlicht, der die Ergebnisse von Kaffee-Degustationen von April 2014 bis September 2016 enthält. Dieser Datensatz ist Teil des Projektes Tidytuesday (https://github.com/rfordatascience/tidytuesday) und wird heute verwendet, um den verschiedenen Facetten von Kaffee auf die Spur zu kommen.
+
+# Beurteilung des Kaffees
+
+Der Kaffee wird nach einem detailierten Protokoll auf insgesamt zehn Dimensionen beurteilt:
+
+* Aroma (aroma)
+* Geschmack (flavor)
+* Nachgeschmack (aftertaste)
+* Säure (acidity)
+* Körper (body)
+* Ausgewogenheit (balance)
+* Einheitlichkeit (uniformity)
+* Keine Geschmacksfehler (clean_cup)
+* Süße (sweetness)
+* Gesamteindruck (cupper_points)
+
+Das Rating funktioniert pro Dimension in der Regel auf einer Skala von 6 (gut) bis 10 (außerordentlich gut) mit jeweils Unterstufen (sh. auch hier: https://www.scaa.org/PDF/resources/cupping-protocols.pdf). Eigentlich beginnt die Skala bei 0, jedoch wird alles unter 6 als nicht "specialty grade" beurteilt. 
+
+Diese Werte werden aufsummiert und es ergeben sich die "Total Cup Points", also eine Art Gesamtscore. Dieser rangiert entsprechend im Bereich von 0-100.
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, 
+                      echo = FALSE, dpi = 300, cache.lazy = FALSE,
+                      tidy = "styler", fig.width = 8, fig.height = 5)
 library(tidytuesdayR)
 library(tidyverse)
+library(silgelib)
+library(bdfcolors)
+library(correlation) 
+library(ggcharts)
+library(kableExtra)
+
 
 tuesdata <- tidytuesdayR::tt_load('2020-07-07')
 
@@ -29,17 +58,215 @@ coffee <- tuesdata$coffee_ratings
 rm(tuesdata)
 ```
 
-
 ```{r}
 
-coffee %>%  
-  count(country_of_origin, sort = TRUE)
-
-coffee %>% 
-  group_by(country_of_origin) %>% 
-  summarise(avg_aroma = mean(flavor)) %>% 
-  arrange(-avg_aroma)
-
+coffee <- coffee %>% 
+  filter(species != "Robusta") %>% 
+  select(country_of_origin, region, altitude_mean_meters, harvest_year, grading_date, processing_method, 
+         aroma, flavor, aftertaste, acidity, body, balance, uniformity, clean_cup, sweetness, cupper_points, 
+         moisture, species, total_cup_points) 
 
 ```
 
+# Betrachtete Sorten und Anbauländer
+
+Der Datensatz enthält 1311 Proben der Sorte "Arabica" und nur 28 Proben der Sorte "Robusta".
+Im folgenden werde nur die Sorte "Arabica" weiter untersuchen.
+
+Nachfolgend sind die Anbauländer der Kaffees aufgezählt, die am häufigsten degustiert wurden.
+
+```{r}
+coffee %>% 
+  filter(!is.na(country_of_origin)) %>% 
+  mutate(country_of_origin = fct_lump(country_of_origin, 10)) %>% 
+  count(country_of_origin, sort = TRUE) %>% 
+  select(Anbauland = country_of_origin) %>% 
+  kable()
+```
+
+Die Kaffees, die am häufigsten getestet wurden, stammen aus Mexico (236 Proben) am unteren Ende befindet sich mit 40 Proben Kaffee aus Tansania.
+Weniger häufige Anbauländer wurden in der Position "Other" zusammengefasst. 
+
+Während ich die meisten Länder auch mit Kaffeeanbau in Verbindung bringe, wusste ich noch nicht, dass in Taiwan und auf Hawaii auch Kaffee angebaut wird. 
+
+Und wie unterschiedlich ist nun die Bewertung der Kaffees?
+
+# Kaffeebewertung nach Anbauland
+
+Zunächst wird betrachtet, wie sich die Total Cup Points der Degustationen im Durchschnitt über die Anbauländer darstellen.
+
+```{r}
+
+coffee %>% 
+    select(country_of_origin, aroma, flavor, aftertaste, acidity, body, balance, uniformity, clean_cup, sweetness,
+           cupper_points, total_cup_points) %>% 
+  select(country_of_origin, total_cup_points) %>% 
+  filter(!is.na(country_of_origin)) %>% 
+  mutate(country_of_origin = fct_lump(country_of_origin, 10)) %>% 
+  group_by(country_of_origin) %>% 
+  summarise_all(mean) %>% 
+  pivot_longer(-country_of_origin) %>%
+  mutate(country_of_origin = fct_reorder(country_of_origin, value)) %>% 
+  ggplot(aes(x=country_of_origin, y = value, label = round(value,1))) +
+  geom_bar(stat = "identity", fill = "midnightblue", alpha = 0.8) +
+  coord_flip() +
+  theme_plex() +
+  geom_label() +
+  labs(x = "Anbauland", y = "Durchschnittliche Total Cup Points")
+
+
+```
+Das Land mit den höchsten Total Cup Points ist Äthiopien; das Schlusslicht bildet Kaffee aus Honduras. 
+
+Das führt nun zu der Frage, woher es kommt, dass die Total Cup Points variieren. Zu diesem Zweck erfolgt nun die Aufsplittung der Total Cup Points in die zehn Unterdimensionen.
+
+```{r}
+coffee %>% 
+    select(country_of_origin, aroma, flavor, aftertaste, acidity, body, balance, uniformity, clean_cup, sweetness,
+           cupper_points) %>% 
+  filter(!is.na(country_of_origin)) %>% 
+  mutate(country_of_origin = fct_lump(country_of_origin, 10)) %>% 
+  pivot_longer(-country_of_origin) %>% 
+  group_by(country_of_origin, name) %>% 
+  summarise(value = mean(value)) %>% 
+  mutate(value = round(value, 1)) %>% 
+  ungroup() %>% 
+  mutate(country_of_origin = fct_reorder(.f = country_of_origin, .x = value, .fun = sum)) %>% 
+  ggplot(aes(x = country_of_origin, fill = name, weight = value)) +
+  geom_bar() +
+  theme_plex() +
+  coord_flip() +
+  labs(x = "Anbauland", y = "Durchschnittliche Total Cup Points nach Unterdimensionen", fill = "Dimension")
+  
+```
+Während die Dimensionen Einheitlichkeit (uniformity), Süße (sweetness) und Geschmack (flavor) über die Proben aller Länder mehr oder weniger gleich gut abschneiden, öffnet sich das Feld bei den Cupper Points.
+
+
+Jetzt gehe ich kurz der Frage nach, ob es einen Zusammenhang zwischen der Höhenlage der Plantage und den Total Cup Points gibt.
+
+# Höhenlage und Kaffeebewertung
+
+```{r}
+
+coffee %>% 
+  filter(!is.na(country_of_origin)) %>% 
+  select(total_cup_points, altitude_mean_meters) %>% 
+  filter(total_cup_points > 0, altitude_mean_meters< 3000) %>% 
+  ggplot(aes(y=total_cup_points, x=altitude_mean_meters)) +
+  geom_point(alpha = 0.4, color = "midnightblue") +
+  theme_plex() +
+  geom_smooth(method = "lm") +
+  labs(x = "Mittlere Höhenlage der Plantage",
+       y = "Total Cup Points")
+
+```
+Ich musste ein paar Werte herausfiltern, die offensichtlich falsch waren; das trifft vor allem auf die Höhenlage zu. Hier gab es ein paar wenige Extremwerte im Bereich von 3.000 - 100.000 Metern, was unrealistisch ist. Danach stellt sich dieser Scatterplot dar. Durch diesen habe ich eine einfache Regressionsgerade gelegt; ein perfekter fit ist das  nicht, aber es deutet sich an, dass ein höher gelegenes Anbaugebiet zu höheren Total Cup Points führt. Vermutlich wirkt sich die Höhenlage auf einen oder mehrere der o.g. Dimensionen aus, wodurch die Total Cup Points entsprechend steigen.
+
+Um einzukreisen, welche Dimensionen dafür verantwortlich sind, blicke ich noch einmal auf den Zusammenhang zwischen den einzelnen Dimensionen und der Höhenlage. 
+
+```{r}
+coffee %>% 
+  filter(!is.na(country_of_origin)) %>% 
+  filter(total_cup_points > 0, altitude_mean_meters< 3000) %>% 
+  select(altitude_mean_meters, aroma, flavor, aftertaste, acidity, body, balance, uniformity, clean_cup, sweetness, 
+         cupper_points) %>% 
+  pivot_longer(-altitude_mean_meters) %>% 
+  ggplot(aes(y=value, x=altitude_mean_meters)) +
+  facet_wrap(.~name) +
+  geom_point(alpha = 0.4, color = "midnightblue") +
+  theme_plex() +
+  geom_smooth(method = "lm") +
+  labs(x = "Mittlere Höhenlage der Plantage",
+       y = "Total Cup Points")
+
+
+```
+Während einige Dimensionen, wie z.B. Süße oder Einheitlichkeit offensichtlich unbeeinflusst sind von der Höhenlage der Plantage, sieht es bei anderen Dimensionen schon etwas anders aus (z.B. Säure: je höher die Plantage liegt, desto mehr steigt die Beurteilung auf dieser Dimension).
+
+# Zwischenfazit
+
+Die bisherige Analyse führt zu zwei Erkenntnissen:
+
+1. Die Bewertung des Kaffees unterscheidet sich je nach Anbauland. 
+2. Die Höhenlage hat ebenfalls Einfluss auf die Bewertung des Kaffees. 
+
+Beides sind Informationen, die in der Regel auf der Kaffeepackung zu finden sind, wie das Beispiel auf den folgenden Bildern zeigt.
+
+<img src="/posts/2021-06-02-kaffeepause/post_files/IMG_2929.HEIC" alt="" width="400px"/>
+
+<img src="/posts/2021-06-02-kaffeepause/post_files/IMG_2928.heic" alt="" width="400px"/>
+
+Somit werde ich jetzt ein Modell berechnen (Entscheidungsbaum), dass beide Merkmale kombiniert und die Total Cup Points prognostiziert; für eine kleine Hilfe beim nächsten Einkauf; um auf die Qualität zu schließen. 
+
+Eine kurze Bemerkung zu Entscheidungsbäumen. Sie neigen zum Overfitting, d.h. sie lernen die präsentierten Daten auswendig und sind daher nicht in der Lage, die eigentlich zu lernenden Zusammenhänge in neuen Daten zu erkennen. Dies wird dadurch verhindert, dass der Entscheidungsbaum getunt wird; im hier vorliegenden Fall werden insgesamt 1.600 Modelle berechnet und nun folgt das Ergebnis un dann die beste Lösung ausgewählt. Und das Ergebnis ist im wahrsten Sinne des Wortes ein Baum. 
+
+```{r}
+library(tidymodels)
+
+set.seed(123)
+coffee_split <- coffee %>% 
+  filter(!is.na(country_of_origin)) %>% 
+  mutate(country_of_origin = fct_lump(country_of_origin, 10)) %>% 
+  filter(total_cup_points > 0, altitude_mean_meters< 3000) %>% 
+  select(country_of_origin, altitude_mean_meters, total_cup_points) %>% 
+  mutate(country_of_origin = factor(country_of_origin)) %>% 
+  initial_split(strata = total_cup_points)
+
+coffee_train <- training(coffee_split)
+coffee_test <- testing(coffee_split)
+
+set.seed(234)
+coffee_folds <- bootstraps(coffee_train, strata = total_cup_points)
+
+
+
+tree_spec <-
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune(),
+    min_n = tune()
+  ) %>%
+  set_mode("regression") %>%
+  set_engine("rpart")
+
+tree_grid <- grid_regular(cost_complexity(), tree_depth(), min_n(), levels = 4)
+
+set.seed(345)
+tree_rs <-
+  tune_grid(
+    tree_spec,
+    total_cup_points ~ country_of_origin + altitude_mean_meters,
+    resamples = coffee_folds,
+    grid = tree_grid,
+    metrics = metric_set(rmse, mae, mape, rsq)
+  )
+
+show_best(tree_rs,n =1)
+best_tree <- select_best(tree_rs, metric = "rmse")
+
+
+final_tree <- finalize_model(tree_spec, best_tree)
+
+final_fit <- fit(final_tree, 
+                     total_cup_points ~ country_of_origin + altitude_mean_meters, 
+                     coffee_train)
+
+collect_metrics(last_fit(final_tree, 
+                     total_cup_points ~ country_of_origin + altitude_mean_meters, 
+                     coffee_split))
+
+
+rpart.plot(final_fit$fit, cex = 0.6)
+```
+Der Baum unterscheidet an oberster Stelle anhand des Anbaulandes; im weiteren nach der Höhenlage des Anbaugebiets.
+
+Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folg durchschreiten. Das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links. Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit landet der Kaffe bei einem Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand. 
+Hätte ich das mal vorher gewusst!
+
+Um die Lesbarkeit zu verbessern, folgen hier noch einmal die Regeln als Tabelle, zum einfachen einordnen.
+
+```{r}
+rpart.rules(final_fit$fit, roundint=FALSE, clip.facs=TRUE)
+```
+
+Viel Spass damit beim nächsten Einkauf von Kaffee!
