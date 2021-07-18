@@ -14,7 +14,7 @@ draft: no
 
 Er ist wortwörtlich in aller Munde: Kaffee. Ob als Filterkaffee, Espresso, Cafe Creme oder Mokka. Zum Frühstück, nach dem Mittag oder am Nachmittag. Ob heiß gebrüht oder auf Eiswürfeln serviert. Mal kommt er schwarz daher, mal weiß, mal mit wenig, mal mit viel Zucker. Gelegentlich ist eine ordentliche Portion Milchschaum oben drauf. Wann und wie auch immer Kaffee genossen wird: Das wichtigste ist den Genießer*innen doch, dass der Kaffee gut schmeckt.
 
-<img src="/posts/2021-06-02-kaffeepause/post_files/nathan-dumlao-6VhPY27jdps-unsplash.jpg" alt="source: unsplash.com / Nathan Dumlao" width="400px"/>
+<img src="/posts/2021-06-02-kaffeepause/post_files/nathan-dumlao-6VhPY27jdps-unsplash.png" alt="source: unsplash.com / Nathan Dumlao" width="400px"/>
 
 Das [Coffee Quality Institute](https://www.coffeeinstitute.org) hat im Januar 2018 einen Datensatz veröffentlicht, der die Ergebnisse von Kaffee-Degustationen von April 2014 bis September 2016 enthält. Dieser Datensatz ist Teil des Projektes [Tidytuesday](https://github.com/rfordatascience/tidytuesday) und wird heute verwendet, um gutem Kaffee auf die Spur zu kommen.
 
