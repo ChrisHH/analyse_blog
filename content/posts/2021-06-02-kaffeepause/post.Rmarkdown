@@ -14,9 +14,7 @@ draft: no
 
 Er ist wortwörtlich in aller Munde: Kaffee. Ob als Filterkaffee, Espresso, Cafe Creme oder Mokka. Zum Frühstück, nach dem Mittag oder am Nachmittag. Ob heiß gebrüht oder auf Eiswürfeln serviert. Mal kommt er schwarz daher, mal weiß, mal mit wenig, mal mit viel Zucker. Gelegentlich ist eine ordentliche Portion Milchschaum oben drauf. Wann und wie auch immer Kaffee genossen wird: Das wichtigste ist den Genießer*innen doch, dass der Kaffee gut schmeckt.
 
-<img src="/posts/2021-06-02-kaffeepause/post_files/janko-ferlic-h9Iq22JJlGk-unsplash.jpg" alt="Bildquelle: www.unsplash.com" width="400px"/>
-
-Das Coffee Quality Institute (https://www.coffeeinstitute.org) hat im Januar 2018 einen Datensatz veröffentlicht, der die Ergebnisse von Kaffee-Degustationen von April 2014 bis September 2016 enthält. Dieser Datensatz ist Teil des Projektes Tidytuesday (https://github.com/rfordatascience/tidytuesday) und wird heute verwendet, um den verschiedenen Facetten von Kaffee auf die Spur zu kommen.
+Das [Coffee Quality Institute](https://www.coffeeinstitute.org) hat im Januar 2018 einen Datensatz veröffentlicht, der die Ergebnisse von Kaffee-Degustationen von April 2014 bis September 2016 enthält. Dieser Datensatz ist Teil des Projektes [Tidytuesday](https://github.com/rfordatascience/tidytuesday) und wird heute verwendet, um gutem Kaffee auf die Spur zu kommen.
 
 # Beurteilung des Kaffees
 
@@ -33,9 +31,9 @@ Der Kaffee wird nach einem detailierten Protokoll auf insgesamt zehn Dimensionen
 * Süße (sweetness)
 * Gesamteindruck (cupper_points)
 
-Das Rating funktioniert pro Dimension in der Regel auf einer Skala von 6 (gut) bis 10 (außerordentlich gut) mit jeweils Unterstufen (sh. auch hier: https://www.scaa.org/PDF/resources/cupping-protocols.pdf). Eigentlich beginnt die Skala bei 0, jedoch wird alles unter 6 als nicht "specialty grade" beurteilt. 
+Das Rating funktioniert pro Dimension in der Regel auf einer Skala von 6 (gut) bis 10 (außerordentlich gut) mit jeweils Unterstufen (mehr Informationen vermittelt [dieser Leitfaden](https://www.scaa.org/PDF/resources/cupping-protocols.pdf)). Eigentlich beginnt die Skala bei 0, jedoch wird alles unter 6 als nicht "specialty grade" beurteilt.
 
-Diese Werte werden aufsummiert und es ergeben sich die "Total Cup Points", also eine Art Gesamtscore. Dieser rangiert entsprechend im Bereich von 0-100.
+Diese Werte werden aufsummiert und es ergeben sich die "Total Cup Points", also ein Gesamtscore. Dieser rangiert entsprechend im Bereich von 0-100; je höher dieser Wert ist, desto besser ist der Kaffee insgesamt.
 
 ```{r, include=FALSE}
 library(knitr)
@@ -70,12 +68,11 @@ coffee <- coffee %>%
 
 ```
 
-# Betrachtete Sorten und Anbauländer
+# Sorten und Anbauländer
 
-Der Datensatz enthält 1311 Proben der Sorte "Arabica" und nur 28 Proben der Sorte "Robusta".
-Im folgenden werde nur die Sorte "Arabica" weiter untersuchen.
+Der Datensatz enthält 1311 Proben der Sorte "Arabica" und nur 28 Proben der Sorte "Robusta". Im folgenden werde nur die Sorte "Arabica" weiter untersuchen.
 
-Nachfolgend sind die Anbauländer der Kaffees aufgezählt, die am häufigsten degustiert wurden.
+Zunächst erfolgt ein Blick darauf, welche die häufigsten Anbauländer des degustierten Kaffees sind.
 
 ```{r}
 coffee %>% 
@@ -86,16 +83,13 @@ coffee %>%
   kable()
 ```
 
-Die Kaffees, die am häufigsten getestet wurden, stammen aus Mexico (236 Proben) am unteren Ende befindet sich mit 40 Proben Kaffee aus Tansania.
-Weniger häufige Anbauländer wurden in der Position "Other" zusammengefasst. 
+Die Kaffees, die am häufigsten getestet wurden, stammen aus Mexico (236 Proben) am unteren Ende befindet sich mit 40 Proben Kaffee aus Tansania. Weniger häufige Anbauländer wurden in der Position "Other" zusammengefasst. 
 
 Während ich die meisten Länder auch mit Kaffeeanbau in Verbindung bringe, wusste ich noch nicht, dass in Taiwan und auf Hawaii auch Kaffee angebaut wird. 
 
-Und wie unterschiedlich ist nun die Bewertung der Kaffees?
-
 # Kaffeebewertung nach Anbauland
 
-Zunächst wird betrachtet, wie sich die Total Cup Points der Degustationen im Durchschnitt über die Anbauländer darstellen.
+Nun wird betrachtet, wie sich die Total Cup Points der Degustationen im Durchschnitt über die Anbauländer unterscheiden. Dazu wurden die Total Cup Points pro Land über alle Degustationen gemittelt.
 
 ```{r}
 
@@ -118,9 +112,10 @@ coffee %>%
 
 
 ```
-Das Land mit den höchsten Total Cup Points ist Äthiopien; das Schlusslicht bildet Kaffee aus Honduras. 
 
-Das führt nun zu der Frage, woher es kommt, dass die Total Cup Points variieren. Zu diesem Zweck erfolgt nun die Aufsplittung der Total Cup Points in die zehn Unterdimensionen.
+Das Land mit den höchsten durchschnittlichen Total Cup Points ist Äthiopien; das Schlusslicht bildet Kaffee aus Honduras. 
+
+Das führt nun zu der Frage, woher es kommt, dass die Total Cup Points variieren. Zu diesem Zweck erfolgt die Aufsplittung der Total Cup Points in die zehn Unterdimensionen.
 
 ```{r}
 coffee %>% 
@@ -141,12 +136,12 @@ coffee %>%
   labs(x = "Anbauland", y = "Durchschnittliche Total Cup Points nach Unterdimensionen", fill = "Dimension")
   
 ```
-Während die Dimensionen Einheitlichkeit (uniformity), Süße (sweetness) und Geschmack (flavor) über die Proben aller Länder mehr oder weniger gleich gut abschneiden, öffnet sich das Feld bei den Cupper Points.
 
-
-Jetzt gehe ich kurz der Frage nach, ob es einen Zusammenhang zwischen der Höhenlage der Plantage und den Total Cup Points gibt.
+Während die Dimensionen Einheitlichkeit (uniformity), Süße (sweetness) und Geschmack (flavor) über die Proben aller Länder mehr oder weniger gleich gut abschneiden, öffnet sich das Feld bei den Cupper Points. 
 
 # Höhenlage und Kaffeebewertung
+
+Eine weitere Variable, die in dem Datensatz vorhanden ist, ist die Höhenlage der Plantage. Die Frage ist: wie wirkt sich diese auf die Total Cup Points aus? Gibt es einen Zusammenhang? Die Antwort liefert die folgende Grafik, bei der die Total Cup Points in Abhängigkeit von der Höhenlage dargestellt sind. 
 
 ```{r}
 
@@ -162,9 +157,13 @@ coffee %>%
        y = "Total Cup Points")
 
 ```
-Ich musste ein paar Werte herausfiltern, die offensichtlich falsch waren; das trifft vor allem auf die Höhenlage zu. Hier gab es ein paar wenige Extremwerte im Bereich von 3.000 - 100.000 Metern, was unrealistisch ist. Danach stellt sich dieser Scatterplot dar. Durch diesen habe ich eine einfache Regressionsgerade gelegt; ein perfekter fit ist das  nicht, aber es deutet sich an, dass ein höher gelegenes Anbaugebiet zu höheren Total Cup Points führt. Vermutlich wirkt sich die Höhenlage auf einen oder mehrere der o.g. Dimensionen aus, wodurch die Total Cup Points entsprechend steigen.
 
-Um einzukreisen, welche Dimensionen dafür verantwortlich sind, blicke ich noch einmal auf den Zusammenhang zwischen den einzelnen Dimensionen und der Höhenlage. 
+Ich musste ein paar Werte herausfiltern, die offensichtlich falsch waren; das trifft vor allem auf die Höhenlage zu. Hier gab es ein paar wenige Extremwerte im Bereich von 3.000 - 100.000 Metern, was unrealistisch ist. 
+
+Die Regressionsgerade in der Grafik deutet schon an, dass ein höher gelegenes Anbaugebiet zu höheren Total Cup Points führt.
+Vermutlich wirkt sich die Höhenlage auf einen oder mehrere der o.g. Unterdimensionen aus, wodurch die Total Cup Points entsprechend steigen.
+
+Um einzukreisen, welche Dimensionen dafür verantwortlich sind, werden nun noch einmal die einzelnen Unterdimensionen in Abhängigkeit von der Höhenlage betrachtet. 
 
 ```{r}
 coffee %>% 
@@ -183,22 +182,25 @@ coffee %>%
 
 
 ```
-Während einige Dimensionen, wie z.B. Süße oder Einheitlichkeit offensichtlich unbeeinflusst sind von der Höhenlage der Plantage, sieht es bei anderen Dimensionen schon etwas anders aus (z.B. Säure: je höher die Plantage liegt, desto mehr steigt die Beurteilung auf dieser Dimension).
+
+Während einige Dimensionen, wie z.B. Süße oder Einheitlichkeit offensichtlich unbeeinflusst sind von der Höhenlage der Plantage, sieht es bei anderen Dimensionen schon etwas anders aus (z.B. Säure: je höher die Plantage liegt, desto mehr steigt die Beurteilung auf dieser Dimension). Hier hat die Höhenlage einen erkennbaren Einfluss. 
 
 # Zwischenfazit
 
 Die bisherige Analyse führt zu zwei Erkenntnissen:
 
-1. Die Bewertung des Kaffees unterscheidet sich je nach Anbauland. 
+1. Die Bewertung (Total Cup Points) des Kaffees unterscheidet sich je nach Anbauland. 
 2. Die Höhenlage hat ebenfalls Einfluss auf die Bewertung des Kaffees. 
 
 Beides sind Informationen, die in der Regel auf der Kaffeepackung zu finden sind, wie das Beispiel auf dem folgenden Bild zeigt.
 
 <img src="/posts/2021-06-02-kaffeepause/post_files/Folie1.png" alt="" width="700"/>
 
-Somit werde ich jetzt ein Modell berechnen (Entscheidungsbaum), dass beide Merkmale kombiniert und die Total Cup Points prognostiziert; für eine kleine Hilfe beim nächsten Einkauf, um auf die Qualität zu schließen. 
+Somit werde ich jetzt einen Entscheidungsbaum berechnen, der beide Merkmale kombiniert und geeignet ist, die Total Cup Points zu prognostizieren - für eine kleine Hilfe beim nächsten Einkauf, um guten Kaffee zu kaufen.
 
-Eine kurze Bemerkung zu Entscheidungsbäumen. Sie neigen zum Overfitting, d.h. sie lernen die präsentierten Daten auswendig und sind daher nicht in der Lage, die eigentlich zu lernenden Zusammenhänge in neuen Daten zu erkennen. Dies wird dadurch verhindert, dass der Entscheidungsbaum getunt wird; im hier vorliegenden Fall werden insgesamt 1.600 Modelle berechnet und nun folgt das Ergebnis un dann die beste Lösung ausgewählt. Und das Ergebnis ist im wahrsten Sinne des Wortes ein Baum. 
+# Entscheidungsbaum für guten Kaffee
+
+Nachdem 1.600 Entscheidungsbäume berechnet wurden, ist dies die beste Lösung.
 
 ```{r}
 library(tidymodels)
@@ -253,11 +255,11 @@ final_fit <- fit(tree_spec,
 
 
 
-rpart.plot(final_fit$fit, cex = 0.6, roundint = FALSE)
+rpart.plot(final_fit$fit, cex = 0.5, roundint = FALSE)
 ```
+
 Der Baum unterscheidet an oberster Stelle anhand des Anbaulandes; im weiteren nach der Höhenlage des Anbaugebiets.
 
-Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten. Das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links. Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit landet der Kaffe bei einem Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand. 
-Hätte ich das mal vorher gewusst!
+Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten: das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links ("Yes"). Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit erzielt der Kaffee ein geschätztes Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand.
 
-Viel Spass damit beim nächsten Einkauf von Kaffee!
+Beim nächsten Einkauf weiß ich also, worauf ich achten kann, um in den Genuss von gutem Kaffee zu kommen!
