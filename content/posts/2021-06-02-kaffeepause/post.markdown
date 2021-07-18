@@ -41,7 +41,8 @@ Diese Werte werden aufsummiert und es ergeben sich die "Total Cup Points", also 
 
 # Sorten und Anbauländer
 
-Der Datensatz enthält 1311 Proben der Sorte "Arabica" und nur 28 Proben der Sorte "Robusta". Im folgenden werde nur die Sorte "Arabica" weiter untersuchen.
+Der Datensatz enthält die Ergebnisse von 1311 Degustationen der Sorte "Arabica" und von 28 Degustationen der Sorte "Robusta".
+Im folgenden wird nur die Sorte "Arabica" weiter untersucht.
 
 Zunächst erfolgt ein Blick darauf, welche die häufigsten Anbauländer des degustierten Kaffees sind.
 
@@ -88,7 +89,7 @@ Zunächst erfolgt ein Blick darauf, welche die häufigsten Anbauländer des degu
 </tbody>
 </table>
 
-Die Kaffees, die am häufigsten getestet wurden, stammen aus Mexico (236 Proben) am unteren Ende befindet sich mit 40 Proben Kaffee aus Tansania. Weniger häufige Anbauländer wurden in der Position "Other" zusammengefasst. 
+Die Kaffees, die am häufigsten verkostet wurden, stammen aus Mexico (236 Proben) am unteren Ende befindet sich mit 40 Proben Kaffee aus Tansania. Weniger häufige Anbauländer wurden in der Position "Other" zusammengefasst. 
 
 Während ich die meisten Länder auch mit Kaffeeanbau in Verbindung bringe, wusste ich noch nicht, dass in Taiwan und auf Hawaii auch Kaffee angebaut wird. 
 
@@ -104,31 +105,28 @@ Das führt nun zu der Frage, woher es kommt, dass die Total Cup Points variieren
 
 <img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-5-1.png" width="2400" />
 
-Während die Dimensionen Einheitlichkeit (uniformity), Süße (sweetness) und Geschmack (flavor) über die Proben aller Länder mehr oder weniger gleich gut abschneiden, öffnet sich das Feld bei den Cupper Points. 
+Während die Dimensionen Einheitlichkeit (uniformity), Süße (sweetness) und Geschmack (flavor) über die Proben aller Länder mehr oder weniger gleich gut abschneiden, öffnet sich das Feld beispielsweise bei den Cupper Points. 
 
 # Höhenlage und Kaffeebewertung
 
-Eine weitere Variable, die in dem Datensatz vorhanden ist, ist die Höhenlage der Plantage. Die Frage ist: wie wirkt sich diese auf die Total Cup Points aus? Gibt es einen Zusammenhang? Die Antwort liefert die folgende Grafik, bei der die Total Cup Points in Abhängigkeit von der Höhenlage dargestellt sind. 
+Eine weitere Variable, die in dem Datensatz vorhanden ist, ist die Höhenlage der Plantage des degustierten Kaffees. Die Frage ist: wie wirkt sich diese auf die Total Cup Points aus? Gibt es einen Zusammenhang? Die Antwort liefert die folgende Grafik, in der die Total Cup Points in Abhängigkeit von der Höhenlage dargestellt sind.
 
 <img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
 
-Ich musste ein paar Werte herausfiltern, die offensichtlich falsch waren; das trifft vor allem auf die Höhenlage zu. Hier gab es ein paar wenige Extremwerte im Bereich von 3.000 - 100.000 Metern, was unrealistisch ist. 
-
-Die Regressionsgerade in der Grafik deutet schon an, dass ein höher gelegenes Anbaugebiet zu höheren Total Cup Points führt.
-Vermutlich wirkt sich die Höhenlage auf einen oder mehrere der o.g. Unterdimensionen aus, wodurch die Total Cup Points entsprechend steigen.
+Die Regressionsgerade in der Grafik deutet an, dass ein höher gelegenes Anbaugebiet zu höheren Total Cup Points führt. Wahrscheinlich wirkt sich die Höhenlage auf einen oder mehrere der o.g. Unterdimensionen aus, wodurch die Total Cup Points entsprechend variieren.
 
 Um einzukreisen, welche Dimensionen dafür verantwortlich sind, werden nun noch einmal die einzelnen Unterdimensionen in Abhängigkeit von der Höhenlage betrachtet. 
 
 <img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
 
-Während einige Dimensionen, wie z.B. Süße oder Einheitlichkeit offensichtlich unbeeinflusst sind von der Höhenlage der Plantage, sieht es bei anderen Dimensionen schon etwas anders aus (z.B. Säure: je höher die Plantage liegt, desto mehr steigt die Beurteilung auf dieser Dimension). Hier hat die Höhenlage einen erkennbaren Einfluss. 
+Während einige Dimensionen, wie z.B. Süße oder Einheitlichkeit offensichtlich unbeeinflusst sind von der Höhenlage der Plantage, sieht es bei anderen Dimensionen schon etwas anders aus (z.B. Säure: je höher die Plantage liegt, desto mehr steigt die Beurteilung auf dieser Dimension). Hier hat die Höhenlage einen erkennbaren Einfluss.
 
 # Zwischenfazit
 
 Die bisherige Analyse führt zu zwei Erkenntnissen:
 
 1. Die Bewertung (Total Cup Points) des Kaffees unterscheidet sich je nach Anbauland. 
-2. Die Höhenlage hat ebenfalls Einfluss auf die Bewertung des Kaffees. 
+2. Die Höhenlage hat Einfluss auf die Bewertung des Kaffees.
 
 Beides sind Informationen, die in der Regel auf der Kaffeepackung zu finden sind, wie das Beispiel auf dem folgenden Bild zeigt.
 
