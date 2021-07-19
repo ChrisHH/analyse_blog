@@ -138,12 +138,11 @@ Somit werde ich jetzt einen Entscheidungsbaum berechnen, der beide Merkmale komb
 
 # Entscheidungsbaum für guten Kaffee
 
-Nachdem 1.600 Entscheidungsbäume berechnet wurden, ist dies die beste Lösung.
+Der Entscheidungsbaum basiert auf Machine Learning. Nach Berechnung von 1.600 unterschiedlichen Modellen wurde die beste Lösung ausgewählt.
 
 
 
-Der gleich folgende Baum gibt Auskunft über diese Anbauländer.
-Wichtig ist, zu verstehen, dass "OTHER" zu betrachten ist, wie ein eigentliches Land. Ich gehe darauf gleich nochmal kurz ein.
+Der gleich folgende Baum gibt Auskunft über die nachfolgenden Anbauländer.
 
 <table>
  <thead>
@@ -187,6 +186,9 @@ Wichtig ist, zu verstehen, dass "OTHER" zu betrachten ist, wie ein eigentliches 
   </tr>
 </tbody>
 </table>
+
+Wichtig ist, zu verstehen, dass "Other" zu betrachten ist, wie ein eigentliches Land. 
+Ich gehe darauf gleich in einem Lesebeispiel ein. 
 
 Und nun folgt der eigentliche Entscheidungsbaum.
 
