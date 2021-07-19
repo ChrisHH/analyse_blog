@@ -66,7 +66,8 @@ coffee <- coffee %>%
   filter(species != "Robusta") %>% 
   select(country_of_origin, region, altitude_mean_meters, harvest_year, grading_date, processing_method, 
          aroma, flavor, aftertaste, acidity, body, balance, uniformity, clean_cup, sweetness, cupper_points, 
-         moisture, species, total_cup_points) 
+         moisture, species, total_cup_points) %>% 
+  mutate(country_of_origin = if_else(country_of_origin == "Tanzania, United Republic Of", "Tanzania", country_of_origin))
 
 ```
 
@@ -249,17 +250,45 @@ tree_spec <-
 
 #final_tree <- finalize_model(tree_spec, best_tree)
 
+
+coffee_final <- coffee %>% 
+  filter(!is.na(country_of_origin)) %>% 
+  mutate(country_of_origin = fct_lump(country_of_origin, 10)) %>% 
+  filter(total_cup_points > 0, altitude_mean_meters< 3000) %>% 
+  select(country_of_origin, altitude_mean_meters, total_cup_points) %>% 
+  mutate(country_of_origin = factor(country_of_origin)) 
+
+
 final_fit <- fit(tree_spec, 
                      total_cup_points ~ country_of_origin + altitude_mean_meters, 
-                     coffee_train)
+                     coffee_final)
+```
 
+Der gleich folgende Baum gibt Auskunft über diese Anbauländer.
+Wichtig ist, zu verstehen, dass "OTHER" zu betrachten ist, wie ein eigentliches Land. Ich gehe darauf gleich nochmal kurz ein.
 
+```{r}
+coffee_final %>% 
+  count(country_of_origin, sort = TRUE) %>% 
+  select(country_of_origin) %>% 
+  rename("Anbauländer" = "country_of_origin") %>% 
+  kable()
+```
 
-rpart.plot(final_fit$fit, cex = 0.5, roundint = FALSE)
+Und nun folgt der eigentliche Entscheidungsbaum.
+
+```{r}
+rpart.plot(final_fit$fit, cex = 0.3)
+temp<-rpart.rules(final_fit$fit)
 ```
 
 Der Baum unterscheidet an oberster Stelle anhand des Anbaulandes; im weiteren nach der Höhenlage des Anbaugebiets.
+Ein Abzweig nach links bedeutet, dass die Bedingung erfüllt ist. Entsprechend nach rechts, wenn die Bedingung nicht erfüllt ist.
 
-Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten: das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links ("Yes"). Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit erzielt der Kaffee ein geschätztes Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand.
+Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten: das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links ("Yes"). Die Höhenangabe "in Lagen über 1.000 Metern" ist "Marketingdeutsch" für "knapp über 1.000 Meter", auf jeden Fall unter 1.500 Meter, weil das sonst genannt worden wäre. Somit geht es am nächsten Knoten nach rechts, da 1.000 nicht größer als 1.690 ist.
+Dann weiter nach links (1.000 < 1.288), nach links (1.000 >= 787) und schlussendlich nach rechts. Das geschätzte Ergebnis liegt bei 81 Total Cup Points. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 78 und 84; und damit schon eher am unteren Rand.
+
+Nehmen wir nochmal ein anderes Beispiel, nämlich einen Kaffee aus Äthiopien, der auf 2.000 Metern angebaut wird. 
+Nun findet sich im Entscheidungsbaum an keiner Stelle das Land "Äthiopien". Hier darf man nun nicht denken, das würde in "Others" liegen. Äthiopien wir durch Ausschluss klassifiziert, nämlich am Ursprungs- und Folgeknoten geht es zweimal nach rechts ("No"). Die Höhe von 2.000 Metern würde dann nochmals nach rechts führen, zu einem Rating von 88 (+/- 3).
 
 Beim nächsten Einkauf weiß ich also, worauf ich achten kann, um in den Genuss von gutem Kaffee zu kommen!

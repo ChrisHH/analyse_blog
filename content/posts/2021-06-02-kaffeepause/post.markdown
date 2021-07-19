@@ -140,10 +140,65 @@ Somit werde ich jetzt einen Entscheidungsbaum berechnen, der beide Merkmale komb
 
 Nachdem 1.600 Entscheidungsbäume berechnet wurden, ist dies die beste Lösung.
 
-<img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-8-1.png" width="2400" />
+
+
+Der gleich folgende Baum gibt Auskunft über diese Anbauländer.
+Wichtig ist, zu verstehen, dass "OTHER" zu betrachten ist, wie ein eigentliches Land. Ich gehe darauf gleich nochmal kurz ein.
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Anbauländer </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Mexico </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Other </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Guatemala </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Colombia </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Brazil </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Taiwan </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Honduras </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Costa Rica </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tanzania </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ethiopia </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> United States (Hawaii) </td>
+  </tr>
+</tbody>
+</table>
+
+Und nun folgt der eigentliche Entscheidungsbaum.
+
+<img src="/posts/2021-06-02-kaffeepause/post_files/figure-html/unnamed-chunk-10-1.png" width="2400" />
 
 Der Baum unterscheidet an oberster Stelle anhand des Anbaulandes; im weiteren nach der Höhenlage des Anbaugebiets.
+Ein Abzweig nach links bedeutet, dass die Bedingung erfüllt ist. Entsprechend nach rechts, wenn die Bedingung nicht erfüllt ist.
 
-Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten: das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links ("Yes"). Am nächsten Knoten geht es wieder nach links, dann nach rechts, dann links, und nochmal links. Somit erzielt der Kaffee ein geschätztes Rating von 80. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 77 und 83; und damit schon eher am unteren Rand.
+Nehme ich einmal, den von mir gekauften Kaffee (Herkunftsland: Mexiko, Höhenlage: "in Lagen über 1.000 Metern"), dann kann ich nun den Pfad wie folgt durchschreiten: das Herkunftsland ist Mexiko, also geht es im Baum von der Wurzel den ersten Ast nach links ("Yes"). Die Höhenangabe "in Lagen über 1.000 Metern" ist "Marketingdeutsch" für "knapp über 1.000 Meter", auf jeden Fall unter 1.500 Meter, weil das sonst genannt worden wäre. Somit geht es am nächsten Knoten nach rechts, da 1.000 nicht größer als 1.690 ist.
+Dann weiter nach links (1.000 < 1.288), nach links (1.000 >= 787) und schlussendlich nach rechts. Das geschätzte Ergebnis liegt bei 81 Total Cup Points. Das Modell schätzt im Mittel 3 Punkte ungenau. Also liegen die Total Cup Points irgendwo zwischen 78 und 84; und damit schon eher am unteren Rand.
+
+Nehmen wir nochmal ein anderes Beispiel, nämlich einen Kaffee aus Äthiopien, der auf 2.000 Metern angebaut wird. 
+Nun findet sich im Entscheidungsbaum an keiner Stelle das Land "Äthiopien". Hier darf man nun nicht denken, das würde in "Others" liegen. Äthiopien wir durch Ausschluss klassifiziert, nämlich am Ursprungs- und Folgeknoten geht es zweimal nach rechts ("No"). Die Höhe von 2.000 Metern würde dann nochmals nach rechts führen, zu einem Rating von 88 (+/- 3).
 
 Beim nächsten Einkauf weiß ich also, worauf ich achten kann, um in den Genuss von gutem Kaffee zu kommen!
