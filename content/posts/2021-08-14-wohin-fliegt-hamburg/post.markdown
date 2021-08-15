@@ -57,10 +57,10 @@ Das Bild war fast zu erwarten. Im Frühling zieht die Anzahl der Abflüge an, er
 
 ## Wohin gehen die Abflüge, außerhalb von Deutschland?
 
-Um diese Frage zu beantworten, habe ich im Folgenden die Inlandsflüge aus dem Datensatz entfernt und für das Jahr 2011- 2019 die TOP 20 Zielländer in der folgenden Grafik animiert.
+Um diese Frage zu beantworten, habe ich im Folgenden die Inlandsflüge aus dem Datensatz entfernt und für das Jahr 2011 - 2019 die TOP 20 Zielländer in der folgenden Grafik animiert.
 
 ![](post_files/figure-html/unnamed-chunk-7-1.gif)<!-- -->
 
 ![](/posts/2021-08-14-wohin-fliegt-hamburg/post_files/unnamed-chunk-7-1.gif)
 
-In diesem Racing Bar Chart (in 15 Sekunden wechselt das Ranking der Jahre 2011-2019), sieht man: Hauptziel ab Hamburg (Direktverbindungen ins Ausland) sind seit Jahren Großbritannien und die Schweiz. Bis zum Jahr 2016 (Jahr des Brexit-Referendums) steigt die Anzahl der Flüge nach Großbritannien kontinuierlich und nimmt dann wieder ab. Die Türkei, Östereich und Frankreich sind relativ stabil auf den Plätzen 3-5 vertreten.
+In diesem Racing Bar Chart (in 15 Sekunden wechselt das Ranking der Jahre 2011-2019), sieht man: Hauptziele ab Hamburg (Direktverbindungen ins Ausland) sind seit Jahren Großbritannien und die Schweiz. Bis zum Jahr 2016 (Jahr des Brexit-Referendums) steigt die Anzahl der Flüge nach Großbritannien kontinuierlich und nimmt dann wieder ab. Die Türkei, Östereich und Frankreich sind relativ stabil auf den Plätzen 3-5 vertreten.
