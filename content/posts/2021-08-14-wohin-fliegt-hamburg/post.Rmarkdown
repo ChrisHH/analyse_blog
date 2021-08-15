@@ -1,0 +1,255 @@
+---
+title: Wohin fliegt Hamburg?
+author: R package build
+date: '2021-08-14'
+slug: []
+categories: []
+tags:
+  - Flüge
+  - Flughafen
+  - HAM
+  - U-Bahn
+  - Taktung
+  - Flugziele
+draft: no
+---
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, 
+                      echo = FALSE, dpi = 300, cache.lazy = FALSE,
+                      tidy = "styler", fig.width = 8, fig.height = 5)
+library(tidytuesdayR)
+library(tidyverse)
+library(silgelib)
+library(bdfcolors)
+library(correlation) 
+library(ggcharts)
+library(kableExtra)
+library(rpart.plot)
+library(tidymodels)
+library(readxl) 
+library(lubridate)
+library(gganimate)
+library(gifski)
+
+flights <- read_xlsx("46421-0010.xlsx", skip = 5)
+
+names <- c("airport_code", "airport_name", "destination_country")
+
+dateSeq <- tibble(date = seq.Date(as.Date("2011-01-31"), as.Date("2021-12-31"), "day")) %>% 
+  mutate(month = month(date, label = TRUE),
+         year = year(date)) %>% 
+  unite("date", month, year, sep="-") %>% 
+  distinct()
+
+names <- c(names, dateSeq$date)
+
+
+names(flights) <- names
+
+rm(names)
+rm(dateSeq)
+
+```
+
+```{r}
+
+flights <- flights %>% 
+  fill(airport_name,.direction = "down") %>% 
+  filter(airport_name != "Insgesamt") %>% 
+  fill(airport_code, .direction = "down")
+
+
+flights <- flights %>% 
+  pivot_longer(-c("airport_code", "airport_name","destination_country")) %>% 
+  separate(name, into = c("month","year"), sep = "-")
+
+flights <- flights %>% 
+  mutate(value = as.numeric(value))
+```
+
+[GovData](https://www.govdata.de) ist das Portal für öffentliche Daten in Deutschland. Und dort bin ich auf den Datensatz gestoßen, den ich für den heutigen Post verwende. Der Datensatz beinhaltet die monatliche Anzahl von Abflügen von deutschen Flughäfen für die Jahre 2011 bis 2021. Da ich mich auch für Fliegerei und Flugzeuge interessiere (meine Faszination gilt hier den physikalischen Prinzipien die Fliegen überhaupt möglich machen und der Konstruktion der komplexen Fluggeräte), habe ich die Daten genutzt, um einmal festzustellen, wie verbunden Hamburg flugtechnisch mit der Welt ist. 
+
+![](/posts/2021-08-14-wohin-fliegt-hamburg/post_files/mika-baumeister-DHlZenOMjJI-unsplash.jpg)
+<center>
+Hamburger Flughafen; Foto von Mika Baumeister auf https://unsplash.com
+</center>
+
+Das das Jahr 2020 ein Tiefpunkt der Flugbranche war, ist hinreichend bekannt. Insofern geht es im Folgenden um die Jahre 2011 bis 2019.
+
+## Entwicklung der Anzahl von Abflügen pro Jahr
+
+Zunächst folgt ein Blick darauf, wie sich die Anzahl der Abflüge über die Jahre entwickelt.
+
+```{r}
+
+flights %>% 
+  mutate(year = as.integer(year)) %>% 
+  filter(airport_code == "F-HAM", year < 2020) %>% 
+  mutate(year = as.factor(year)) %>% 
+  group_by(year) %>% 
+  summarise(anzahl_fluege = sum(value, na.rm = TRUE)) %>% 
+  arrange(year,desc(anzahl_fluege)) %>% 
+  ggplot(aes(x=year, y=anzahl_fluege, label = anzahl_fluege)) +
+  geom_bar(stat = "identity", fill = "midnightblue") +
+  scale_y_continuous(labels = scales::label_number_auto())+
+  geom_label() +
+  theme_plex() +
+  labs(x = "Jahr", y="", caption = "Quelle: https://www-genesis.destatis.de/genesis/online; Tabelle: 46421-0010", title = "Anzahl Abflüge ab Hamburg", subtitle = "TOTAL")
+
+```
+
+Da kommen etliche Flüge zusammen. Auffällig ist ein Einbruch der Zahlen im Jahr 2013, der sich im Jahr 2012 schon andeutete. Zur Erinnerung: das war die Zeit der Euro-Krise (und hier möglicherweise die Ursache für den Rückgang). Insgesamt betrachtet, schwankt die jährliche Zahl der Abflüge zwischen 64.708 und 72.710. Nimmt man mal 70.000 Flüge pro Jahr als jährlichen Mittelwert über diese Zeit, dann sind das rechnerisch 192 Abflüge pro Tag. Der Hamburger Flughafen ist in der Regel von 6:00 - 23:00 Uhr geöffnet. In dieser Zeit sind das also etwa 10 Abflüge pro Stunde oder einer alle 6 Minuten. Das ist nicht mehr weit entfernt von der [Taktung der Hamburger U-Bahn](https://www.hamburg.de/hvv/9806056/hvv-ausweitung-takt/)!
+
+## Verteilung von Inlands- zu Auslandsflügen
+
+Jetzt geht es weiter mit der Betrachtung in Richtung der Flugziele. Zunächst ein Blick auf die Verteilung von Inlands- und Auslandsflügen über die Jahre.
+
+```{r}
+flights %>% 
+  mutate(year = as.integer(year)) %>% 
+  filter(airport_code == "F-HAM", year < 2020) %>%
+  mutate(year = as.factor(year),
+    destination_country = if_else(destination_country == "Deutschland", "Inland", "Ausland")) %>% 
+  group_by(year, destination_country) %>% 
+  summarise(anzahl_fluege = sum(value, na.rm = TRUE)) %>% 
+  group_by(year) %>% 
+  mutate(share = anzahl_fluege / sum(anzahl_fluege)) %>% 
+  ggplot(aes(x=year, y = share, fill = destination_country, label = paste(round(share*100,0),"%",sep=""))) +
+  geom_col() +
+  geom_label() +
+  theme_plex() +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(x = "Jahr", y="Anteil", caption = "Quelle: https://www-genesis.destatis.de/genesis/online; Tabelle: 46421-0010",
+       title = "Abflüge ab Hamburg", subtitle = "Verteilung von Inlands- zu Auslandsflügen",
+       fill = "Ziel") +
+  scale_fill_brewer()
+```
+
+In den Jahren vor der Corona-Krise hatte sich bis zum Jahr 2017 der Anteil der Abflüge nach Deutschland (Inlandsverbindungen) auf ein Minimum von 33% entwickelt, ist dann zuletzt etwas angestiegen. Mit Blick auf die absoluten Zahlen weiter oben, dürfte das Minimum des Anteils für Inlandsflüge im Jahr 2017 jedoch eher darauf zurückzuführen sein, dass der Höchststand von Abflügen im Jahr 2017 durch eine wachsende Anzahl von Auslandsflügen erreicht wurde. Das bestätigt die nachfolgende Grafik.
+
+```{r}
+flights %>% 
+  mutate(year = as.integer(year)) %>% 
+  filter(airport_code == "F-HAM", year < 2020) %>%
+  mutate(year = as.factor(year),
+    destination_country = if_else(destination_country == "Deutschland", "Inland", "Ausland")) %>% 
+  group_by(year, destination_country) %>% 
+  summarise(anzahl_fluege = sum(value, na.rm = TRUE)) %>% 
+  ggplot(aes(x=year, y = anzahl_fluege, fill = destination_country, label = anzahl_fluege)) +
+  geom_col() +
+  geom_label() +
+  theme_plex() +
+  scale_y_continuous(labels = scales::number_format()) +
+  labs(x = "Jahr", y="", caption = "Quelle: https://www-genesis.destatis.de/genesis/online; Tabelle: 46421-0010",
+       title = "Anzahl Abflüge ab Hamburg", subtitle = "Nach Inland und Ausland",
+       fill = "Ziel") +
+  scale_fill_brewer()
+```
+
+Bei aller Faszination für das Thema Fliegen glaube ich, dass ein Großteil der Inlandsverbindungen (wenn nicht sogar alle) für mehr Klimaschutz eingespart werden kann. Mit Hilfe dieser offiziellen Zahlen kann dies für die Zukunft zweifelsfrei nachvollzogen werden.
+
+## Welche Saisonalität gibt es?
+
+Wie oben gesehen, pendelt sicht im Mittel die Anzahl von Abflügen pro Jahr ab Hamburg bei ca. 70.000 ein. Mit den vorliegenden Daten lässt sich aber auch gut eine Saisonalität über das Jahr analysieren. Hierzu folgt nun die Veranschaulichung der mittleren Anzahl von Abflügen über die Jahre 2011-2019 nach Monaten.
+
+```{r}
+
+flights %>% 
+  mutate(year = as.integer(year)) %>% 
+  filter(airport_code == "F-HAM", year < 2020) %>%
+  mutate(year = as.factor(year)) %>% 
+  group_by(year, month) %>% 
+  summarise(monats_summe = sum(value, na.rm = TRUE)) %>% 
+  group_by(month) %>% 
+  summarise(mittlere_anzahl_abfluege = mean(monats_summe)) %>% 
+  mutate(month = factor(month, levels = c("Jan", "Feb", "Mär","Apr", "Mai", "Jun", "Jul", "Aug",
+                                      "Sep", "Okt","Nov","Dez"))) %>%  
+  ggplot(aes(x=month, y=mittlere_anzahl_abfluege, label = as.integer(mittlere_anzahl_abfluege))) +
+  geom_bar(stat = "identity", fill = "midnightblue") +
+  geom_label() +
+  labs(x = "Monat", y="", caption = "Quelle: https://www-genesis.destatis.de/genesis/online; Tabelle: 46421-0010", title = "Anzahl Abflüge ab Hamburg", subtitle = "Durchschnitt nach Monat (Jahr 2011-2019)") +
+  theme_plex()
+
+
+
+```
+
+Das Bild war fast zu erwarten. Im Frühling zieht die Anzahl der Abflüge an, erreicht dann in den Monaten Mai bis Oktober ein Plateau und flacht dann wieder ab. Aus praktischer Sicht bedeutet dies unter anderem auch, dass man in den Sommermonaten die besseren Voraussetzungen zum Beobachten von Flugzeugen am Flughafen hat (z.B. Planespotting).
+
+## Wohin gehen die Abflüge, außerhalb von Deutschland?
+
+Um diese Frage zu beantworten, habe ich im Folgenden die Inlandsflüge aus dem Datensatz entfernt und für das Jahr 2011- 2019 die TOP 20 Zielländer in der folgenden Grafik animiert.
+
+```{r}
+
+my_theme <- theme_classic(base_family = "IBMPlexSans") +
+  theme(axis.text.y = element_blank()) +
+  theme(axis.ticks.y = element_blank()) +
+  theme(axis.line.y = element_blank()) +
+  theme(legend.background = element_rect(fill = "white")) +
+  theme(plot.background = element_rect(fill = "white")) +
+  theme(panel.background = element_rect(fill = "white")) +
+  theme(legend.position = "none")
+
+
+flights %>% 
+  filter(airport_code == "F-HAM") %>% 
+  filter(destination_country != "Deutschland") %>% 
+  mutate(year = as.numeric(year)) %>% 
+  group_by(year, destination_country) %>% 
+  summarise(anzahl_fluege = sum(value, na.rm = TRUE)) %>% 
+  group_by(year) %>% 
+  arrange(desc(anzahl_fluege)) %>% 
+  mutate(rank = row_number()) %>% 
+  filter(rank <= 20) %>% 
+  ggplot() +  
+  aes(xmin = 0 ,  
+      xmax = anzahl_fluege) +  
+  aes(ymin = rank - .45,  
+      ymax = rank + .45,  
+      y = rank) +  
+  aes(fill = destination_country)  +
+  facet_wrap(~ year) +  
+  geom_rect(alpha = .8) +  
+  scale_fill_viridis_d(option = "viridis",  
+                       direction = -1) +  
+  scale_x_continuous(  
+    limits = c(-20000, 60000),  
+    breaks = c(0,10000,20000,30000,40000,50000,60000)) +  
+  geom_text(col = "black", 
+            
+            size=3,
+            hjust = "right",  
+            aes(label = destination_country),  
+            x = -50) +  
+  scale_y_reverse() +  
+  labs(fill = NULL) +  
+  labs(x = 'Anzahl Abflüge pro Jahr') +  
+  labs(y = "Zielland") +  
+  my_theme ->  
+my_plot
+
+
+my_plot +  
+  facet_null() +  
+  scale_x_continuous(  
+    limits = c(-4000, 7000),
+    breaks = seq(0,7000,1000)) +  
+  aes(group = destination_country) +  
+  labs(title = 'TOP 20 Abflüge nach Zielland ab Hamburg im Jahr: {as.integer(frame_time)}') +
+  labs(subtitle = "Ohne Inlandsflüge") +
+  transition_time(year, range = c(2011,2019)) -> my_animation
+
+animate(my_animation, height = 500, width =700, rewind = FALSE, duration = 15, nframes = 100, 
+        res = 100)
+
+anim_save("unnamed-chunk-7-1.gif")
+
+Sys.sleep(5)
+```
+
+![](/posts/2021-08-14-wohin-fliegt-hamburg/post_files/unnamed-chunk-7-1.gif)
+
+In diesem Racing Bar Chart (in 15 Sekunden wechselt das Ranking der Jahre 2011-2019), sieht man: Hauptziel ab Hamburg (Direktverbindungen ins Ausland) sind seit Jahren Großbritannien und die Schweiz. Bis zum Jahr 2016 (Jahr des Brexit-Referendums) steigt die Anzahl der Flüge nach Großbritannien kontinuierlich und nimmt dann wieder ab. Die Türkei, Östereich und Frankreich sind relativ stabil auf den Plätzen 3-5 vertreten.
