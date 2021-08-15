@@ -49,11 +49,11 @@ Bei aller Faszination für das Thema Fliegen glaube ich, dass ein Großteil der 
 
 ## Welche Saisonalität gibt es?
 
-Wie oben gesehen, pendelt sicht im Mittel die Anzahl von Abflügen pro Jahr ab Hamburg bei ca. 70.000 ein. Mit den vorliegenden Daten lässt sich aber auch gut eine Saisonalität über das Jahr analysieren. Hierzu folgt nun die Veranschaulichung der mittleren Anzahl von Abflügen über die Jahre 2011-2019 nach Monaten.
+Wie oben gesehen, pendelt sich im Mittel die Anzahl von Abflügen pro Jahr ab Hamburg bei ca. 70.000 ein. Mit den vorliegenden Daten lässt sich aber auch gut eine Saisonalität über das Jahr analysieren. Hierzu folgt nun die Veranschaulichung der mittleren Anzahl von Abflügen über die Jahre 2011-2019 nach Monaten.
 
 <img src="/posts/2021-08-14-wohin-fliegt-hamburg/post_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
 
-Das Bild war fast zu erwarten. Im Frühling zieht die Anzahl der Abflüge an, erreicht dann in den Monaten Mai bis Oktober ein Plateau und flacht dann wieder ab. Aus praktischer Sicht bedeutet dies unter anderem auch, dass man in den Sommermonaten die besseren Voraussetzungen zum Beobachten von Flugzeugen am Flughafen hat (z.B. Planespotting).
+Das Bild war fast zu erwarten. Im Frühling zieht die Anzahl der Abflüge an, erreicht dann in den Monaten Mai bis Oktober ein Plateau und flacht dann wieder ab. Aus praktischer Sicht bedeutet dies unter anderem auch, dass man in den Sommermonaten die besseren Voraussetzungen zum Beobachten von Flugzeugen am Flughafen hat (z.B. Planespotting), da die Flugbewegung größer ist. 
 
 ## Wohin gehen die Abflüge, außerhalb von Deutschland?
 
