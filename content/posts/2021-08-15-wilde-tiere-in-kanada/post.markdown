@@ -15,11 +15,11 @@ draft: no
 
 
 Ich beabsichtige, bald nach Kanada zu reisen und habe mich deshalb schon durch einen Reiseführer gelesen, einen Reisevortrag angeschaut und natürlich auf verschiedenen Webseiten recherchiert.
-Dabei bin ich immer wieder darauf gestoßen, dass Kanada ein "Bärenland" ist und man in der Natur an bestimmten Stellen damit rechnen müsse, Bären anzutreffen. In einer anderen Dokumentation über die in den Alpen angesiedelten Trentino-Bären sagte ein Naturschützer: Wenn es zu einer Begegnung kommt, sollte man sicher eher glücklich schätzen, eine auserwählte Person zu sein.
+Dabei bin ich immer wieder darauf gestoßen, dass Kanada ein "Bärenland" ist und man in der Natur an bestimmten Stellen damit rechnen müsse, Bären anzutreffen. In einer anderen Dokumentation über die in den Alpen angesiedelten Trentino-Bären sagte ein Naturschützer: Wenn es zu einer Begegnung kommt, sollte man sich eher glücklich schätzen, eine auserwählte Person zu sein.
 
 ![](/posts/2021-08-15-wilde-tiere-in-kanada/post_files/geoff-brooks-K01-S2NVJCg-unsplash.jpg)
 
-Immerhin weiß ich durch meine Recherche nun schon, das Bären eigentlich kaum interessiert daran sind, Menschen zu begegnen. Verhindern kann man das wohl in dem man lautstark singt oder sich unterhält und indem man Bärenglöckchen am Rucksack befestigt, die ständig klimpern und den Bären schon von Weitem signalisieren, dass Menschen im Anmarsch sind. So ein Glöckchen habe ich mir schon angeschafft. 
+Immerhin weiß ich durch meine Recherche nun schon, das Bären eigentlich kaum interessiert daran sind, Menschen zu begegnen. Verhindern kann man das beim Wandern wohl, in dem man lautstark singt oder sich unterhält und indem man Bärenglöckchen am Rucksack befestigt, die ständig klimpern und den Bären schon von Weitem signalisieren, dass Menschen im Anmarsch sind. So ein Glöckchen habe ich mir schon angeschafft. 
 
 <img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/Bearbell.png" alt="" width="40%"/>
 
@@ -182,9 +182,10 @@ Um die ungleiche Anzahl der Summen pro Jahr auszugleichen und einen besseren Ver
 
 <img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
 
-Die erfassten Vorkommnisse konzentrieren sich in den Top 10 von "Bighorn Sheep" bis "Wolf". Andere Spezien sind unter "Others zusammengefasst. Fasst man die Spezies "Black Bear" und "Grizzly Bear"  zusammen, dann kommt schon ein nennenswerter Anteil zusammen, nämlich circa 30% der Vorkommnisse im Jahr 2020. In den Jahren davor waren die Vorkommnisse mit Bären sogar noch ausgeprägter. Der Großteil der Vorkommnisse entfiel jedoch im Jahr 2020 mit fast 50% auf Elche. 
+Die erfassten Vorkommnisse konzentrieren sich in den Top 10 von "Bighorn Sheep" bis "Wolf". Andere Spezien sind unter "Others zusammengefasst. Fasst man die Spezies "Black Bear" und "Grizzly Bear"  zusammen, dann kommt schon ein nennenswerter Anteil zusammen, nämlich circa 30% der Vorkommnisse im Jahr 2020. In den Jahren davor waren die Vorkommnisse mit Bären sogar noch ausgeprägter. Auffällig ist, dass der Anteil der dokumentieren Vorkommnisse mit Schwarzbären größer ist, als mit Grizzlybären. Das hat den einfachen Grund, dass laut offiziellen Zahlen die Population der Schwarzbären in Kanada deutlich größer ist. Interessant ist - warum auch immer (möglicherweise hängt es mit dem Rückgang des Tourismus zusammen), dass im Jahr 2020 der Hauptteil der Vorkommnisse auf Elche entfiel (fast 50%).
 
-Doch worum ging es bei diesen Vorkommnissen? Dazu konzentriere ich die weitere Analyse für diesen Beitrag auf die Bären (Schwarzbären und Grizzlybären), da sie im Fokus stehen (sorry liebe Elche, falls ich Euch an dieser Stelle unterschätze).
+Doch worum ging es bei diesen Vorkommnissen? Wie haben sich die Tiere verhalten? 
+Dazu konzentriere ich die weitere Analyse für diesen Beitrag auf die Bären (Schwarzbären und Grizzlybären), da sie im Fokus stehen (sorry liebe Elche, falls ich Euch an dieser Stelle unterschätze).
 
 # Verhalten der Bären
 
