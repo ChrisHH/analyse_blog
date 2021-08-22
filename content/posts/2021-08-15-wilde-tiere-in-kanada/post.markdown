@@ -223,7 +223,7 @@ Die Daten besätigen eigentlich nur das, was man in zahlreichen Ratgebern nachle
 
 Insofern war das eine schöne Übung, um die Ratschläge mit Daten und Fakten zu untermauern.
 
-# Tageszeiten der Vorfälle
+# Tageszeiten der Vorkommnisse
 
 Mich interessiert nun, wann, d.h. zu welchen Tageszeiten diese Vorfälle stattfinden. Da die Uhrzeiten ebenfalls dokumentiert sind, wird für die Vorkommnisse mit den Verhaltensweisen des vorigen Abschnittes die Tageszeit (volle Stunde) ermittelt und dann pro Zeitstunde gezählt, wie viele Vorkommnisse dokumentiert wurden.
 
@@ -238,6 +238,7 @@ Für die im vorigen Abschnitt untersuchten Verhaltensweisen schaue ich schlussen
 
 Eine gute Nachricht! Der Blick auf die Y-Achse verrät, dass sich viele Vorkommnisse in den Zeilen "Retreat" häufen und das ist die Flucht des Bären. Das heißt: im Fall einer unangenehmen Begegnung mit einem Bären kann man ihn dazu bringen wegzulaufen. 
 
-Nahezu jede Antwort (ein Wurf) mit einem "Chalkball", also einem kleinen Sack, gefüllt mit Kreidepuder (den man wohl zum Klettern benötigt, um ausreichend Grip in den Händen zu haben), führte dazu, dass der Bär weglief. Auffällig ist auch, dass "Noise - Voice" dazu führt, dass die Bären weggehen/-laufen (ich denke hier auch an das Bärenglöckchen). das Bärenspray führt erfüllt seinen Zweck und der Bär läuft überwiegend davon. In keinem dokumentierten Fall wird der Bär derart wütend, dass er zum Angriff übergeht. Wenngleich das Bärenspray dem Bären keine bleibenden Beeinträchtigungen zufügt, sollte man daran denken, dass auch andere Mittel geeignet sind, einen Bären zu vertreiben. 
+Nahezu jede Antwort (ein Wurf) mit einem "Chalkball", also einem kleinen Sack, gefüllt mit Kreidepuder (den man wohl zum Klettern benötigt, um ausreichend Grip in den Händen zu haben), führte dazu, dass der Bär weglief. Auffällig ist auch, dass "Noise - Voice" dazu führt, dass die Bären weggehen/-laufen (ich denke hier auch an das Bärenglöckchen). Das Bärenspray  erfüllt seinen Zweck und der Bär läuft nach dessen Anwendung überwiegend davon. In keinem dokumentierten Fall wird der Bär derart gereizt, dass er zum Angriff übergeht. Wenngleich das Bärenspray dem Bären keine bleibenden Beeinträchtigungen zufügt, sollte man daran denken, dass auch andere Mittel geeignet sind, einen Bären zu vertreiben. 
 
-Mein Fazit: ich bin mit der Bärenglocke schon gut gerüstet. Über die Anschaffung eines "Chalkballs" denke ich noch nach! Das Bärenspray kann man in Kanada wohl auch örtlich ausleihen ("If you spray, you pay!"). 
+Mein Fazit: ich bin mit der Bärenglocke schon gut gerüstet. Über die Anschaffung eines "Chalkballs" denke ich noch nach. 
+Das Bärenspray kann man in Kanada wohl auch örtlich ausleihen ("If you spray, you pay!"). 
