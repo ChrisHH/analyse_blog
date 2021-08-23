@@ -51,7 +51,7 @@ Immerhin weiß ich durch meine Recherche nun schon, das Bären eigentlich kaum i
 
 Kommt die Begegnung unverhofft oder hat der Bär schlechte Laune, dann kann sich in letzter Konsequenz Bärenspray (eine große Dose Pfefferspray) als lebensrettend erweisen.
 
-Ich habe mich gefragt: wie häufig kommt es denn zu Begegnungen zwischen Mensch und Bär und wie gehen diese Begegnungen aus? Dazu habe ich mich auf die Suche nach Daten gemacht und kann das OpenData Portal der kanadischen Regierung empfehlen! Hier kam mir der offizielle Datensatz über die Co-Existenz von Mensch und Wildtieren sehr gelegen. [Dies ist der Link](https://open.canada.ca/data/en/dataset/743a0b4a-9e33-4b12-981a-9f9fd3dd1680)zum Datensatz der heute die Datengrundlage für meinen Beitrag ist. 
+Ich habe mich gefragt: wie häufig kommt es denn zu Begegnungen zwischen Mensch und Bär und wie gehen diese Begegnungen aus? Dazu habe ich mich auf die Suche nach Daten gemacht und kann das OpenData Portal der kanadischen Regierung empfehlen! Hier kam mir der offizielle Datensatz über die Co-Existenz von Mensch und Wildtieren sehr gelegen. [Dies ist der Link](https://open.canada.ca/data/en/dataset/743a0b4a-9e33-4b12-981a-9f9fd3dd1680) zum Datensatz der heute die Datengrundlage für meinen Beitrag ist. 
 
 # Struktur des Datensatzes
 
@@ -222,7 +222,7 @@ vorfaelle %>%
   
 
 ```
-In allen Jahren spielten sich die erfassten Vorkommnisse sehr konzentriert im zweiten und dritten Quartal ab. In den anderen Quartalen halten sie wahrscheinlich Winterruhe, die lt. [Wikipedia](https://de.wikipedia.org/wiki/Amerikanischer_Schwarzbär) für Schwarzbären in kalten Regionen (dazu würde ich Kanada zählen), von September bis Mai dauern kann. Möglicherweise sind in dieser Zeit aber auch weniger Menschen aktiv, wobei das nicht vorstellbar ist, da eine Schneelandschaft ja auch zum Wintersport einlädt.
+In allen Jahren spielten sich die erfassten Vorkommnisse sehr konzentriert im zweiten und dritten Quartal ab. In den anderen Quartalen halten die Bären wahrscheinlich Winterruhe, die lt. [Wikipedia](https://de.wikipedia.org/wiki/Amerikanischer_Schwarzbär) für Schwarzbären in kalten Regionen (dazu würde ich Kanada zählen), von September bis Mai dauern kann. Möglicherweise sind in dieser Zeit aber auch keine oder deutlich weniger Menschen aktiv in der Natur, wobei das nicht vorstellbar ist, da eine Schneelandschaft ja auch zum Wintersport einlädt!?
 
 Der Vollständigkeit halber hier noch ein Blick auf die gleiche Darstellung, nur einzeln gruppiert nach dem Verhalten.
 
@@ -294,4 +294,4 @@ Eine gute Nachricht! Der Blick auf die Y-Achse verrät, dass sich viele Vorkommn
 Nahezu jede Antwort (ein Wurf) mit einem "Chalkball", also einem kleinen Sack, gefüllt mit Kreidepuder (den man wohl zum Klettern benötigt, um ausreichend Grip in den Händen zu haben), führte dazu, dass der Bär weglief (gelb gefüllter Kreis). Auffällig ist auch, dass "Noise - Voice" dazu führt, dass die Bären weggehen/-laufen (ich denke hier auch an das Bärenglöckchen). Das Bärenspray  erfüllt seinen Zweck und der Bär läuft nach dessen Anwendung überwiegend davon. In keinem dokumentierten Fall wird der Bär derart gereizt, dass er zum Angriff übergeht. Wenngleich das Bärenspray dem Bären keine bleibenden Beeinträchtigungen zufügt, sollte man daran denken, dass auch andere Mittel geeignet sind, einen Bären zu vertreiben. 
 
 Mein Fazit: ich bin mit der Bärenglocke schon gut gerüstet. Über die Anschaffung eines "Chalkballs" denke ich noch nach. 
-Das Bärenspray kann man in Kanada wohl auch örtlich ausleihen ("If you spray, you pay!"). 
+Das Bärenspray kann man in Kanada wohl auch örtlich ausleihen ("If you spray, you pay!"). Aber wahrscheinlich werde ich all das nicht brauchen; Bären halten Winterruhe und die kaum bis nicht vorhandenen Vorkommnisse im 4. Quartal zeigen: man sollte sich eher glücklich schätzen überhaupt einen Bären zu sehen, als sich Gedanken bezüglich einer Begegnung zu machen. 
