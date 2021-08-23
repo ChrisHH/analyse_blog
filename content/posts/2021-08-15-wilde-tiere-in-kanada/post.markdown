@@ -14,23 +14,21 @@ draft: no
 ---
 
 
-Ich beabsichtige, bald nach Kanada zu reisen und habe mich deshalb schon durch einen Reiseführer gelesen, einen Reisevortrag angeschaut und natürlich auf verschiedenen Webseiten recherchiert.
-Dabei bin ich immer wieder darauf gestoßen, dass Kanada ein "Bärenland" ist und man in der Natur an bestimmten Stellen damit rechnen müsse, Bären anzutreffen. In einer anderen Dokumentation über die in den Alpen angesiedelten Trentino-Bären sagte ein Naturschützer: Wenn es zu einer Begegnung kommt, sollte man sich eher glücklich schätzen, eine auserwählte Person zu sein.
+Ich beabsichtige, bald nach Kanada zu reisen und habe mich deshalb schon durch Reiseführer gelesen, einen Reisevortrag angeschaut und natürlich auf verschiedenen Webseiten recherchiert. Dabei wurde mir erst richtig bewusst, dass Kanada ein sog. Bärenland ist.
 
 ![](/posts/2021-08-15-wilde-tiere-in-kanada/post_files/geoff-brooks-K01-S2NVJCg-unsplash.jpg)
 
-Immerhin weiß ich durch meine Recherche nun schon, das Bären eigentlich kaum interessiert daran sind, Menschen zu begegnen. Verhindern kann man das beim Wandern wohl, in dem man lautstark singt oder sich unterhält und indem man Bärenglöckchen am Rucksack befestigt, die ständig klimpern und den Bären schon von Weitem signalisieren, dass Menschen im Anmarsch sind. So ein Glöckchen habe ich mir schon angeschafft. 
+Immerhin weiß ich durch meine Recherche nun schon, das Bären eigentlich kaum interessiert daran sind, Menschen zu begegnen. Verhindern kann man das beim Wandern wohl, in dem man lautstark singt oder sich unterhält und indem man Bärenglöckchen am Rucksack befestigt, die ständig klimpern und den Bären schon von Weitem signalisieren, dass Menschen im Anmarsch sind. So ein Glöckchen habe ich zumindest schonmal.
 
 <img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/Bearbell.png" alt="" width="40%"/>
 
 Kommt die Begegnung unverhofft oder hat der Bär schlechte Laune, dann kann sich in letzter Konsequenz Bärenspray (eine große Dose Pfefferspray) als lebensrettend erweisen.
 
-Lange Rede kurzer Sinn: man liest und hört viel. Aber am Ende des Tages sind es doch Fakten, die überzeugen. Und deshalb kommt mir der offizielle Datensatz über die Co-Existenz von Mensch und Wildtieren der kanadischen Regierung sehr gelegen. Diesen habe ich auf dem [Open Data Portal von Kanada entdeckt](https://open.canada.ca/data/en/dataset/743a0b4a-9e33-4b12-981a-9f9fd3dd1680) und möchte heute einmal analysieren, wie häufig Begegnungen mit Bären in der kanadischen Wildnis dokumentiert sind und wie sich die Bären dabei verhielten.
+Ich habe mich gefragt: wie häufig kommt es denn zu Begegnungen zwischen Mensch und Bär und wie gehen diese Begegnungen aus? Dazu habe ich mich auf die Suche nach Daten gemacht und kann das OpenData Portal der kanadischen Regierung empfehlen! Hier kam mir der offizielle Datensatz über die Co-Existenz von Mensch und Wildtieren sehr gelegen. [Dies ist der Link](https://open.canada.ca/data/en/dataset/743a0b4a-9e33-4b12-981a-9f9fd3dd1680)zum Datensatz der heute die Datengrundlage für meinen Beitrag ist. 
 
 # Struktur des Datensatzes
 
-Zunächst erfolgt ein Blick auf die Dimensionen und Variablen, die in dem Datensatz enthalten sind. Der Datensatz umfasst 15 Variablen und 33559 Beobachtungen; damit ist er schon sehr reichhaltig.
-
+Zunächst erfolgt ein kurzer Blick auf die Inhalte des Datensatzes. Der Datensatz umfasst 15 Variablen und 33559 Beobachtungen.
 Im Einzelnen kommen die folgenden Variablen im Datensatz vor:
 
 - incident_number
@@ -49,101 +47,9 @@ Im Einzelnen kommen die folgenden Variablen im Datensatz vor:
 - deterrents_used
 - animal_response_to_deterrents
 
-Und wie sieht es aus mit der Vollständigkeit?
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Variable </th>
-   <th style="text-align:left;"> Datentyp </th>
-   <th style="text-align:right;"> Vollständigkeit </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> incident_number </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> field_unit </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> protected_heritage_area </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> incident_type </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> species_common_name </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> animal_health_status </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 0.4141661 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> cause_of_animal_health_status </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 0.1379064 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> animal_behaviour </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 0.5677464 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> reason_for_animal_behaviour </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 0.3187223 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> animal_attractant </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 0.3010519 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> deterrents_used </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 0.2528979 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> animal_response_to_deterrents </td>
-   <td style="text-align:left;"> character </td>
-   <td style="text-align:right;"> 0.2255431 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> incident_date </td>
-   <td style="text-align:left;"> Date </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> local_time </td>
-   <td style="text-align:left;"> difftime </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> sum_of_number_of_animals </td>
-   <td style="text-align:left;"> numeric </td>
-   <td style="text-align:right;"> 1.0000000 </td>
-  </tr>
-</tbody>
-</table>
-
-Das sieht gut aus, denn das Datum, die Uhrzeit und die Spezies ist zu 100% vollständig. Auch das Verhalten des Tieres weist einen hohen Füllgrad auf (fast 60%). 
-
 # Beteiligte Tiere / Spezies
 
-Nun ist es an der Zeit einen Überblick zu gewinnen, welche Tiere an den gemeldeten Vorkommnissen (so wird das Wort "Incident" im Folgenden übersetzt) beteiligt waren. 
-Zunächst erfolgt ein kurzer Blick darauf, wieviele Vorkommnisse pro Jahr in dem Datensatz enthalten sind. 
+Nun ist es an der Zeit einen Überblick zu gewinnen, welche Tiere an den gemeldeten Vorkommnissen (so wird das Wort "Incident" im Folgenden übersetzt) beteiligt waren, aber zuallererst eine Zählung, wieviele Vorkommnisse pro Jahr in dem Datensatz enthalten sind. 
 
 <table>
  <thead>
@@ -172,15 +78,13 @@ Zunächst erfolgt ein kurzer Blick darauf, wieviele Vorkommnisse pro Jahr in dem
 </tbody>
 </table>
 
-Die Vorkommnisse wachsen seit 2017. Den Ansprung um mehr als 3.000 Meldungen im Jahr 2019 habe ich versucht mit Hilfe des Datensatzes zu erklären, blieb dabei aber erfolglos.
+Die Vorkommnisse wachsen seit 2017. Den Ansprung um mehr als 3.000 Meldungen im Jahr 2019 habe ich versucht mit Hilfe des Datensatzes zu erklären, blieb dabei aber erfolglos. Die folgende Grafik zeigt nun die Top 10 Spezies die in den Vorkommnissen dokumentiert wurden.
 
-Die folgende Grafik zeigt nun die Top 10 Spezies die in den Vorkommnissen dokumentiert wurden.
-
-<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-5-1.png" width="2400" />
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-4-1.png" width="2400" />
 
 Um die ungleiche Anzahl der Summen pro Jahr auszugleichen und einen besseren Vergleich zu ermöglichen folgt ein relativierter Blick, mit den Spezies sortiert nach dem Jahr 2020.
 
-<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-5-1.png" width="2400" />
 
 Die erfassten Vorkommnisse konzentrieren sich in den Top 10 von "Bighorn Sheep" bis "Wolf". Andere Spezien sind unter "Others zusammengefasst. Fasst man die Spezies "Black Bear" und "Grizzly Bear"  zusammen, dann kommt schon ein nennenswerter Anteil zusammen, nämlich circa 30% der Vorkommnisse im Jahr 2020. In den Jahren davor waren die Vorkommnisse mit Bären sogar noch ausgeprägter. Auffällig ist, dass der Anteil der dokumentieren Vorkommnisse mit Schwarzbären größer ist, als mit Grizzlybären. Das hat den einfachen Grund, dass laut offiziellen Zahlen die Population der Schwarzbären in Kanada deutlich größer ist. Interessant ist - warum auch immer (möglicherweise hängt es mit dem Rückgang des Tourismus zusammen), dass im Jahr 2020 der Hauptteil der Vorkommnisse auf Elche entfiel (fast 50%).
 
@@ -189,9 +93,9 @@ Dazu konzentriere ich die weitere Analyse für diesen Beitrag auf die Bären (Sc
 
 # Verhalten der Bären
 
-Die folgende Grafik gibt einen Überblick: über die "Art" des Verhaltens sowie die Häufigkeit.
+Die folgende Grafik gibt einen Überblick über die "Art" des Verhaltens der Bären sowie die Häufigkeit.
 
-<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-6-1.png" width="2400" />
 
 Am häufigsten wurde bei Bären das Verhalten "Presence - Wildlife Exclusion Zones" erfasst. Damit ist gemeint, dass sich die Bären in Zonen aufhalten, die stark von Menschen genutzt werden, also z.B. wenn ein Bär plötzlich im Garten steht oder in der Mülltonne nach Futter sucht. Als nächstes folgt das Verhalten "Indiffernt to People/Vehicles", welches sich am besten mit dem Begriff "ignorierend" beschreiben lässt; d.h. der Bär reagiert nicht auf die menschliche Begegnung. Der Grund "Avoidance", also Vermeidung steht an dritter Stelle. Dieses Verhalten ist dadurch charakterisiert, dass sich der Bär zurückzieht. 
 
@@ -211,7 +115,7 @@ Blicke ich auf die Vorkommnisse und filtere die "unangenehmeren" heraus, sind es
 
 Die Frage ist, was der Auslöser für dieses Verhalten gewesen ist? Die folgende Grafik versucht das zu beantworten, indem sie für jedes Verhalten die Häufigkeit der Ursachen darstellt.
 
-<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-8-1.png" width="2400" />
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-7-1.png" width="2400" />
 Der Blick auf die verschiedenen Gründe der einzelnen Verhaltensweisen zeigt, dass es den Bären häufig um Verteidigung geht, undzwar vorallem der Bärenjungen.
 Ein weiterer Grund ist die Verteidigung des Lebensraumes aber teilweise auch von Futter. In den Gründen taucht auch immer wieder der Grund "Food Conditioned" auf. 
 
@@ -221,24 +125,35 @@ Die Daten besätigen eigentlich nur das, was man in zahlreichen Ratgebern nachle
 2. Man sollte Bären, auch wenn sie die Gegenwart eines Menschen akzeptieren, nicht nähern. Im Gegenteil, man sollte versuchen, sich zurückzuziehen. 
 3. Man sollte sie niemals füttern. 
 
-Insofern war das eine schöne Übung, um die Ratschläge mit Daten und Fakten zu untermauern.
+Insofern war das eine schöne Übung, um die Ratschläge mit Daten zu untermauern - da ist schon was dran!
 
-# Tageszeiten der Vorkommnisse
+# Saisonalität und Tageszeit der Vorkommnisse
+
+Wie steht es nun um die Saisonalität der gemeldeten Vorkommnisse von o.g. definierten "unangenehmen" Begegnungen mit Bären?
+Dazu habe ich die folgende Grafik erstellt, in der die Anzahl der Vorkommnisse pro Tag über die gesamte vier Jahre dargestellt ist.
+Die gestrichtelten Linien stellen jeweils den Quartalsanfang dar.
+
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-8-1.png" width="2400" />
+In allen Jahren spielten sich die erfassten Vorkommnisse sehr konzentriert im zweiten und dritten Quartal ab. In den anderen Quartalen halten sie wahrscheinlich Winterruhe, die lt. [Wikipedia](https://de.wikipedia.org/wiki/Amerikanischer_Schwarzbär) für Schwarzbären in kalten Regionen (dazu würde ich Kanada zählen), von September bis Mai dauern kann. Möglicherweise sind in dieser Zeit aber auch weniger Menschen aktiv, wobei das nicht vorstellbar ist, da eine Schneelandschaft ja auch zum Wintersport einlädt.
+
+Der Vollständigkeit halber hier noch ein Blick auf die gleiche Darstellung, nur einzeln gruppiert nach dem Verhalten.
+
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-9-1.png" width="2400" />
 
 Mich interessiert nun, wann, d.h. zu welchen Tageszeiten diese Vorfälle stattfinden. Da die Uhrzeiten ebenfalls dokumentiert sind, wird für die Vorkommnisse mit den Verhaltensweisen des vorigen Abschnittes die Tageszeit (volle Stunde) ermittelt und dann pro Zeitstunde gezählt, wie viele Vorkommnisse dokumentiert wurden.
 
-<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-9-1.png" width="2400" />
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-10-1.png" width="2400" />
 Die Interpretation ist schwierig, denn eine Begegnung bedarf Bär und Mensch. Insofern sieht man an dieser Kurve wahrscheinlich , dass Menschen vorallem tagsüber zu bestimmten Zeiten unterwegs sind (z.B. beim Wandern) und dann überrascht es nicht, dass die meisten Vorkommnisse in der Zeit von 11-16 Uhr dokumentiert sind. Ohne eine Normierung fällt es schwer, diese Daten zu interpretieren.
 
 # Abwehr im Falle einer unangenehmen Begegnung mit einem Bären
 
 Für die im vorigen Abschnitt untersuchten Verhaltensweisen schaue ich schlussendlich noch, wie diese abgewehrt wurden und was das Ergebnis war. 
 
-<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-10-1.png" width="2400" />
+<img src="/posts/2021-08-15-wilde-tiere-in-kanada/post_files/figure-html/unnamed-chunk-11-1.png" width="2400" />
 
 Eine gute Nachricht! Der Blick auf die Y-Achse verrät, dass sich viele Vorkommnisse in den Zeilen "Retreat" häufen und das ist die Flucht des Bären. Das heißt: im Fall einer unangenehmen Begegnung mit einem Bären kann man ihn dazu bringen wegzulaufen. 
 
-Nahezu jede Antwort (ein Wurf) mit einem "Chalkball", also einem kleinen Sack, gefüllt mit Kreidepuder (den man wohl zum Klettern benötigt, um ausreichend Grip in den Händen zu haben), führte dazu, dass der Bär weglief. Auffällig ist auch, dass "Noise - Voice" dazu führt, dass die Bären weggehen/-laufen (ich denke hier auch an das Bärenglöckchen). Das Bärenspray  erfüllt seinen Zweck und der Bär läuft nach dessen Anwendung überwiegend davon. In keinem dokumentierten Fall wird der Bär derart gereizt, dass er zum Angriff übergeht. Wenngleich das Bärenspray dem Bären keine bleibenden Beeinträchtigungen zufügt, sollte man daran denken, dass auch andere Mittel geeignet sind, einen Bären zu vertreiben. 
+Nahezu jede Antwort (ein Wurf) mit einem "Chalkball", also einem kleinen Sack, gefüllt mit Kreidepuder (den man wohl zum Klettern benötigt, um ausreichend Grip in den Händen zu haben), führte dazu, dass der Bär weglief (gelb gefüllter Kreis). Auffällig ist auch, dass "Noise - Voice" dazu führt, dass die Bären weggehen/-laufen (ich denke hier auch an das Bärenglöckchen). Das Bärenspray  erfüllt seinen Zweck und der Bär läuft nach dessen Anwendung überwiegend davon. In keinem dokumentierten Fall wird der Bär derart gereizt, dass er zum Angriff übergeht. Wenngleich das Bärenspray dem Bären keine bleibenden Beeinträchtigungen zufügt, sollte man daran denken, dass auch andere Mittel geeignet sind, einen Bären zu vertreiben. 
 
 Mein Fazit: ich bin mit der Bärenglocke schon gut gerüstet. Über die Anschaffung eines "Chalkballs" denke ich noch nach. 
 Das Bärenspray kann man in Kanada wohl auch örtlich ausleihen ("If you spray, you pay!"). 
