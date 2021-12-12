@@ -7,7 +7,7 @@ categories:
   - COVID
   - Falschinformation
 tags: []
-draft: yes
+draft: no
 ---
 
 ```{r, include=FALSE}
