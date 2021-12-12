@@ -1,0 +1,145 @@
+---
+title: Der Aufkleber
+author: Christian Jähnert
+date: '2021-12-11'
+slug: []
+categories:
+  - COVID
+  - Falschinformation
+tags: []
+draft: yes
+---
+
+```{r, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, message = FALSE, 
+                      echo = FALSE, dpi = 300, cache.lazy = FALSE,
+                      tidy = "styler", fig.width = 8, fig.height = 5)
+
+library(tidyverse)
+library(janitor)
+library(silgelib)
+
+```
+## Hintergrund
+
+Im Fahrstuhl meines Fitnessstudios ist eine Informationstafel angebracht, auf der über die aktuell geltende 2G-Regel informiert wird. Links unten fiel mir dort in dieser Woche ein Aufkleber auf. Damit soll wohl verdeutlicht werden (durch die roten Pfeile), dass die Impfung nicht funktioniert.
+
+<img src="/posts/2021-12-11-der-aufkleber/index_der_aufkleber_files/PHOTO-2021-12-11-19-13-52.jpg" alt="" width="50%"/>
+
+Ich habe diesen unsinnigen Aufkleber entfernt und heute etwas Zeit, mich dem Inhalt zu widmen.
+
+## Erkenntnis 1
+
+Die Quellenangabe ist sehr dürftig. Nach etwas Recherche konnte ich die Zahlen dann aber finden und nachbilden. 
+
+[Hier](https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/sterbefallzahlen.html) finden sich die Informationen zu Sonderauswertung der Sterbefallzahlen in Deutschland.
+
+Mein Fazit: Durch unpräzise Quellenangaben wird erschwert, die Inhalte zu überprüfen.
+
+## Erkenntnis 2
+
+Ich musste etwas nachdenken, aber die mittlere Spalte ist wohl wie folgt zu verstehen:
+
+* Monat 2019 – es gab noch kein COVID
+* Monat 2020 – es gab COVID aber noch keine Impfung
+* Monat 2021 – es gab COVID und es waren schon Menschen geimpft
+
+Aufgrund des roten Pfeils soll man (so denke ich) schlussfolgern, dass im Zeitraum mit COVID und geimpften Menschen mehr oder annähernd genauso viele Menschen, wie in 2019 gestorben sind. Es soll der Eindruck erweckt werden, dass die Pandemie gar nicht so schlimm ist oder auch dass Impfen eigentlich nichts bringt. 
+
+Mein Fazit: Es wird unterstellt, dass die Anzahl der Todesfälle allein von Monat, Jahr und der Gegebenheit, ob COVID bzw. ein Impfstoff dagegen existiert abhängt. Aber das Leben (oder Sterben) ist komplexer. Das Statistische Bundesamt kommentiert z.B. in dem Bericht eine Hitzewelle, aufgrund derer im Sommer 2021 viele Menschen starben; man kann ergänzend dazu in der [Zeitreihe der Luftemperatur](https://de.wikipedia.org/wiki/Zeitreihe_der_Lufttemperatur_in_Deutschland#2011_bis_2020) sehen, dass der Juni und Juli 2021 in Deutschland durchschnittlich 1-2 Grad wärmer war als im Jahr 2020. 
+
+Ferner wird nicht berücksichtigt, dass in den unterschiedlichen Zeiträumen unterschiedliche Virusvarianten das Infektionsgeschehen bestimmten. Wir erinnern uns, dass im Jahr 2020 noch der Wildtyp dominierte und im Sommer 2021 die weitaus ansteckendere Delta-Variante (sh. auch [hier](https://www.apotheken-umschau.de/krankheiten-symptome/infektionskrankheiten/coronavirus/delta-variante-breitet-sich-rasant-aus-784661.html)). 
+
+## Erkenntnis 3
+
+Ich habe mich gefragt: Warum hat die Person, die diesen Aufkleber erstellt hat, ausgerechnet die Monate Mai, Juni und Juli gewählt? Deshalb habe ich alle Daten, die das Statistische Bundesamt anbietet einmal geplottet.
+
+```{r}
+
+sterbefaelle <-  tempfile(fileext = ".xlsx")
+dataURL <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
+download.file(dataURL, destfile = sterbefaelle, mode='wb')
+
+sterbefaelle <- readxl::read_excel(sterbefaelle, 
+                                   sheet = "D_2016-2021_Monate_AG_Ins", 
+                                   skip = 8) %>% 
+  clean_names() %>% 
+  filter(unter_jahren == "Insgesamt") %>% 
+  select(jahr = x2, januar:dezember)
+
+
+
+
+monate <- sterbefaelle %>% 
+   pivot_longer(-jahr) %>% 
+   select(name) %>% 
+   distinct() %>% 
+   mutate(monat = 1:12) 
+
+
+covid_sterbefaelle <-  tempfile(fileext = ".xlsx")
+
+dataURL <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/COVID-19_Todesfaelle.xlsx?__blob=publicationFile"
+
+download.file(dataURL, destfile = covid_sterbefaelle, mode='wb')
+
+covid_sterbefaelle <- readxl::read_excel(covid_sterbefaelle, 
+                                   sheet = "COVID_Todesfälle_Monat") %>%
+   clean_names() %>%
+   separate(sterbe_monat, into = c("jahr","monat"), sep = "m", convert = TRUE) %>% 
+   mutate(anzahl_verstorbene_covid_19_falle = as.numeric(anzahl_verstorbene_covid_19_falle)) %>% 
+   left_join(monate)
+
+
+
+merged_dataset <- sterbefaelle %>% 
+   pivot_longer(-jahr) %>% 
+   left_join(covid_sterbefaelle) %>% 
+   mutate(anzahl_verstorbene_other = if_else(is.na(anzahl_verstorbene_covid_19_falle),value,value - anzahl_verstorbene_covid_19_falle)) %>% 
+   select(-monat, -value) %>% 
+   rename(monat = name) %>% 
+   pivot_longer(-c("jahr","monat")) %>% 
+   mutate(jahr = factor(jahr),
+          monat = factor(monat, levels = c("januar",
+                                         "februar",
+                                          "marz",
+                                          "april",
+                                          "mai",
+                                          "juni",
+                                          "juli",
+                                          "august",
+                                          "september",
+                                          "oktober",
+                                          "november",
+                                          "dezember"),
+                        labels = c("JAN",
+                                   "FEB",
+                                   "MAR",
+                                   "APR",
+                                   "MAI",
+                                   "JUN",
+                                   "JUL",
+                                   "AUG",
+                                   "SEP",
+                                   "OKT",
+                                   "NOV",
+                                   "DEZ"))) 
+   
+
+
+merged_dataset %>% 
+   mutate(value = if_else(is.na(value),0,value)) %>% 
+   ggplot(aes(x = monat, fill = jahr, group = jahr, weight = value)) +
+   geom_bar(position = "dodge") +
+   theme_plex() +
+   scale_fill_viridis_d() +
+   labs(x = "Monat", y = "Anzahl Sterbefälle", fill = "Jahr") +
+   scale_y_continuous(labels = scales::number_format())
+
+
+
+
+
+```
+Mein Fazit: Die Auswahl der Monate Mai, Juni und Juli ist kein Zufall. Denn beispielsweise mit den Daten der Monate Februar, März und April hätte die simple Logik des Autoren des Aufklebers schon nicht mehr funktioniert. 
