@@ -17,12 +17,11 @@ Im Fahrstuhl meines Fitnessstudios ist eine Informationstafel angebracht, auf de
 
 <img src="/posts/2021-12-11-der-aufkleber/index_der_aufkleber_files/PHOTO-2021-12-11-19-13-52.jpg" alt="" width="50%"/>
 
-Ich habe diesen unsinnigen Aufkleber entfernt und heute etwas Zeit, mich dem Inhalt zu widmen.
+Ich habe diesen Aufkleber entfernt und heute etwas Zeit, mich dem Inhalt zu widmen.
 
 ## Erkenntnis 1
 
 Die Quellenangabe ist sehr dürftig. Nach etwas Recherche konnte ich die Zahlen dann aber finden und nachbilden. 
-
 [Hier](https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/sterbefallzahlen.html) finden sich die Informationen zu Sonderauswertung der Sterbefallzahlen in Deutschland.
 
 Mein Fazit: Durch unpräzise Quellenangaben wird erschwert, die Inhalte zu überprüfen.

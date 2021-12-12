@@ -27,12 +27,11 @@ Im Fahrstuhl meines Fitnessstudios ist eine Informationstafel angebracht, auf de
 
 <img src="/posts/2021-12-11-der-aufkleber/index_der_aufkleber_files/PHOTO-2021-12-11-19-13-52.jpg" alt="" width="50%"/>
 
-Ich habe diesen unsinnigen Aufkleber entfernt und heute etwas Zeit, mich dem Inhalt zu widmen.
+Ich habe diesen Aufkleber entfernt und heute etwas Zeit, mich dem Inhalt zu widmen.
 
 ## Erkenntnis 1
 
 Die Quellenangabe ist sehr dürftig. Nach etwas Recherche konnte ich die Zahlen dann aber finden und nachbilden. 
-
 [Hier](https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/sterbefallzahlen.html) finden sich die Informationen zu Sonderauswertung der Sterbefallzahlen in Deutschland.
 
 Mein Fazit: Durch unpräzise Quellenangaben wird erschwert, die Inhalte zu überprüfen.
@@ -66,16 +65,18 @@ sterbefaelle <- readxl::read_excel(sterbefaelle,
                                    skip = 8) %>% 
   clean_names() %>% 
   filter(unter_jahren == "Insgesamt") %>% 
-  select(jahr = x2, januar:dezember)
+  select(jahr = x2, januar:dezember) 
 
 
-
+sterbefaelle <- sterbefaelle %>% 
+   pivot_longer(-jahr) %>% 
+   rename("monat" = "name",
+          "sterbefaelle_gesamt" = "value") 
 
 monate <- sterbefaelle %>% 
-   pivot_longer(-jahr) %>% 
-   select(name) %>% 
+   select(monat) %>% 
    distinct() %>% 
-   mutate(monat = 1:12) 
+   mutate(monat_zahl = 1:12) 
 
 
 covid_sterbefaelle <-  tempfile(fileext = ".xlsx")
@@ -89,16 +90,13 @@ covid_sterbefaelle <- readxl::read_excel(covid_sterbefaelle,
    clean_names() %>%
    separate(sterbe_monat, into = c("jahr","monat"), sep = "m", convert = TRUE) %>% 
    mutate(anzahl_verstorbene_covid_19_falle = as.numeric(anzahl_verstorbene_covid_19_falle)) %>% 
-   left_join(monate)
+   left_join(monate, by = c("monat" = "monat_zahl")) %>% 
+   select(jahr, monat = monat.y, anzahl_verstorbene_covid_19_falle)
 
 
 
 merged_dataset <- sterbefaelle %>% 
-   pivot_longer(-jahr) %>% 
    left_join(covid_sterbefaelle) %>% 
-   mutate(anzahl_verstorbene_other = if_else(is.na(anzahl_verstorbene_covid_19_falle),value,value - anzahl_verstorbene_covid_19_falle)) %>% 
-   select(-monat, -value) %>% 
-   rename(monat = name) %>% 
    pivot_longer(-c("jahr","monat")) %>% 
    mutate(jahr = factor(jahr),
           monat = factor(monat, levels = c("januar",
@@ -128,14 +126,16 @@ merged_dataset <- sterbefaelle %>%
    
 
 
-merged_dataset %>% 
-   mutate(value = if_else(is.na(value),0,value)) %>% 
+merged_dataset %>%
+   filter(name == "sterbefaelle_gesamt") %>% 
    ggplot(aes(x = monat, fill = jahr, group = jahr, weight = value)) +
    geom_bar(position = "dodge") +
    theme_plex() +
    scale_fill_viridis_d() +
    labs(x = "Monat", y = "Anzahl Sterbefälle", fill = "Jahr") +
    scale_y_continuous(labels = scales::number_format())
+
+
 
 
 
